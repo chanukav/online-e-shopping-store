@@ -1,6 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- Footer Section -->
-<footer class="bg-dark text-white py-5">
+<!-- Footer Section --><footer class="bg-dark text-white py-5">
     <div class="container">
       <div class="row g-4">
         <!-- First Grid: About Us, FAQ, Order History, Order Information -->
