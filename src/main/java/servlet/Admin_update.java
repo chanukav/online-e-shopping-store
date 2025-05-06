@@ -37,7 +37,9 @@ public class Admin_update extends HttpServlet {
 		
 		service.updateCustomer(admin);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("singleDataButton");
+		//request.setAttribute("email", admin.getEmail());
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("Single_admin_details");
 		
 		dispatcher.forward(request, response);
 		

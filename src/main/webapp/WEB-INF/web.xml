@@ -49,23 +49,23 @@
 </servlet-mapping>
 
 <servlet>
-	<servlet-name>updateCustomer</servlet-name>
-	<servlet-class>servlet.updateCustomer</servlet-class>
+	<servlet-name>Admin_update</servlet-name>
+	<servlet-class>servlet.Admin_update</servlet-class>
 </servlet>
 
 <servlet-mapping>
-		<servlet-name>updateCustomer</servlet-name>
-		<url-pattern>/single</url-pattern>
+		<servlet-name>Admin_update</servlet-name>
+		<url-pattern>/admin/Admin_update</url-pattern>
 </servlet-mapping>
 
 <servlet>
-	<servlet-name>deleteCustomer</servlet-name>
-	<servlet-class>servlet.deleteCustomer</servlet-class>
+	<servlet-name>Admin_delete</servlet-name>
+	<servlet-class>servlet.Admin_delete</servlet-class>
 </servlet>
 
 <servlet-mapping>
-		<servlet-name>deleteCustomer</servlet-name>
-		<url-pattern>/deletecus</url-pattern>
+		<servlet-name>Admin_delete</servlet-name>
+		<url-pattern>/admin/Admin_delete</url-pattern>
 </servlet-mapping>
 
 

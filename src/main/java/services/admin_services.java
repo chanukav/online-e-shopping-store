@@ -132,8 +132,8 @@ public class admin_services {
 	
 	public void updateCustomer(Admin admin) {
 		try {
-			String query = "UPDATE customer SET first_name ='"+admin.getFname()+"', first_name ='"+admin.getLname()+"', email ='"+admin.getEmail()+"', password ='"+admin.getPassword()+"' WHERE email='"+admin.getEmail()+"'";
-			
+			String query = "UPDATE gamudalk.admin SET first_name ='"+admin.getFname()+"', last_name ='"+admin.getLname()+"', email ='"+admin.getEmail()+"', password ='"+admin.getPassword()+"' WHERE email='"+admin.getEmail()+"'";
+
 			
 			Statement statement = DBConnect.getConnection().createStatement();
 			statement.executeUpdate(query);
@@ -144,6 +144,21 @@ public class admin_services {
 		}
 		
 	}
+	
+	public void deleteCustomer(Admin admin) {
+		try {
+			String query = "DELETE FROM gamudalk.admin WHERE email ='"+admin.getEmail()+"'";
+			
+			Statement statement = DBConnect.getConnection().createStatement();	
+			statement.executeUpdate(query);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 	
 

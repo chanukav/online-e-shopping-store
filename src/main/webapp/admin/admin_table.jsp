@@ -34,8 +34,8 @@
   			</td>
   			
   			<td>
-  				<form action="deleteCustomer" method="post">
-  					<input type="hidden" name="email" value="${cus.email}">
+  				<form action="Admin_delete" method="post">
+  					<input type="hidden" name="email" value="${admin.email}">
   					<button type="submit">Delete</button>
   					
   				</form>
