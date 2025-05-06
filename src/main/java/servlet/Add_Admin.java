@@ -41,7 +41,7 @@ public class Add_Admin extends HttpServlet {
 		
 		service.regAdmin(admin);
 		
-		RequestDispatcher dispatcher=request.getRequestDispatcher("admin_login.jsp");
+		RequestDispatcher dispatcher=request.getRequestDispatcher("admin_table.jsp");
 		dispatcher.forward(request, response);
 		
 	}

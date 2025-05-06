@@ -8,30 +8,26 @@
 </head>
 <body>
 	<h1>Update your profile</h1>
-	<form method="post" action="updateCustomer">
-	<div class="form-floating mb-3">
-		<label for="floatingInput">Admin ID</label>
-	  <input type="text" class="form-control" id="floatingInput" name="admin_id" value="${admin.adminid}">
-	</div>
+	<form method="post" action="Admin_update">
 	<div class="form-floating mb-3">
 		<label for="floatingInput">Fist Name</label>
-	  <input type="text" class="form-control" id="floatingInput" name="firstName" value="${admin.fname}">
+	  <input type="text" class="form-control" id="floatingInput" name="firstName" value="${param.firstName}">
 
 	</div>
 	<div class="form-floating mb-3">
 		<label for="floatingInput">Last Name</label>
-	  <input type="text" class="form-control" id="floatingInput" name="lastName" value="${admin.lname}" >
+	  <input type="text" class="form-control" id="floatingInput" name="lastName" value="${param.lastName}" >
 	  
 	</div>
 	
 	<div class="form-floating mb-3">
 	<label for="floatingInput">Email address</label>
-	  <input type="email" class="form-control" id="floatingInput" name="email" value="${admin.email}">
+	  <input type="email" class="form-control" id="floatingInput" name="email" value="${param.email}">
 	  
 	</div>
 	<div class="form-floating">
 		<label for="floatingPassword">Password</label>
-	  <input type="password" class="form-control" id="floatingPassword" name="password" value="${admin.password}">
+	  <input type="password" class="form-control" id="floatingPassword" name="password" value="${param.password}">
 	</div>
 	
 	<button type="submit" class="btn btn-secondary">Submit</button>

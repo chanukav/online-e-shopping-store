@@ -64,7 +64,6 @@
 	</fieldset>
 	<form action="admin_update.jsp" method="post">
 
-	<input type="hidden" name="admin_id" value="${admin.adminid}">
 	<input type="hidden" name="firstName" value="${admin.fname}">
 	<input type="hidden" name="lastName" value="${admin.lname}">
 	<input type="hidden" name="email" value="${admin.email}">
