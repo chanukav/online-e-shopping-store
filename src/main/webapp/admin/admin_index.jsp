@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.Admin" %>
 <%
-    model.Admin admin = (model.Admin) request.getAttribute("Admin");
+    Admin admin = (Admin) session.getAttribute("admin");
     if (admin == null) {
         response.sendRedirect("admin_login.jsp");
         return;
@@ -10,211 +10,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel - E-Shop</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
-            min-height: 100vh;
-        }
-        .sidebar {
-            width: 240px;
-            height: 100vh;
-            background: #2E2E2E;
-            border-radius: 24px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-            position: fixed;
-            left: 24px;
-            top: 24px;
-            padding: 24px 0;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sidebar .logo {
-            font-size: 1.7rem;
-            font-weight: bold;
-            color: #2a1b3d;
-            margin-bottom: 32px;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            flex: 1;
-        }
-        .sidebar ul li {
-            margin-bottom: 8px;
-        }
-        .sidebar ul li a {
-            display: flex;
-            align-items: center;
-            padding: 12px 32px;
-            color: #2a1b3d;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-        }
-        .sidebar ul li a i {
-            margin-right: 16px;
-            font-size: 1.2rem;
-        }
-        .sidebar ul li a.active,
-        .sidebar ul li a:hover {
-            background: #f3f6fa;
-            color: #2563eb;
-            font-weight: 600;
-        }
-        .main-content {
-            margin-left: 288px;
-            padding: 40px 40px 40px 0;
-        }
-        .main-card {
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-            padding: 32px;
-            min-height: 80vh;
-        }
-	.sidebar-toggle {
-	    display: none;
-	    position: fixed;
-	    top: 24px;
-	    right: 24px; /* Move to right */
-	    z-index: 1001;
-	    background: #2563eb;
-	    color: #fff;
-	    border: none;
-	    border-radius: 50%;
-	    width: 48px;
-	    height: 48px;
-	    font-size: 1.5rem;
-	    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-	    cursor: pointer;
+  <meta charset="UTF-8">
+  <title>Gamuda.LK Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap and Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .sidebar {
+    background-color: #f9fafb;
+    width: 250px;
+    min-height: 100vh;
+    transition: width 0.3s;
+    flex-direction: column;
+  	position: relative; /* 🧲 Make sidebar a positioning context */
+  }
+	.logout-wrapper {
+	  margin-top: auto;
+	  padding: 10px 20px;
 	}
+
+  .sidebar.collapsed {
+    width: 70px;
+  }
+  .sidebar.collapsed .logout-wrapper {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+  .sidebar .nav-link {
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+  }
+
+  .sidebar.collapsed .nav-link span {
+    display: none;
+  }
+
+  .sidebar.collapsed .logo-full {
+    display: none;
+  }
+
+  .sidebar.collapsed .logo-icon {
+    display: inline;
+  }
+
+  .logo-icon {
+    display: none;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .top-nav {
+    background-color: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-toggle-sidebar {
+    background: none;
+    border: none;
+    font-size: 20px;
+    margin-right: 10px;
+    
+    
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      height: 100%;
+      z-index: 1000;
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+  }
+
+  /* 🔽 NEW CSS FOR COLLAPSED SIDEBAR 🔽 */
+
+  .sidebar.collapsed .nav-top,
+  .sidebar.collapsed .nav-middle {
+    display: none;
+  }
+
+  .sidebar.collapsed .logout-wrapper {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+	  }
 	
-	.sidebar-backdrop {
+	.sidebar.collapsed .logout-wrapper span {
 	    display: none;
-	    position: fixed;
-	    top: 0; left: 0; right: 0; bottom: 0;
-	    background: rgba(0,0,0,0.25);
-	    z-index: 1000;
-	}
+	  }
 	
-	@media (max-width: 900px) {
-	    .sidebar {
-	        left: 0;
-	        top: 0;
-	        width: 80vw;
-	        max-width: 320px;
-	        height: 100vh;
-	        border-radius: 0 24px 24px 0;
-	        transform: translateX(-110%);
-	        transition: transform 0.3s;
-	        position: fixed;
-	        box-shadow: 2px 0 16px rgba(0,0,0,0.08);
-	        z-index: 1002;
-	    }
-	    .sidebar.open {
-	        transform: translateX(0);
-	    }
-	    .sidebar-toggle {
-	        display: block;
-	    }
-	    .sidebar-backdrop.active {
-	        display: block;
-	    }
-	    .main-content {
-	        margin-left: 0;
-	        padding: 24px 8px;
-	    }
-	    .main-card {
-	        padding: 16px;
-	        min-height: 60vh;
-	    }
-	    body.sidebar-open {
-	        overflow: hidden;
-	    }
+	.logout-wrapper {
+	    padding: 10px 20px;
+	 }
+	
+	 .logout-wrapper button {
+	    width: 100%;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    gap: 10px;
+	  }
+	.sidebar.collapsed .logout-wrapper button span {
+		  display: none;
+		}
+		
+	.sidebar.collapsed .logout-wrapper {
+		  padding: 10px 0;
+		  display: flex;
+		  justify-content: center;
 	}
- </style>
-</head>
+  
+</style>
+
 <body>
-	<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-	<button class="sidebar-toggle" id="sidebarToggle" aria-label="Open sidebar">
-	    <i class="fas fa-bars"></i>
-	</button>
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="logo">E-Shop Admin</div>
-        <ul>
-            <li><a href="#" class="active" data-page="dashboard.jsp"><i class="fas fa-gauge"></i> Dashboard</a></li>
-            <li><a href="#" data-page="orders.jsp"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-            <li><a href="#" data-page="products.jsp"><i class="fas fa-box"></i> Products</a></li>
-            <li><a href="#" data-page="customers.jsp"><i class="fas fa-users"></i> Customers</a></li>
-            <li><a href="#" data-page="Manage_all_admins"><i class="fas fa-user-shield"></i> Admins</a></li>
-            <li><a href="#" data-page="billing.jsp"><i class="fas fa-chart-line"></i> Billing Analytics</a></li>
-            <li><a href="#" data-page="settings.jsp"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="#" data-page="help.jsp"><i class="fas fa-question-circle"></i> Help</a></li>
-        </ul>
-    </nav>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <div class="main-card">
-            <iframe id="mainFrame" src="dashboard.jsp" frameborder="0" style="width: 100%; height: 70vh; border: none; border-radius: 16px;"></iframe>
-        </div>
+<!-- Sidebar -->
+<div class="d-flex">
+  <div id="sidebar" class="sidebar d-flex flex-column">
+    <div class="p-3">
+      <h4 class="logo-full">Gamuda.LK</h4>
+      <h4 class="logo-icon">G.</h4>
     </div>
+	<nav class="nav flex-column">
+	  <a href="dashboard.jsp" class="nav-link" target="contentFrame"><i data-lucide="gauge"></i><span>Dashboard</span></a>
+	  <a href="orders.jsp" class="nav-link" target="contentFrame"><i data-lucide="shopping-cart"></i><span>Orders</span></a>
+	  <a href="products.jsp" class="nav-link" target="contentFrame"><i data-lucide="box"></i><span>Products</span></a>
+	  <a href="customers.jsp" class="nav-link" target="contentFrame"><i data-lucide="users"></i><span>Customers</span></a>
+	  <a href="Manage_all_admins" class="nav-link" target="contentFrame"><i data-lucide="shield-check"></i><span>Admins</span></a>
+	  <a href="billing.jsp" class="nav-link" target="contentFrame"><i data-lucide="line-chart"></i><span>Billing</span></a>
+	  <a href="settings.jsp" class="nav-link" target="contentFrame"><i data-lucide="settings"></i><span>Settings</span></a>
+	  <a href="help.jsp" class="nav-link" target="contentFrame"><i data-lucide="help-circle"></i><span>Help</span></a>
+	</nav>
+	<div class="logout-wrapper">
+	  <form method="GET" action="Admin_logout">
+	    <button type="submit" class="btn btn-danger d-flex align-items-center justify-content-center gap-2">
+	      <i data-lucide="log-out"></i> <span>Logout</span>
+	    </button>
+	  </form>
+	</div>
+  </div>
 
-<script>
-    const links = document.querySelectorAll('.sidebar ul li a');
-    const iframe = document.getElementById('mainFrame');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
-    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  <!-- Main Content Area -->
+  <div class="flex-grow-1 d-flex flex-column">
+    <div class="top-nav">
+      <div>
+        <button id="toggleBtn" class="btn-toggle-sidebar"><i class="fas fa-bars"></i></button>
+		</div>
+		<div class="d-flex align-items-center gap-2">
+		  <div class="profile-icon rounded-circle overflow-hidden" style="width: 35px; height: 35px;">
+		    <img src="Admin_Image?adminId=${admin.adminid}" onerror="this.src='<%=request.getContextPath()%>/admin/Adminassets/images/default.webp';" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+		  </div>
+		  <span><%= admin.getEmail() %></span>
+		</div>
 
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const page = this.getAttribute('data-page');
-            iframe.src = page;
-            links.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            // Close sidebar on mobile after click
-            sidebar.classList.remove('open');
-            sidebarBackdrop.classList.remove('active');
-            document.body.classList.remove('sidebar-open');
-        });
-    });
+    </div>
+    <main class="main-content">
+      <iframe src="dashboard.jsp" name="contentFrame" frameborder="0" style="width: 100%; height: 80vh; border: none; border-radius: 8px;"></iframe>
+      <div id="loading" style="display: none; text-align: center; padding: 20px;">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
 
-    // Sidebar toggle for mobile
-    sidebarToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        sidebar.classList.toggle('open');
-        sidebarBackdrop.classList.toggle('active');
-        document.body.classList.toggle('sidebar-open');
-    });
+<!-- Overlay for mobile -->
+<div id="overlay" class="overlay"></div>
+	<script>
+		  // Initialize Lucide icons
+		  lucide.createIcons();
+		
+		  const toggleBtn = document.getElementById('toggleBtn');
+		  const sidebar = document.getElementById('sidebar');
+		  const overlay = document.getElementById('overlay');
+		  const iframe = document.querySelector('iframe[name="contentFrame"]');
+		  const loading = document.getElementById('loading');
+		  const links = document.querySelectorAll('.nav-link');
+				
+		// Handle sidebar toggle (collapse on large screens, show/hide on mobile)
+		toggleBtn.addEventListener('click', () => {
+					if (window.innerWidth <= 768) {
+					    sidebar.classList.toggle('show');
+					    overlay.classList.toggle('show');
+					 } else {
+					    sidebar.classList.toggle('collapsed');
+					    lucide.createIcons();
+					  }
+			});
 
-    // Close sidebar when clicking backdrop
-    sidebarBackdrop.addEventListener('click', function() {
-        sidebar.classList.remove('open');
-        sidebarBackdrop.classList.remove('active');
-        document.body.classList.remove('sidebar-open');
-    });
 
-    // Optional: close sidebar when resizing to desktop
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 900) {
-            sidebar.classList.remove('open');
-            sidebarBackdrop.classList.remove('active');
-            document.body.classList.remove('sidebar-open');
-        }
-    });
-</script>
+		
+		  // Close mobile sidebar when overlay is clicked
+		  overlay.addEventListener('click', () => {
+		    sidebar.classList.remove('show');
+		    overlay.classList.remove('show');
+		  });
+		
+		  // Show loading spinner when iframe starts loading
+		  iframe.addEventListener('load', () => {
+		    loading.style.display = 'none';
+		  });
+		
+		  // Add click behavior to all sidebar links
+		  links.forEach(link => {
+		    link.addEventListener('click', function () {
+		      loading.style.display = 'block';
+		
+		      // Highlight active tab
+		      links.forEach(l => l.classList.remove('active'));
+		      this.classList.add('active');
+		
+		      // Hide sidebar on mobile after click
+		      if (window.innerWidth <= 768) {
+		        sidebar.classList.remove('show');
+		        overlay.classList.remove('show');
+		      }
+		
+		      // No need to set iframe.src manually because of target="contentFrame"
+		    });
+		  });
+	</script>
+
 </body>
 </html>

@@ -25,7 +25,6 @@
 </servlet-mapping>
 
 
-
 <servlet>
 	<servlet-name>Manage_all_admins</servlet-name>
 	<servlet-class>servlet.Manage_all_admins</servlet-class>
@@ -67,6 +66,29 @@
 		<servlet-name>Admin_delete</servlet-name>
 		<url-pattern>/admin/Admin_delete</url-pattern>
 </servlet-mapping>
+
+
+<servlet>
+	<servlet-name>Admin_logout</servlet-name>
+	<servlet-class>servlet.Admin_logout</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>Admin_logout</servlet-name>
+		<url-pattern>/admin/Admin_logout</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+	<servlet-name>Admin_Image</servlet-name>
+	<servlet-class>servlet.Admin_Image</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>Admin_Image</servlet-name>
+		<url-pattern>/admin/Admin_Image</url-pattern>
+</servlet-mapping>
+
 
 
 
