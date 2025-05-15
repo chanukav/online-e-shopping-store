@@ -6,6 +6,8 @@ public class Admin {
 	private String lname;
 	private String email;
 	private String password;
+	private byte[] image;
+	
 	
 	
 	public int getAdminid() {
@@ -38,6 +40,16 @@ public class Admin {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public byte[] getImage() {
+	    return image;
+	}
+
+	public void setImage(byte[] image) {
+	    this.image = image;
+	}
+	
+	
 	
 	
 	

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 import model.Admin;
 import services.admin_services;
@@ -37,13 +38,30 @@ public class Admin_Login extends HttpServlet {
 		boolean status = service.validate(admin);
 		
 		if(status) {
-			Admin loginedCus = service.getOne(admin);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("admin_index.jsp");
-			request.setAttribute("Admin" , loginedCus);
-			dispatcher.forward(request, response);
+			
+			Admin loginedAdmin = service.getOne(admin);
+
+			// ✅ Start a session and store admin info
+			HttpSession session = request.getSession();
+			session.setAttribute("admin", loginedAdmin);
+
+			// Optionally: set a timeout (in seconds)
+			session.setMaxInactiveInterval(30 * 60); // 30 minutes
+
+			response.sendRedirect("admin_index.jsp");
+			
+			
 		}else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("admin_login.jsp");
-			dispatcher.forward(request, response);
+			Admin loginedAdmin = service.getOne(admin);
+
+			// ✅ Start a session and store admin info
+			HttpSession session = request.getSession();
+			session.setAttribute("admin", loginedAdmin);
+
+			// Optionally: set a timeout (in seconds)
+			session.setMaxInactiveInterval(30 * 60); // 30 minutes
+
+			response.sendRedirect("admin_index.jsp");
 		}
 	}
 
