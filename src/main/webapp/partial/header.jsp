@@ -8,8 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>GAMUDALK</title>
-  
-	<link rel="icon" type="image/png" href="<%= request.getContextPath() %>/image/favicon-96x96.png" sizes="96x96">
 	<link rel="icon" type="image/svg+xml" href="<%= request.getContextPath() %>/image/favicon.svg">
 	<link rel="shortcut icon" href="<%= request.getContextPath() %>/image/favicon.ico">
 	<link rel="apple-touch-icon" sizes="180x180" href="<%= request.getContextPath() %>/image/apple-touch-icon.png">
@@ -58,9 +56,14 @@
 
     /* Middle Header */
     .logo-img {
-      width: 80px;
-      height: auto;
-    }
+	      width: 90px;
+	      height: auto;
+		  height: auto;
+		  transition: transform 0.3s ease;
+	 }
+	  .logo-img:hover {
+	    transform: scale(1.05);
+	  }
 
     .middle-header {
       background-color: #f85506;
@@ -231,13 +234,12 @@
     <div class="middle-header">
       <div class="container py-2">
         <div class="row align-items-center text-center text-md-start">
-          <!-- Logo -->
-          <div class="col-12 col-md-3 mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
-            <a href="#" class="logo">
-              <img src="<%= request.getContextPath() %>/image/Gamuda2.webp" class="logo-img" alt="Banner 1">
-            </a>
-          </div>
-
+		<!-- Logo -->
+		<div class="col-12 col-md-3 mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
+		  <a href="<%= request.getContextPath() %>/index.jsp" class="logo">
+		    <img src="<%= request.getContextPath() %>/image/glogo.webp" class="logo-img" alt="GamudaLk.logo">
+		  </a>
+		</div>
           <!-- Search Bar -->
           <div class="col-12 col-md-6 mb-2 mb-md-0 d-flex justify-content-center align-items-center">
             <div class="input-group w-100" style="max-width: 100%;">

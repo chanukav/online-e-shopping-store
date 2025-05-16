@@ -31,6 +31,7 @@ public class Add_Admin extends HttpServlet {
 
         admin.setFname(request.getParameter("firstName"));
         admin.setLname(request.getParameter("lastName"));
+        admin.setPhoneNumber(request.getParameter("PhoneNumber"));
         admin.setEmail(request.getParameter("email"));
         admin.setPassword(request.getParameter("password"));
 

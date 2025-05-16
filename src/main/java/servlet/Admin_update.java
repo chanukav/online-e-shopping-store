@@ -46,6 +46,7 @@ public class Admin_update extends HttpServlet {
 		admin.setAdminid(Integer.parseInt(request.getParameter("adminId")));
 		admin.setFname(request.getParameter("firstName"));
 		admin.setLname(request.getParameter("lastName"));
+		admin.setPhoneNumber(request.getParameter("phoneNumber"));
 		admin.setEmail(request.getParameter("email"));
 		admin.setPassword(request.getParameter("password"));
 		if (isImageUpdated) {

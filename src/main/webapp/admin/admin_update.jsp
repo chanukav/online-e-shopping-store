@@ -100,6 +100,15 @@ body {
                 <input type="text" class="form-control" id="lastName" name="lastName" value="${param.lastName}" placeholder="Last Name">
                 <label for="lastName">Last Name</label>
             </div>
+            
+			<!-- ✅ Phone Number Field with SL validation -->
+			<div class="form-floating mb-3">
+			    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="${param.phoneNumber}" placeholder="Phone Number"
+			           maxlength="10"
+			           pattern="^0[0-9]{9}$"
+			           title="Enter a valid Sri Lankan phone number (e.g., 0771234567)" required>
+			    <label for="phoneNumber">Phone Number</label>
+			</div>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" name="email" value="${param.email}" placeholder="Email Address">
                 <label for="email">Email Address</label>

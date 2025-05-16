@@ -85,46 +85,59 @@
             <h3><i class="fas fa-user-circle me-2"></i>${admin.fname} ${admin.lname}</h3>
         </div>
 
-        <div class="row g-4 mb-3">
+		<div class="row g-4 mb-3">
             <div class="col-md-6">
                 <div class="form-floating">
                     <input type="text" class="form-control" id="admin_id" value="${admin.adminid}">
                     <label for="admin_id"><i class="fas fa-id-badge me-2"></i>Admin ID</label>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
+        </div>
+        <div class="col-md-6">
+           	<div class="form-floating">
                     <input type="text" class="form-control" id="firstName" value="${admin.fname}">
                     <label for="firstName"><i class="fas fa-user me-2"></i>First Name</label>
-                </div>
             </div>
-        </div>
-
-        <div class="row g-4 mb-3">
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="lastName" value="${admin.lname}">
-                    <label for="lastName"><i class="fas fa-user me-2"></i>Last Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="email" class="form-control" id="email" value="${admin.email}">
-                    <label for="email"><i class="fas fa-envelope me-2"></i>Email address</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="password" value="${admin.password}">
-            <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
-        </div>
+           </div>
+      	</div>
+		<div class="row g-4 mb-3">
+	        <div class="col-md-6">
+	           <div class="form-floating">
+	                 <input type="text" class="form-control" id="lastName" value="${admin.lname}">
+	                 <label for="lastName"><i class="fas fa-user me-2"></i>Last Name</label>
+	            </div>
+	    	</div>
+	    	<div class="col-md-6">
+        	<div class="form-floating">
+			            <input 
+			                type="text" 
+			                class="form-control" 
+			                id="phoneNumber" 
+			                value="${admin.phoneNumber}" 
+			                maxlength="10"
+			                pattern="^0[0-9]{9}$"
+			                title="Enter a valid Sri Lankan phone number (e.g., 0771234567)">
+			            <label for="phoneNumber"><i class="fas fa-phone-alt me-2"></i>Phone Number</label>
+        	</div>
+    		</div>
+	    	<div class="col-md-6">
+	          	<div class="form-floating">
+	                  <input type="email" class="form-control" id="email" value="${admin.email}">
+	                  <label for="email"><i class="fas fa-envelope me-2"></i>Email address</label>
+	            </div>
+	    </div>
+	 </div>
+	     <div class="form-floating mb-3">
+	           <input type="password" class="form-control" id="password" value="${admin.password}">
+	           <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+	     </div>
+	     
     </fieldset>
 
     <form action="admin_update.jsp" method="post" class="text-center mt-4">
         <input type="hidden" name="adminId" value="${admin.adminid}">
         <input type="hidden" name="firstName" value="${admin.fname}">
         <input type="hidden" name="lastName" value="${admin.lname}">
+        <input type="hidden" name="PNumber" value="${admin.phoneNumber}">
         <input type="hidden" name="email" value="${admin.email}">
         <input type="hidden" name="password" value="${admin.password}">
         <button type="submit" class="update-btn"><i class="fas fa-edit me-2"></i>Update</button>

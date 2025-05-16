@@ -9,26 +9,29 @@ import java.util.ArrayList;
 import model.Admin;
 import util.DBConnect;
 
-	public class admin_services {
+public class admin_services {
 		
-		public void regAdmin(Admin admin) {
-		    String query = "INSERT INTO gamudalk.admin (first_name, last_name, email, password, image) VALUES (?, ?, ?, ?, ?)";
-	
-		    try (Connection conn = DBConnect.getConnection();
-		         PreparedStatement stmt = conn.prepareStatement(query)) {
-	
-		        stmt.setString(1, admin.getFname());
-		        stmt.setString(2, admin.getLname());
-		        stmt.setString(3, admin.getEmail());
-		        stmt.setString(4, admin.getPassword());
-		        stmt.setBytes(5, admin.getImage()); // image is a byte[]
-	
-		        stmt.executeUpdate();
-	
-		    } catch (Exception e) {
-		        e.printStackTrace();
+	public void regAdmin(Admin admin) {
+		String query = "INSERT INTO gamudalk.admin (first_name, last_name, phone_number, email, password, image) VALUES (?, ?, ?, ?, ?, ?)";
+
+			try (Connection conn = DBConnect.getConnection();
+		        PreparedStatement stmt = conn.prepareStatement(query)) {
+
+		         stmt.setString(1, admin.getFname());
+		         stmt.setString(2, admin.getLname());
+		         stmt.setString(3, admin.getPhoneNumber()); // New field
+		         stmt.setString(4, admin.getEmail());
+		         stmt.setString(5, admin.getPassword());
+		         stmt.setBytes(6, admin.getImage());
+
+		         stmt.executeUpdate();
+
+		        } catch (Exception e) {
+		            e.printStackTrace();
 		    }
-		}
+	}
+
+
 
 	
 	public boolean validate(Admin admin) {
@@ -79,63 +82,65 @@ import util.DBConnect;
 	}
 
 	
-	public ArrayList<Admin> getAllAdmins(){
-		try {
-			ArrayList<Admin> listAdmin = new ArrayList<Admin>();
-			
-			String query = "select * from gamudalk.admin";
-			
-			Statement  statement = DBConnect.getConnection().createStatement();
-			ResultSet rs = statement.executeQuery(query);
-			while(rs.next()) {
-				Admin admin =new Admin();
-				
-				admin.setAdminid(rs.getInt("admin_id"));
-				admin.setFname(rs.getString("first_name"));
-				admin.setLname(rs.getString("last_name"));
-				admin.setEmail(rs.getString("email"));
-				admin.setPassword(rs.getString("password"));
-				admin.setImage(rs.getBytes("image")); // Add this line
-				
-				listAdmin.add(admin);
-				
-			}
-			return listAdmin;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
+	public ArrayList<Admin> getAllAdmins() {
+	    try {
+	        ArrayList<Admin> listAdmin = new ArrayList<Admin>();
+	        String query = "SELECT * FROM gamudalk.admin";
+
+	        Statement statement = DBConnect.getConnection().createStatement();
+	        ResultSet rs = statement.executeQuery(query);
+
+	        while (rs.next()) {
+	            Admin admin = new Admin();
+
+	            admin.setAdminid(rs.getInt("admin_id"));
+	            admin.setFname(rs.getString("first_name"));
+	            admin.setLname(rs.getString("last_name"));
+	            admin.setPhoneNumber(rs.getString("phone_number")); // ✅ New line
+	            admin.setEmail(rs.getString("email"));
+	            admin.setPassword(rs.getString("password"));
+	            admin.setImage(rs.getBytes("image"));
+
+	            listAdmin.add(admin);
+	        }
+
+	        return listAdmin;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
+
 	
 	public Admin singleDataButton(Admin admin) {
-		try {
-			String query = "select * from gamudalk.admin where email = '"+admin.getEmail()+"'";
-			
-			Statement statement = DBConnect.getConnection().createStatement();
-			
-			ResultSet rs = statement.executeQuery(query);
-			
-			if(rs.next()) {
-
-				admin.setAdminid(rs.getInt("admin_id"));
-				admin.setFname(rs.getString("first_name"));
-				admin.setLname(rs.getString("last_name"));
-				admin.setEmail(rs.getString("email"));
-				admin.setPassword(rs.getString("password"));
-				admin.setImage(rs.getBytes("image")); // Added image support
-				
-				return admin;
-				
-			}
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	    try {
+	        String query = "SELECT * FROM gamudalk.admin WHERE email = ?";
+	        
+	        try (Connection conn = DBConnect.getConnection();
+	             PreparedStatement stmt = conn.prepareStatement(query)) {
+	            
+	            stmt.setString(1, admin.getEmail());
+	            ResultSet rs = stmt.executeQuery();
+	            
+	            if (rs.next()) {
+	                admin.setAdminid(rs.getInt("admin_id"));
+	                admin.setFname(rs.getString("first_name"));
+	                admin.setLname(rs.getString("last_name"));
+	                admin.setPhoneNumber(rs.getString("phone_number")); // ✅ Include phone number
+	                admin.setEmail(rs.getString("email"));
+	                admin.setPassword(rs.getString("password"));
+	                admin.setImage(rs.getBytes("image"));
+	                
+	                return admin;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
+
 	
 	public void updateAdmin(Admin admin, boolean isImageUpdated) {
 	    try {
@@ -144,23 +149,25 @@ import util.DBConnect;
 
 	        if (isImageUpdated && admin.getImage() != null) {
 	            // Update including the image
-	            query = "UPDATE gamudalk.admin SET first_name = ?, last_name = ?, email = ?, password = ?, image = ? WHERE admin_id = ?";
+	            query = "UPDATE gamudalk.admin SET first_name = ?, last_name = ?, phone_number = ?, email = ?, password = ?, image = ? WHERE admin_id = ?";
 	            statement = DBConnect.getConnection().prepareStatement(query);
 	            statement.setString(1, admin.getFname());
 	            statement.setString(2, admin.getLname());
-	            statement.setString(3, admin.getEmail());
-	            statement.setString(4, admin.getPassword());
-	            statement.setBytes(5, admin.getImage());
-	            statement.setInt(6, admin.getAdminid());
+	            statement.setString(3, admin.getPhoneNumber()); // ✅ new
+	            statement.setString(4, admin.getEmail());
+	            statement.setString(5, admin.getPassword());
+	            statement.setBytes(6, admin.getImage());
+	            statement.setInt(7, admin.getAdminid());
 	        } else {
 	            // Update without modifying image
-	            query = "UPDATE gamudalk.admin SET first_name = ?, last_name = ?, email = ?, password = ? WHERE admin_id = ?";
+	            query = "UPDATE gamudalk.admin SET first_name = ?, last_name = ?, phone_number = ?, email = ?, password = ? WHERE admin_id = ?";
 	            statement = DBConnect.getConnection().prepareStatement(query);
 	            statement.setString(1, admin.getFname());
 	            statement.setString(2, admin.getLname());
-	            statement.setString(3, admin.getEmail());
-	            statement.setString(4, admin.getPassword());
-	            statement.setInt(5, admin.getAdminid());
+	            statement.setString(3, admin.getPhoneNumber()); // ✅ new
+	            statement.setString(4, admin.getEmail());
+	            statement.setString(5, admin.getPassword());
+	            statement.setInt(6, admin.getAdminid());
 	        }
 
 	        statement.executeUpdate();
@@ -168,6 +175,7 @@ import util.DBConnect;
 	        e.printStackTrace();
 	    }
 	}
+
 
 	
 	

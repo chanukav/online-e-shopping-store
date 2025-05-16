@@ -137,10 +137,18 @@
                 <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
                 <label for="lastName">Last Name</label>
             </div>
+			<div class="form-floating mb-3">
+				<input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number" pattern="^0\d{9}$" 
+				           maxlength="10"
+				           title="Enter a valid 10-digit Sri Lankan phone number starting with 0 (e.g., 0712345678)" 
+				           required>
+				 <label for="PhoneNumber">Phone Number</label>
+			</div>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
                 <label for="email">Email Address</label>
             </div>
+
 			<div class="form-floating mb-4 position-relative">
 			  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required minlength="8"
 			         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
