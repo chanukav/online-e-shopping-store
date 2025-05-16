@@ -136,13 +136,18 @@
                 <c:forEach var="admin" items="${adminList}">
                     <tr>
                         <td>${admin.adminid}</td>
-                        <td class="text-center">
-                            <img 
-                                src="Admin_Image?adminId=${admin.adminid}"
-                                onerror="this.src='<%=request.getContextPath()%>/admin/Adminassets/images/default.webp';"
-                                alt="Profile"
-                                class="profile-img">
-                        </td>
+						<td class="text-center">
+						  <form action="Single_admin_details" method="post">
+						    <input type="hidden" name="email" value="${admin.email}">
+						    <button type="submit" class="p-0 border-0 bg-transparent">
+						      <img 
+						        src="Admin_Image?adminId=${admin.adminid}"
+						        onerror="this.src='<%=request.getContextPath()%>/admin/Adminassets/images/default.webp';"
+						        alt="Profile"
+						        class="profile-img">
+						    </button>
+						  </form>
+						</td>
                         <td>${admin.fname}</td>
                         <td>${admin.lname}</td>
                         <td>${admin.email}</td>

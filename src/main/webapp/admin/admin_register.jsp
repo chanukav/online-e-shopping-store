@@ -141,10 +141,18 @@
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
                 <label for="email">Email Address</label>
             </div>
-            <div class="form-floating mb-4">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                <label for="password">Password</label>
-            </div>
+			<div class="form-floating mb-4 position-relative">
+			  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required minlength="8"
+			         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+			         title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters">
+			  <label for="password">Password</label>
+			  <button type="button" id="togglePassword" class="btn position-absolute top-50 end-0 translate-middle-y me-2" style="background: none; border: none;">
+			    <i class="fas fa-eye" id="toggleIcon"></i>
+			  </button>
+			</div>
+			<div class="progress mb-4" style="height: 5px;">
+			  <div id="passwordStrength" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>
             <div class="text-center">
                 <button type="submit" class="btn btn-custom">Register</button>
             </div>
@@ -166,6 +174,52 @@
             reader.readAsDataURL(file);
         }
     });
+    
+    document.getElementById('password').addEventListener('input', function () {
+    	  const pwd = this.value;
+    	  const strengthBar = document.getElementById('passwordStrength');
+    	  
+    	  // Password strength evaluation
+    	  let strength = 0;
+    	  if (pwd.length >= 8) strength += 25;
+    	  if (/[A-Z]/.test(pwd)) strength += 25;
+    	  if (/[a-z]/.test(pwd)) strength += 25;
+    	  if (/[0-9]/.test(pwd)) strength += 25;
+
+    	  // Update progress bar
+    	  strengthBar.style.width = strength + '%';
+    	  if (strength <= 25) {
+    	    strengthBar.className = 'progress-bar bg-danger';
+    	  } else if (strength <= 50) {
+    	    strengthBar.className = 'progress-bar bg-warning';
+    	  } else if (strength <= 75) {
+    	    strengthBar.className = 'progress-bar bg-info';
+    	  } else {
+    	    strengthBar.className = 'progress-bar bg-success';
+    	  }
+
+    	  // Existing validation
+    	  if (pwd.length < 8) {
+    	    this.setCustomValidity("Password must be at least 8 characters.");
+    	  } else {
+    	    this.setCustomValidity("");
+    	  }
+    	});
+
+    	// Toggle password visibility
+    	document.getElementById('togglePassword').addEventListener('click', function () {
+    	  const passwordInput = document.getElementById('password');
+    	  const toggleIcon = document.getElementById('toggleIcon');
+    	  if (passwordInput.type === 'password') {
+    	    passwordInput.type = 'text';
+    	    toggleIcon.classList.remove('fa-eye');
+    	    toggleIcon.classList.add('fa-eye-slash');
+    	  } else {
+    	    passwordInput.type = 'password';
+    	    toggleIcon.classList.remove('fa-eye-slash');
+    	    toggleIcon.classList.add('fa-eye');
+    	  }
+    	});
 </script>
 </body>
 </html>

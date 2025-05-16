@@ -166,12 +166,14 @@
 <!-- Sidebar -->
 <div class="d-flex">
   <div id="sidebar" class="sidebar d-flex flex-column">
-    <div class="p-3">
-      <h4 class="logo-full">Gamuda.LK</h4>
-      <h4 class="logo-icon">G.</h4>
-    </div>
+	<a href="<%=request.getContextPath()%>/index.jsp" class="text-decoration-none">
+	  <div class="p-3">
+	    <h4 class="logo-full">Gamuda.LK</h4>
+	    <h4 class="logo-icon">G.</h4>
+	  </div>
+	</a>
 	<nav class="nav flex-column">
-	  <a href="dashboard.jsp" class="nav-link" target="contentFrame"><i data-lucide="gauge"></i><span>Dashboard</span></a>
+	  <a href="<%=request.getContextPath()%>/admin/admin_dashboard.jsp" class="nav-link" target="contentFrame"><i data-lucide="gauge"></i><span>Dashboard</span></a>
 	  <a href="orders.jsp" class="nav-link" target="contentFrame"><i data-lucide="shopping-cart"></i><span>Orders</span></a>
 	  <a href="products.jsp" class="nav-link" target="contentFrame"><i data-lucide="box"></i><span>Products</span></a>
 	  <a href="customers.jsp" class="nav-link" target="contentFrame"><i data-lucide="users"></i><span>Customers</span></a>
@@ -196,12 +198,19 @@
         <button id="toggleBtn" class="btn-toggle-sidebar"><i class="fas fa-bars"></i></button>
 		</div>
 		<div class="d-flex align-items-center gap-2">
-		  <div class="profile-icon rounded-circle overflow-hidden" style="width: 35px; height: 35px;">
-		    <img src="Admin_Image?adminId=${admin.adminid}" onerror="this.src='<%=request.getContextPath()%>/admin/Adminassets/images/default.webp';" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
-		  </div>
+			<div class="profile-icon rounded-circle overflow-hidden" style="width: 35px; height: 35px;">
+			  <form action="Single_admin_details" method="post">
+			    <input type="hidden" name="email" value="${admin.email}">
+			    <button type="submit" class="p-0 border-0 bg-transparent">
+			      <img src="Admin_Image?adminId=${admin.adminid}" 
+			           onerror="this.src='<%=request.getContextPath()%>/admin/Adminassets/images/default.webp';" 
+			           alt="Profile" 
+			           style="width: 100%; height: 100%; object-fit: cover;">
+			    </button>
+			  </form>
+			</div>
 		  <span><%= admin.getEmail() %></span>
 		</div>
-
     </div>
     <main class="main-content">
       <iframe src="dashboard.jsp" name="contentFrame" frameborder="0" style="width: 100%; height: 80vh; border: none; border-radius: 8px;"></iframe>
