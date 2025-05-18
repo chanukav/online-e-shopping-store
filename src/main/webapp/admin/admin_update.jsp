@@ -10,6 +10,7 @@
 <style>
 body {
     background-color: #fceaca;
+    transition: all 0.3s ease-in-out;
 }
 .container {
     display: flex;
@@ -24,6 +25,7 @@ body {
     max-width: 700px;
     width: 100%;
     box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
 }
 .profile-header {
     text-align: center;
@@ -58,11 +60,25 @@ body {
 }
 .form-control {
     border-radius: 10px;
-    border-color: #fe980f;
+    border: 2px solid #fe980f;
+    transition: border-color 0.3s;
 }
 .form-control:focus {
     border-color: #f85506;
     box-shadow: 0 0 5px rgba(248, 85, 6, 0.5);
+}
+.form-control.valid {
+    border-color: green !important;
+}
+.form-control.invalid {
+    border-color: red !important;
+}
+.error-message {
+    font-size: 0.85rem;
+    color: red;
+    margin-top: 5px;
+    margin-left: 5px;
+    transition: all 0.3s ease-in-out;
 }
 .btn-custom {
     background-color: #e61616;
@@ -83,7 +99,6 @@ body {
     <div class="profile-card">
         <form method="post" action="Admin_update" enctype="multipart/form-data">
             <input type="hidden" name="adminId" value="${param.adminId}">
-
             <div class="profile-header">
                 <h1>Update Your Profile</h1>
             </div>
@@ -92,105 +107,122 @@ body {
                 <label for="profilePicInput" class="upload-icon"><i class="fas fa-camera"></i></label>
                 <input type="file" id="profilePicInput" name="image" accept="image/*" style="display: none;">
             </div>
+
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="firstName" name="firstName" value="${param.firstName}" placeholder="First Name">
                 <label for="firstName">First Name</label>
             </div>
+
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="lastName" name="lastName" value="${param.lastName}" placeholder="Last Name">
                 <label for="lastName">Last Name</label>
             </div>
-            
-			<!-- ✅ Phone Number Field with SL validation -->
-			<div class="form-floating mb-3">
-			    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="${param.phoneNumber}" placeholder="Phone Number"
-			           maxlength="10"
-			           pattern="^0[0-9]{9}$"
-			           title="Enter a valid Sri Lankan phone number (e.g., 0771234567)" required>
-			    <label for="phoneNumber">Phone Number</label>
-			</div>
-            <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="email" name="email" value="${param.email}" placeholder="Email Address">
+
+            <div class="form-floating mb-1">
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="${param.PNumber}" placeholder="Phone Number"
+                       maxlength="10" required>
+                <label for="phoneNumber">Phone Number</label>
+            </div>
+            <div id="phoneError" class="error-message"></div>
+
+            <div class="form-floating mb-1">
+                <input type="email" class="form-control" id="email" name="email" value="${param.email}" placeholder="Email Address" required>
                 <label for="email">Email Address</label>
             </div>
-			<div class="form-floating mb-4 position-relative">
-			  <input type="password" class="form-control" id="password" name="password" value="${param.password}" placeholder="Password" required minlength="8"
-			         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-			         title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters">
-			  <label for="password">Password</label>
-			  <button type="button" id="togglePassword" class="btn position-absolute top-50 end-0 translate-middle-y me-2" style="background: none; border: none;">
-			    <i class="fas fa-eye" id="toggleIcon"></i>
-			  </button>
-			</div>
-			<div class="progress mb-4" style="height: 5px;">
-			  <div id="passwordStrength" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
-			<div class="text-center">
-			    <button type="submit" class="btn btn-custom" onclick="return confirm('Do you want to update?')">Submit</button>
-			</div>
+            <div id="emailError" class="error-message"></div>
+
+            <div class="form-floating mb-1 position-relative">
+                <input type="password" class="form-control" id="password" name="password" value="${param.password}" placeholder="Password" required>
+                <label for="password">Password</label>
+                <button type="button" id="togglePassword" class="btn position-absolute top-50 end-0 translate-middle-y me-2" style="background: none; border: none;">
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                </button>
+            </div>
+            <div id="passwordError" class="error-message"></div>
+
+            <div class="progress mb-4" style="height: 5px;">
+                <div id="passwordStrength" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-custom" onclick="return confirm('Do you want to update?')">Submit</button>
+            </div>
         </form>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-		const profilePicInput = document.getElementById('profilePicInput');
-		const profilePicPreview = document.getElementById('profilePicPreview');
-		profilePicInput.addEventListener('change', function() {
-		    const file = this.files[0];
-		    if (file) {
-		        const reader = new FileReader();
-		        reader.onload = function(e) {
-		            profilePicPreview.src = e.target.result;
-		        };
-		        reader.readAsDataURL(file);
-		    }
-		});
-		
-		document.getElementById('password').addEventListener('input', function () {
-			  const pwd = this.value;
-			  const strengthBar = document.getElementById('passwordStrength');
-			  
-			  // Password strength evaluation
-			  let strength = 0;
-			  if (pwd.length >= 8) strength += 25;
-			  if (/[A-Z]/.test(pwd)) strength += 25;
-			  if (/[a-z]/.test(pwd)) strength += 25;
-			  if (/[0-9]/.test(pwd)) strength += 25;
+document.getElementById('profilePicInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profilePicPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
-			  // Update progress bar
-			  strengthBar.style.width = strength + '%';
-			  if (strength <= 25) {
-			    strengthBar.className = 'progress-bar bg-danger';
-			  } else if (strength <= 50) {
-			    strengthBar.className = 'progress-bar bg-warning';
-			  } else if (strength <= 75) {
-			    strengthBar.className = 'progress-bar bg-info';
-			  } else {
-			    strengthBar.className = 'progress-bar bg-success';
-			  }
+function setValidation(input, isValid, messageElementId, messageText = '') {
+    input.classList.remove('valid', 'invalid');
+    if (isValid) {
+        input.classList.add('valid');
+        document.getElementById(messageElementId).innerText = '';
+    } else {
+        input.classList.add('invalid');
+        document.getElementById(messageElementId).innerText = messageText;
+    }
+}
 
-			  // Existing validation
-			  if (pwd.length < 8) {
-			    this.setCustomValidity("Password must be at least 8 characters.");
-			  } else {
-			    this.setCustomValidity("");
-			  }
-			});
+document.getElementById('phoneNumber').addEventListener('input', function () {
+    const phone = this.value;
+    const regex = /^0\d{9}$/;
+    setValidation(this, regex.test(phone), 'phoneError', 'Enter a valid Sri Lankan phone number (e.g., 0771234567)');
+});
 
-			// Toggle password visibility
-			document.getElementById('togglePassword').addEventListener('click', function () {
-			  const passwordInput = document.getElementById('password');
-			  const toggleIcon = document.getElementById('toggleIcon');
-			  if (passwordInput.type === 'password') {
-			    passwordInput.type = 'text';
-			    toggleIcon.classList.remove('fa-eye');
-			    toggleIcon.classList.add('fa-eye-slash');
-			  } else {
-			    passwordInput.type = 'password';
-			    toggleIcon.classList.remove('fa-eye-slash');
-			    toggleIcon.classList.add('fa-eye');
-			  }
-			});
+document.getElementById('email').addEventListener('input', function () {
+    const email = this.value;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setValidation(this, regex.test(email), 'emailError', 'Enter a valid email address (e.g., example@mail.com)');
+});
+
+document.getElementById('password').addEventListener('input', function () {
+    const pwd = this.value;
+    const strengthBar = document.getElementById('passwordStrength');
+    const passwordError = document.getElementById('passwordError');
+    let strength = 0;
+    if (pwd.length >= 8) strength += 25;
+    if (/[A-Z]/.test(pwd)) strength += 25;
+    if (/[a-z]/.test(pwd)) strength += 25;
+    if (/\d/.test(pwd)) strength += 25;
+
+    strengthBar.style.width = strength + '%';
+    strengthBar.className = 'progress-bar';
+    if (strength <= 25) {
+        strengthBar.classList.add('bg-danger');
+    } else if (strength <= 50) {
+        strengthBar.classList.add('bg-warning');
+    } else if (strength <= 75) {
+        strengthBar.classList.add('bg-info');
+    } else {
+        strengthBar.classList.add('bg-success');
+    }
+
+    const isValid = strength === 100;
+    setValidation(this, isValid, 'passwordError', 'Must contain uppercase, lowercase, digit, and be 8+ characters long');
+});
+
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const pwdInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        pwdInput.type = 'password';
+        toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+});
 </script>
 </body>
 </html>

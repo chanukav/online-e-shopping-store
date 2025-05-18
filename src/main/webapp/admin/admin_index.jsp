@@ -13,6 +13,12 @@
   <meta charset="UTF-8">
   <title>Gamuda.LK Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="icon" type="image/svg+xml" href="<%= request.getContextPath() %>/image/favicon.svg">
+  <link rel="shortcut icon" href="<%= request.getContextPath() %>/image/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= request.getContextPath() %>/image/apple-touch-icon.png">
+  <link rel="manifest" href="<%= request.getContextPath() %>/image/site.webmanifest">
+  
   <!-- Preload critical resources for faster loading -->
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" as="style">
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style">
@@ -191,6 +197,9 @@
       <a href="products.jsp" class="nav-link" target="contentFrame"><i data-lucide="box"></i><span>Products</span></a>
       <a href="customers.jsp" class="nav-link" target="contentFrame"><i data-lucide="users"></i><span>Customers</span></a>
       <a href="Manage_all_admins" class="nav-link" target="contentFrame"><i data-lucide="shield-check"></i><span>Admins</span></a>
+      <a href="<%=request.getContextPath()%>/Manage_all_category" class="nav-link" target="contentFrame"><i class="fas fa-th-large"></i><span>Category</span></a>
+
+      
       <a href="billing.jsp" class="nav-link" target="contentFrame"><i data-lucide="line-chart"></i><span>Billing</span></a>
       <a href="settings.jsp" class="nav-link" target="contentFrame"><i data-lucide="settings"></i><span>Settings</span></a>
       <a href="help.jsp" class="nav-link" target="contentFrame"><i data-lucide="help-circle"></i><span>Help</span></a>

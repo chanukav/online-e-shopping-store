@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Registration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -23,10 +23,6 @@
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
-        }
-        .profile-card:hover {
-            transform: translateY(-5px);
         }
         .profile-header {
             text-align: center;
@@ -36,7 +32,6 @@
             color: #2c3e50;
             font-weight: 700;
             font-size: 2rem;
-            letter-spacing: 1px;
         }
         .profile-pic-container {
             position: relative;
@@ -50,10 +45,6 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #fe980f;
-            transition: transform 0.3s ease;
-        }
-        .profile-pic:hover {
-            transform: scale(1.05);
         }
         .upload-icon {
             position: absolute;
@@ -64,25 +55,26 @@
             border-radius: 50%;
             padding: 10px;
             cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .upload-icon:hover {
-            background: #e68a00;
         }
         .form-floating .form-control {
             border-radius: 12px;
             border: 2px solid #e9ecef;
             padding: 1rem;
             height: calc(3.5rem + 2px);
-            transition: border-color 0.3s ease;
         }
-        .form-floating .form-control:focus {
-            border-color: #fe980f;
-            box-shadow: 0 0 8px rgba(254, 152, 15, 0.3);
+        .form-control.is-valid {
+            border-color: #28a745 !important;
         }
-        .form-floating label {
-            color: #6c757d;
-            padding: 1rem;
+        .form-control.is-invalid {
+            border-color: #dc3545 !important;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            background-color: #f8d7da;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 4px;
         }
         .btn-custom {
             background: linear-gradient(90deg, #fe980f, #f85506);
@@ -91,36 +83,17 @@
             padding: 12px 30px;
             border-radius: 12px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
             width: 100%;
         }
         .btn-custom:hover {
             background: linear-gradient(90deg, #e68a00, #e61616);
-            transform: translateY(-2px);
-        }
-        @media (max-width: 576px) {
-            .profile-card {
-                padding: 1.5rem;
-            }
-            .profile-header h1 {
-                font-size: 1.5rem;
-            }
-            .profile-pic-container {
-                width: 100px;
-                height: 100px;
-            }
-            .btn-custom {
-                padding: 10px 20px;
-            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="profile-card">
-        <form method="post" action="Add_Admin" enctype="multipart/form-data">
+        <form method="post" action="Add_Admin" enctype="multipart/form-data" novalidate>
             <div class="profile-header">
                 <h1>Admin Registration</h1>
             </div>
@@ -133,34 +106,39 @@
                 <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
                 <label for="firstName">First Name</label>
             </div>
+
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
                 <label for="lastName">Last Name</label>
             </div>
-			<div class="form-floating mb-3">
-				<input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number" pattern="^0\d{9}$" 
-				           maxlength="10"
-				           title="Enter a valid 10-digit Sri Lankan phone number starting with 0 (e.g., 0712345678)" 
-				           required>
-				 <label for="PhoneNumber">Phone Number</label>
-			</div>
-            <div class="form-floating mb-3">
+
+            <div class="form-floating mb-1">
+                <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number" pattern="^0\d{9}$" maxlength="10" required>
+                <label for="PhoneNumber">Phone Number</label>
+            </div>
+            <div id="phoneError" class="error-message d-none">Enter a valid Sri Lankan phone number (e.g., 0712345678)</div>
+
+            <div class="form-floating mb-1 mt-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
                 <label for="email">Email Address</label>
             </div>
+            <div id="emailError" class="error-message d-none">Enter a valid email address (e.g., example@mail.com)</div>
 
-			<div class="form-floating mb-4 position-relative">
-			  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required minlength="8"
-			         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-			         title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters">
-			  <label for="password">Password</label>
-			  <button type="button" id="togglePassword" class="btn position-absolute top-50 end-0 translate-middle-y me-2" style="background: none; border: none;">
-			    <i class="fas fa-eye" id="toggleIcon"></i>
-			  </button>
-			</div>
-			<div class="progress mb-4" style="height: 5px;">
-			  <div id="passwordStrength" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
+            <div class="form-floating position-relative mb-1 mt-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                <label for="password">Password</label>
+                <button type="button" id="togglePassword" class="btn position-absolute top-50 end-0 translate-middle-y me-2" style="background: none; border: none;">
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                </button>
+            </div>
+            <div id="passwordError" class="error-message d-none">
+                Password must be at least 8 characters long and include at least one number, one uppercase, and one lowercase letter.
+            </div>
+
+            <div class="progress mb-4" style="height: 5px;">
+                <div id="passwordStrength" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
             <div class="text-center">
                 <button type="submit" class="btn btn-custom">Register</button>
             </div>
@@ -168,10 +146,10 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     const profilePicInput = document.getElementById('profilePicInput');
     const profilePicPreview = document.getElementById('profilePicPreview');
+
     profilePicInput.addEventListener('change', function () {
         const file = this.files[0];
         if (file) {
@@ -182,52 +160,67 @@
             reader.readAsDataURL(file);
         }
     });
-    
-    document.getElementById('password').addEventListener('input', function () {
-    	  const pwd = this.value;
-    	  const strengthBar = document.getElementById('passwordStrength');
-    	  
-    	  // Password strength evaluation
-    	  let strength = 0;
-    	  if (pwd.length >= 8) strength += 25;
-    	  if (/[A-Z]/.test(pwd)) strength += 25;
-    	  if (/[a-z]/.test(pwd)) strength += 25;
-    	  if (/[0-9]/.test(pwd)) strength += 25;
 
-    	  // Update progress bar
-    	  strengthBar.style.width = strength + '%';
-    	  if (strength <= 25) {
-    	    strengthBar.className = 'progress-bar bg-danger';
-    	  } else if (strength <= 50) {
-    	    strengthBar.className = 'progress-bar bg-warning';
-    	  } else if (strength <= 75) {
-    	    strengthBar.className = 'progress-bar bg-info';
-    	  } else {
-    	    strengthBar.className = 'progress-bar bg-success';
-    	  }
+    function validateInput(input, errorElement, message) {
+        if (input.checkValidity()) {
+            input.classList.add('is-valid');
+            input.classList.remove('is-invalid');
+            if (errorElement) errorElement.classList.add('d-none');
+        } else {
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('d-none');
+            }
+        }
+    }
 
-    	  // Existing validation
-    	  if (pwd.length < 8) {
-    	    this.setCustomValidity("Password must be at least 8 characters.");
-    	  } else {
-    	    this.setCustomValidity("");
-    	  }
-    	});
+    const phoneNumber = document.getElementById('PhoneNumber');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const phoneError = document.getElementById('phoneError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const passwordStrength = document.getElementById('passwordStrength');
 
-    	// Toggle password visibility
-    	document.getElementById('togglePassword').addEventListener('click', function () {
-    	  const passwordInput = document.getElementById('password');
-    	  const toggleIcon = document.getElementById('toggleIcon');
-    	  if (passwordInput.type === 'password') {
-    	    passwordInput.type = 'text';
-    	    toggleIcon.classList.remove('fa-eye');
-    	    toggleIcon.classList.add('fa-eye-slash');
-    	  } else {
-    	    passwordInput.type = 'password';
-    	    toggleIcon.classList.remove('fa-eye-slash');
-    	    toggleIcon.classList.add('fa-eye');
-    	  }
-    	});
+    phoneNumber.addEventListener('input', () => {
+        validateInput(phoneNumber, phoneError, "Enter a valid Sri Lankan phone number (e.g., 0712345678)");
+    });
+
+    email.addEventListener('input', () => {
+        validateInput(email, emailError, "Enter a valid email address (e.g., example@mail.com)");
+    });
+
+    password.addEventListener('input', () => {
+        validateInput(password, passwordError, "Password must be at least 8 characters, including a number, uppercase and lowercase letter.");
+
+        const pwd = password.value;
+        let strength = 0;
+        if (pwd.length >= 8) strength += 25;
+        if (/[A-Z]/.test(pwd)) strength += 25;
+        if (/[a-z]/.test(pwd)) strength += 25;
+        if (/[0-9]/.test(pwd)) strength += 25;
+
+        passwordStrength.style.width = strength + '%';
+        passwordStrength.className = 'progress-bar';
+        if (strength <= 25) {
+            passwordStrength.classList.add('bg-danger');
+        } else if (strength <= 50) {
+            passwordStrength.classList.add('bg-warning');
+        } else if (strength <= 75) {
+            passwordStrength.classList.add('bg-info');
+        } else {
+            passwordStrength.classList.add('bg-success');
+        }
+    });
+
+    document.getElementById('togglePassword').addEventListener('click', () => {
+        const type = password.type === 'password' ? 'text' : 'password';
+        password.type = type;
+        document.getElementById('toggleIcon').classList.toggle('fa-eye');
+        document.getElementById('toggleIcon').classList.toggle('fa-eye-slash');
+    });
 </script>
 </body>
 </html>

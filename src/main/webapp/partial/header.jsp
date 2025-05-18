@@ -12,6 +12,7 @@
 	<link rel="shortcut icon" href="<%= request.getContextPath() %>/image/favicon.ico">
 	<link rel="apple-touch-icon" sizes="180x180" href="<%= request.getContextPath() %>/image/apple-touch-icon.png">
 	<link rel="manifest" href="<%= request.getContextPath() %>/image/site.webmanifest">
+  
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 	
@@ -28,7 +29,9 @@
       background-color: #f8f9fa;
       color: #e61616;
       font-size: 14px;
-      padding: 10px 0;
+      padding: 0;
+      margin: 0;
+      
     }
 
     .top-header a {
@@ -260,7 +263,7 @@
 
           <!-- Cart -->
           <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end align-items-center">
-            <a href="#" class="cart-icon text-decoration-none">
+            <a href="<%= request.getContextPath() %>/checkout/cart.jsp" class="cart-icon text-decoration-none">
               <i class="fas fa-shopping-cart fa-lg"></i>
               <span class="ms-1">My Cart</span>
               <span id="cart-count" class="cart-count">0</span>

@@ -90,5 +90,64 @@
 </servlet-mapping>
 
 
+<!-- Admin -Category  -->
+<servlet>
+	<servlet-name>Add_Category</servlet-name>
+	<servlet-class>servlet.Add_Category</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>Add_Category</servlet-name>
+		<url-pattern>/admin/category/Add_Category</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+	<servlet-name>Manage_all_category</servlet-name>
+	<servlet-class>servlet.Manage_all_category</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>Manage_all_category</servlet-name>
+		<url-pattern>/admin/category/Manage_all_category</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>update_Category</servlet-name>
+	<servlet-class>servlet.update_Category</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>update_Category</servlet-name>
+		<url-pattern>/admin/category/update_Category</url-pattern>
+</servlet-mapping>
+
+
+
+<servlet>
+	<servlet-name>delete_Category</servlet-name>
+	<servlet-class>servlet.delete_Category</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>delete_Category</servlet-name>
+		<url-pattern>/admin/category/delete_Category</url-pattern>
+</servlet-mapping>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </web-app>
