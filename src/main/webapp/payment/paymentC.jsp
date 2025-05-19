@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label for="cardName">Holder's name</label>
                 <input type="text" id="cardName" name="cardName" 
-                       placeholder="jason momoa" required>
+                       placeholder="jacob burg" required>
             </div>
             
             <div class="form-group">

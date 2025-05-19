@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
+
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-inst..." xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web..." id="WebApp_ID" version="3.0" >
 
 <servlet>
@@ -89,7 +91,6 @@
 		<url-pattern>/admin/Admin_Image</url-pattern>
 </servlet-mapping>
 
-<!-- payment -->
 
 <!-- Admin -Category  -->
 <servlet>
@@ -122,45 +123,7 @@
 		<servlet-name>update_Category</servlet-name>
 		<url-pattern>/admin/category/update_Category</url-pattern>
 </servlet-mapping>
-	<servlet>
-		<servlet-name>addCard</servlet-name>
-		<servlet-class>servlet.addCard</servlet-class>
-	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>addCard</servlet-name>
-		<url-pattern>/payment/addCard</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>readCard</servlet-name>
-		<servlet-class>servlet.readCard</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>readCard</servlet-name>
-		<url-pattern>/payment/readCard</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>updateCard</servlet-name>
-		<servlet-class>servlet.updateCard</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>updateCard</servlet-name>
-		<url-pattern>/payment/updateCard</url-pattern>
-	</servlet-mapping>
-	
-		<servlet>
-		<servlet-name>deleteCard</servlet-name>
-		<servlet-class>servlet.deleteCard</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>deleteCard</servlet-name>
-		<url-pattern>/payment/deleteCard</url-pattern>
-	</servlet-mapping>
 
 
 <servlet>
@@ -173,17 +136,6 @@
 		<url-pattern>/admin/category/delete_Category</url-pattern>
 </servlet-mapping>
 
-
-<!--Product Saween-->
-
-<servlet>
-	<servlet-name>SaveProduct</servlet-name>
-	<servlet-class>servlet.SaveProduct</servlet-class>
-</servlet>
-
-<servlet-mapping>
-		<servlet-name>SaveProduct</servlet-name>
-		<url-pattern>/Product/SaveProduct</url-pattern>
 <!-- Customer -->
 
 <servlet>
@@ -198,17 +150,9 @@
 
 
 <servlet>
-	<servlet-name>ReadAllProduct</servlet-name>
-	<servlet-class>servlet.ReadAllProduct</servlet-class>
-</servlet>
-
-<servlet-mapping>
-		<servlet-name>ReadAllProduct</servlet-name>
-		<url-pattern>/Product/ReadAllProduct</url-pattern>
-</servlet-mapping>
 	<servlet-name>login</servlet-name>
 	<servlet-class>servlet.login</servlet-class>
-</servlet-mapping>
+</servlet>
 
 <servlet-mapping>
 		<servlet-name>login</servlet-name>
@@ -256,6 +200,49 @@
 		<servlet-name>deleteCustomer</servlet-name>
 		<url-pattern>/deletecus</url-pattern>
 </servlet-mapping>
+
+<servlet>
+	<servlet-name>SaveProduct</servlet-name>
+	<servlet-class>servlet.SaveProduct</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>SaveProduct</servlet-name>
+		<url-pattern>/Product/SaveProduct</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+	<servlet-name>ReadAllProduct</servlet-name>
+	<servlet-class>servlet.ReadAllProduct</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>ReadAllProduct</servlet-name>
+		<url-pattern>/Product/ReadAllProduct</url-pattern>
+</servlet-mapping>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

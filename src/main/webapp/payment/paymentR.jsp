@@ -30,22 +30,18 @@
                 <i class="fas fa-ticket-alt"></i>
                 <span>Draws</span>
             </div>
-            <a href="readCard">
-            <div class="nav-item">
+            <a href="readCard" class="nav-item active">
                 <i class="fas fa-credit-card"></i>
-                <span>Payments</span>
-            </div></a>
+                <span>Payment</span>
+            </a>
             <a href="userHistory.jsp" class="nav-item">
                 <i class="fas fa-history"></i>
                 <span>History</span>
             </a>
-            <div class="nav-item">
+            <a href="import.jsp" class="nav-item">
                 <i class="fas fa-exclamation-circle"></i>
-                <span>Imp</span>
-            </div>
-            <div class="nav-item">
-                <i class="far fa-credit-card"></i>
-                <span>Cards</span>
+                <span>Important</span>
+            </a>       
             </div>
             <div class="nav-item">
                 <i class="fas fa-plus-circle"></i>
