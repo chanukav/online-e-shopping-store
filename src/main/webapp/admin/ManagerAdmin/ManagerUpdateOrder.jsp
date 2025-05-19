@@ -39,9 +39,19 @@
       backdrop-filter:blur(18px);
       box-shadow:0 12px 40px rgba(0,0,0,.08);
     }
-    .update-wrapper::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--brand-grad-1),var(--brand-grad-2));z-index:-1;}
+    .update-wrapper::before{content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,var(--brand-grad-1),var(--brand-grad-2));
+    z-index:-1;}
 
-    h3{color:var(--brand-main);font-weight:700;margin-bottom:25px;display:flex;align-items:center;gap:10px;}
+    h3{
+    color:var(--brand-main);
+    font-weight:700;
+    margin-bottom:25px;
+    display:flex;
+    align-items:center;
+    gap:10px;}
 
     label{font-weight:600;font-size:.9rem;}
     input[type="text"],input[type="email"],input[type="number"],input[type="date"],textarea{
@@ -62,7 +72,10 @@
       transition:background .2s ease,transform .2s ease;
       font-size:.9rem;
     }
-    .btn-brand:hover{background:var(--brand-dark);transform:translateY(-2px);}  
+    .btn-brand:hover{
+    background:var(--brand-dark);
+    transform:translateY(-2px);
+    }  
   </style>
 </head>
 <body>
@@ -147,7 +160,7 @@
       if (input) {
         input.addEventListener("input", () => {
           validateInput(input, field);
-          if (field.id === "quantity" || field.id === "unitPrice") calculateTotal();
+          if (field.id === "quantity" || field.id === "price") calculateTotal();
         });
       }
     });
@@ -190,7 +203,7 @@
 
     function calculateTotal() {
       const quantity = parseInt(document.getElementById('quantity').value) || 0;
-      const unitPrice = parseFloat(document.getElementById('unitPrice').value) || 0;
+      const unitPrice = parseFloat(document.getElementById('price').value) || 0;
       document.getElementById('total').value = (quantity * unitPrice).toFixed(2);
     }
   });
