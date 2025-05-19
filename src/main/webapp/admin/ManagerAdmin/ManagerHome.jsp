@@ -99,7 +99,7 @@ pageEncoding="UTF-8"%>
       position: absolute;
       top: 10px;
       left: 10px;
-      width: 998px;
+      width: 100%;
       height: 475px;
       background: linear-gradient(135deg, #ffe3d3, #ffd1b3);
       backdrop-filter: blur(18px);
