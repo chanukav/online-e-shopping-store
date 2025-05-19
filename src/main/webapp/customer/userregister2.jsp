@@ -3,8 +3,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Add Customer</title>
-<link rel="stylesheet" href="css/bootstrap.min.css"> 
+<title>Usear Registation</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css"> 
 <style>
     body {
         background-color: #fcffff;
@@ -47,6 +47,18 @@
     .btn-custom:hover {
         background-color: #e61616;
     }
+    
+    .password-hint {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    .error-message {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
 </style>
 </head>
 <body>
@@ -54,11 +66,10 @@
 
 <div class="container mt-5">
     <div class="form-container">
-        <h2>Add Customer</h2>
-        <form method="post" action="addCustomer">
+        <h2>User Registation</h2>
+        <form method="post" action="<%=request.getContextPath()%>/addCustomer" id="registrationForm">
         
         <input type="hidden" name="source" value="admin">
-        
 
             <!-- Name -->
             <div class="form-floating mb-3">
@@ -109,40 +120,62 @@
             </div>
 
             <!-- Password -->
-            <div class="form-floating mb-4">
+            <div class="form-floating mb-3">
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <label for="password">Password</label>
+                <div class="password-hint">
+                    Password must contain: 6+ characters, uppercase, lowercase, number, and special character
+                </div>
+                <div id="passwordError" class="error-message"></div>
             </div>
             
-            <!-- Source: this tells the servlet this is a USER registration -->
+            <!-- Confirm Password -->
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                <label for="confirmPassword">Confirm Password</label>
+                <div id="confirmPasswordError" class="error-message"></div>
+            </div>
+
             <input type="hidden" name="source" value="user">
 
-            <!-- Submit -->
             <button type="submit" class="btn btn-custom">Register</button>
         </form>
     </div>
 </div>
 
 <script>
-document.querySelector("form").addEventListener("submit", function (e) {
+document.getElementById("registrationForm").addEventListener("submit", function (e) {
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
     const address = document.getElementById("address").value.trim();
     const ageSelected = document.querySelector("input[name='age']:checked");
     const genderSelected = document.querySelector("input[name='gender']:checked");
 
     let errors = [];
+    const passwordError = document.getElementById("passwordError");
+    const confirmPasswordError = document.getElementById("confirmPasswordError");
+    
+    // Clear previous errors
+    passwordError.textContent = "";
+    confirmPasswordError.textContent = "";
 
     if (name === "") {
         errors.push("Name is required.");
     }
 
+    // Password validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     
+    if (!passwordRegex.test(password)) {
+        errors.push("Password must contain: 6+ characters, uppercase, lowercase, number, and special character");
+        passwordError.textContent = "Password must contain: 6+ characters, uppercase, lowercase, number, and special character";
     }
-
-    if (password.length < 6) {
-        errors.push("Password must be at least 6 characters.");
+    
+    if (password !== confirmPassword) {
+        errors.push("Passwords do not match");
+        confirmPasswordError.textContent = "Passwords do not match";
     }
 
     if (address === "") {
@@ -159,7 +192,37 @@ document.querySelector("form").addEventListener("submit", function (e) {
 
     if (errors.length > 0) {
         e.preventDefault();
-        alert(errors.join("\\n"));
+        if (errors.length > 3) { // Show only the most critical errors
+            alert("Please fix the highlighted errors in the form.");
+        } else {
+            alert(errors.join("\n"));
+        }
+    }
+});
+
+// Real-time password validation
+document.getElementById("password").addEventListener("input", function() {
+    const password = this.value;
+    const passwordError = document.getElementById("passwordError");
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    
+    if (password.length > 0 && !passwordRegex.test(password)) {
+        passwordError.textContent = "Password must contain: 6+ characters, uppercase, lowercase, number, and special character";
+    } else {
+        passwordError.textContent = "";
+    }
+});
+
+// Real-time password match check
+document.getElementById("confirmPassword").addEventListener("input", function() {
+    const password = document.getElementById("password").value;
+    const confirmPassword = this.value;
+    const confirmPasswordError = document.getElementById("confirmPasswordError");
+    
+    if (confirmPassword.length > 0 && password !== confirmPassword) {
+        confirmPasswordError.textContent = "Passwords do not match";
+    } else {
+        confirmPasswordError.textContent = "";
     }
 });
 </script>
