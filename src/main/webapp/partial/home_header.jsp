@@ -224,14 +224,11 @@
         </div>
       </div>
     </div>
-    
-    
      <div class="header-icons">
          <a href="profile.jsp"><i class="fas fa-heart"></i> Wishlist</a>
          
        
-         <a href="<%=request.getContextPath()%>/Profile"><i class="fas fa-user"></i> Profile</a><!--changes-->
-         
+          <!--  -<a href="Profile"><i class="fas fa-user"></i> Profile</a><!--changes-->
         </div>
         <!---------------------------------button------------------------->
         
@@ -240,11 +237,11 @@
 
 
 <div class="d-flex gap-2">    
-  <!--  -<form action="login.jsp" method="post" class="m-0">
+  <form action="<%=request.getContextPath()%>/customer/login.jsp" method="post" class="m-0">
     <button type="submit" class="btn btn-primary">Login</button>
-  </form>-->
+  </form>
 
-  <form action="index.jsp" method="post" class="m-0">
+  <form action="logout.jsp" method="post" class="m-0">
     <button type="submit" class="btn btn-danger">Sign Out</button>
   </form>
 </div>

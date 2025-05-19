@@ -1,4 +1,4 @@
-<%@ include file="/partial/home_header.jsp" %>
+<%@ include file="/partial/header.jsp" %>
 <%@ page import="java.lang.Math" %>
 
 

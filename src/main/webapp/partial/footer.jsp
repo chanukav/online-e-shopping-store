@@ -16,7 +16,7 @@
         <div class="col-6 col-md-3">
           <h5><i class="fas fa-headset me-2"></i>Customer Service</h5>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white text-decoration-none"><i class="fas fa-envelope me-2"></i>Contact Us</a></li>
+            <li><a href="feedback.jsp" class="text-white text-decoration-none"><i class="fas fa-envelope me-2"></i>Contact Us</a></li>
             <li><a href="#" class="text-white text-decoration-none"><i class="fas fa-exchange-alt me-2"></i>Returns</a></li>
             <li><a href="#" class="text-white text-decoration-none"><i class="fas fa-sitemap me-2"></i>Site Map</a></li>
             <li><a href="#" class="text-white text-decoration-none"><i class="fas fa-user-circle me-2"></i>My Account</a></li>
