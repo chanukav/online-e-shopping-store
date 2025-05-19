@@ -4,6 +4,7 @@ public class Admin {
 	private int	 adminid;
 	private String fname;
 	private String lname;
+	private String phoneNumber;
 	private String email;
 	private String password;
 	private byte[] image;
@@ -27,6 +28,13 @@ public class Admin {
 	}
 	public void setLname(String lname) {
 		this.lname = lname;
+	}
+	public String getPhoneNumber() {
+	    return phoneNumber;
+	}
+	
+	public void setPhoneNumber(String phoneNumber) {
+	    this.phoneNumber = phoneNumber;
 	}
 	public String getEmail() {
 		return email;
