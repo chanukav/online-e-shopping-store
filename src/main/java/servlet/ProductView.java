@@ -29,7 +29,7 @@ public class ProductView extends HttpServlet {
 		
 		List<Product>allProduct = ProductService.getAllProduct();
 		request.setAttribute("allProduct", allProduct);
-		RequestDispatcher dispatch = request.getRequestDispatcher("AllProduct Userview.jsp");
+		RequestDispatcher dispatch = request.getRequestDispatcher("/product/AllProduct Userview.jsp");
 		dispatch.forward(request, response);
 		
 	}

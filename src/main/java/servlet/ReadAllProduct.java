@@ -27,7 +27,7 @@ public class ReadAllProduct extends HttpServlet {
 		
 		List<Product>allProduct = ProductService.getAllProduct();
 		request.setAttribute("allProduct", allProduct);
-		RequestDispatcher dispatch = request.getRequestDispatcher("Allproduct.jsp");
+		RequestDispatcher dispatch = request.getRequestDispatcher("/admin/admin_product/Allproduct.jsp");
 		dispatch.forward(request, response);
 		
 	}

@@ -212,8 +212,8 @@ header {
                             <div><strong>Brand:</strong> <c:out value="${product.pbrand}" default="No Brand" /></div>
                             <div><strong>Availability:</strong> 
                                 <c:choose>
-                                    <c:when test="${product.pstock > 10}">In Stock</c:when>
-                                    <c:when test="${product.pstock > 0}">Low Stock</c:when>
+                                    <c:when test="${product.pstock > 4}">In Stock</c:when>
+                                    <c:when test="${product.pstock <= 4}">Low Stock</c:when>
                                     <c:otherwise>Out of Stock</c:otherwise>
                                 </c:choose>
                             </div>

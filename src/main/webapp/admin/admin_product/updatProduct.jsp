@@ -123,20 +123,13 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo">GAMUDA.LK</div>
-            <div class="user-actions">
-                <a href="index.html" style="color: white; text-decoration: none;">Back to Store</a>
-            </div>
-        </div>
-    </header>
+    
 
     <div class="container">
         <div class="form-container">
             <h1>Update Product</h1>
 
-            <form id="productForm" action="UpdateProduct" method="POST" enctype="multipart/form-data">
+            <form id="productForm" action="<%=request.getContextPath()%>/UpdateProduct" method="POST" enctype="multipart/form-data">
 
 
                 <div class="form-group">

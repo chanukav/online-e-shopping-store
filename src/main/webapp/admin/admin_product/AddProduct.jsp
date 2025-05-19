@@ -121,20 +121,13 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo">GAMUDA.LK</div>
-            <div class="user-actions">
-                <a href="index.html" style="color: white; text-decoration: none;">Back to Store</a>
-            </div>
-        </div>
-    </header>
+    
 
     <div class="container">
         <div class="form-container">
             <h1>Add New Product</h1>
 
-            <form id="productForm" action="SaveProduct" method="POST" enctype="multipart/form-data">
+            <form id="productForm" action="<%=request.getContextPath()%>/SaveProduct" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="productName">Product Name*</label>
                     <input type="text" id="productName" name="productName" required onkeyup="validateField(this)">

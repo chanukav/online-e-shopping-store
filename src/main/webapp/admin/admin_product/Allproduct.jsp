@@ -156,19 +156,12 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo">GAMUDA.LK</div>
-            <div class="user-actions">
-                <a href="#" style="color: white; text-decoration: none;">Logout</a>
-            </div>
-        </div>
-    </header>
+    
 
     <div class="container">
         <div class="admin-header">
             <h1 class="page-title">Product Management</h1>
-            <a href="AddProduct.jsp" class="btn">Add New Product</a>
+            <a href="admin/admin_product/AddProduct.jsp" class="btn">Add New Product</a>
         </div>
 
         <div class="data-grid">
@@ -201,7 +194,7 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <form action="updatProduct.jsp" method="POST">
+                                    <form action="admin/admin_product/updatProduct.jsp" method="POST">
                                         <input type="hidden" name="pid" value="${product.pid}">
                                         <input type="hidden" name="prodName" value="${product.prodName}">
                                         <input type="hidden" name="category" value="${product.category}">

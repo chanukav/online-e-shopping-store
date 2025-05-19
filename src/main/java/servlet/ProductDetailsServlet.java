@@ -30,7 +30,7 @@ public class ProductDetailsServlet extends HttpServlet {
 
             if (productList != null && !productList.isEmpty()) {
                 request.setAttribute("product", productList.get(0));
-                request.getRequestDispatcher("productDetails.jsp").forward(request, response);
+                request.getRequestDispatcher("/product/productDetails.jsp").forward(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
             }

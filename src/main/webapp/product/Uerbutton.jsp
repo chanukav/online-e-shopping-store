@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<form action="ProductView" method="POST">
+	<form action="<%=request.getContextPath()%>/ProductView" method="POST">
 		<input type="submit" value="View All product">
 	</form>
 
