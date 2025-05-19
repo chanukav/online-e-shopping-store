@@ -135,19 +135,27 @@
 </servlet-mapping>
 
 
+<!--Product Saween-->
+
+<servlet>
+	<servlet-name>SaveProduct</servlet-name>
+	<servlet-class>servlet.SaveProduct</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>SaveProduct</servlet-name>
+		<url-pattern>/Product/SaveProduct</url-pattern>
+</servlet-mapping>
 
 
+<servlet>
+	<servlet-name>ReadAllProduct</servlet-name>
+	<servlet-class>servlet.ReadAllProduct</servlet-class>
+</servlet>
 
-
-
-
-
-
-
-
-
-
-
-
+<servlet-mapping>
+		<servlet-name>ReadAllProduct</servlet-name>
+		<url-pattern>/Product/ReadAllProduct</url-pattern>
+</servlet-mapping>
 
 </web-app>
