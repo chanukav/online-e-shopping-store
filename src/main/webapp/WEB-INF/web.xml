@@ -184,6 +184,16 @@
 <servlet-mapping>
 		<servlet-name>SaveProduct</servlet-name>
 		<url-pattern>/Product/SaveProduct</url-pattern>
+<!-- Customer -->
+
+<servlet>
+	<servlet-name>AddCustomer</servlet-name>
+	<servlet-class>servlet.AddCustomer</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>AddCustomer</servlet-name>
+		<url-pattern>/customer/addcus</url-pattern>
 </servlet-mapping>
 
 
@@ -196,5 +206,59 @@
 		<servlet-name>ReadAllProduct</servlet-name>
 		<url-pattern>/Product/ReadAllProduct</url-pattern>
 </servlet-mapping>
+	<servlet-name>login</servlet-name>
+	<servlet-class>servlet.login</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>login</servlet-name>
+		<url-pattern>/customer/cuslog</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+	<servlet-name>admincustomers</servlet-name>
+	<servlet-class>servlet.admincustomers</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>admincustomers</servlet-name>
+		<url-pattern>/cusAdmin</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+	<servlet-name>singleDataButton</servlet-name>
+	<servlet-class>servlet.singleDataButton</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>singleDataButton</servlet-name>
+		<url-pattern>/singlebutton</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>updatecustomer</servlet-name>
+	<servlet-class>servlet.updatecustomer</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>updatecustomer</servlet-name>
+		<url-pattern>/single</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>deleteCustomer</servlet-name>
+	<servlet-class>servlet.deleteCustomer</servlet-class>
+</servlet>
+
+<servlet-mapping>
+		<servlet-name>deleteCustomer</servlet-name>
+		<url-pattern>/deletecus</url-pattern>
+</servlet-mapping>
+
+
+
+
 
 </web-app>
