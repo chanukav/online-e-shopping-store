@@ -89,6 +89,7 @@
 		<url-pattern>/admin/Admin_Image</url-pattern>
 </servlet-mapping>
 
+<!-- payment -->
 
 <!-- Admin -Category  -->
 <servlet>
@@ -121,7 +122,45 @@
 		<servlet-name>update_Category</servlet-name>
 		<url-pattern>/admin/category/update_Category</url-pattern>
 </servlet-mapping>
+	<servlet>
+		<servlet-name>addCard</servlet-name>
+		<servlet-class>servlet.addCard</servlet-class>
+	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>addCard</servlet-name>
+		<url-pattern>/payment/addCard</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>readCard</servlet-name>
+		<servlet-class>servlet.readCard</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>readCard</servlet-name>
+		<url-pattern>/payment/readCard</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>updateCard</servlet-name>
+		<servlet-class>servlet.updateCard</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>updateCard</servlet-name>
+		<url-pattern>/payment/updateCard</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>deleteCard</servlet-name>
+		<servlet-class>servlet.deleteCard</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>deleteCard</servlet-name>
+		<url-pattern>/payment/deleteCard</url-pattern>
+	</servlet-mapping>
 
 
 <servlet>
