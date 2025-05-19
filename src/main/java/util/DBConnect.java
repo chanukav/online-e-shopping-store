@@ -8,7 +8,7 @@ public class DBConnect {
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
 		
 		String username = "root";
-		String password = "mysql071441";
+		String password = "DEShV*0202*";
 		
 		Class.forName("com.mysql.jdbc.Driver");
 		
