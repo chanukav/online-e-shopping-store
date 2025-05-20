@@ -21,14 +21,10 @@
                 <div>
                     <h2>Account</h2>
                 </div>
-                <div class="nav-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Overview</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-ticket-alt"></i>
-                    <span>Draws</span>
-                </div>
+                <a href="<%=request.getContextPath()%>/Profile" class="nav-item"><i class="fas fa-chart-bar"></i><span>Account details</span></div></a>
+		        <a href="draws.jsp" class="nav-item">
+		        <i class="fas fa-ticket-alt"></i><span>Draws</span>
+		        </a>
                 <a href="paymentR.jsp" class="nav-item">
                     <i class="fas fa-credit-card"></i>
                     <span>Payments</span>
@@ -41,18 +37,18 @@
                     <i class="fas fa-exclamation-circle"></i>
                     <span>Important</span>
                 </a>
-                <div class="nav-item">
-                    <i class="far fa-credit-card"></i>
-                    <span>Cards</span>
-                </div>
+                
+             <a href="cards.jsp" class="nav-item"><i class="far fa-credit-card"></i><span>Cards</span></a>
+
                 <div class="nav-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Add Address</span>
                 </div>
-                <div class="nav-item">
-                    <i class="fas fa-chevron-left"></i>
-                    <span>Previous</span>
-                </div>
+                            <a href="<%=request.getContextPath()%>/index.jsp">
+            <div class="nav-item">
+                <i class="fas fa-chevron-left"></i>
+                <span>Previous</span>
+            </div></a>
             </div>
         </div>
         

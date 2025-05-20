@@ -13,7 +13,7 @@
         <h2 class="form-title">Add new card</h2>
         
         <div class="card-icons">
-            <img src="/eshopping/img/visa.png" alt="Visa" class="card-icon">
+            <img src="/eshopping/img/amex.png" alt="Visa" class="card-icon">
             <img src="/eshopping/img/master.png" alt="MasterCard" class="card-icon">
             <img src="/eshopping/img/amex.png" alt="Amex" class="card-icon">
             <img src="/eshopping/img/discover.jpg" alt="Discover" class="card-icon">

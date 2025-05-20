@@ -30,7 +30,7 @@ public class paymentService {
     public ArrayList<payment> getAllCards() {
         ArrayList<payment> cards = new ArrayList<>();
         try (Connection conn = DBConnect.getConnection()) {
-            String query = "SELECT * FROM card_details";
+            String query = "SELECT * FROM gamudalk.card_details";
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(query);
 

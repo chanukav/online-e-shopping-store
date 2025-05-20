@@ -7,7 +7,6 @@
     <%@ include file="/partial/newheader.jsp" %>
   <meta charset="UTF-8">
 
-
   <title>My Profile</title>
   <style>
     body {

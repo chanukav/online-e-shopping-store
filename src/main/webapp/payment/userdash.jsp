@@ -32,7 +32,7 @@
 	        <i class="fas fa-ticket-alt">
 	        </i><span>Draws</span>
 	        </a>
-            <a href="readCard" class="nav-item active">
+            <a href="readCard" class="nav-item">
                 <i class="fas fa-credit-card"></i>
                 <span>Payment</span>
             </a>
@@ -43,15 +43,14 @@
             <a href="import.jsp" class="nav-item">
                 <i class="fas fa-exclamation-circle"></i>
                 <span>Important</span>
-            </a>    
-            
+            </a> 
                     <a href="cards.jsp" class="nav-item"><i class="far fa-credit-card"></i><span>Cards</span></a>
-               
+                  
             <div class="nav-item">
                 <i class="fas fa-plus-circle"></i>
                 <span>Add new address</span>
             </div>
-             <a href="<%=request.getContextPath()%>/index.jsp">
+            <a href="<%=request.getContextPath()%>/index.jsp">
             <div class="nav-item">
                 <i class="fas fa-chevron-left"></i>
                 <span>Previous</span>
@@ -72,58 +71,17 @@
             </div>
         </div>
         
-        <!-- Cards Section -->
-        <div class="section">
-            <div class="section-header">
-                <h3 class="section-title">Your Cards</h3>
-                <a href="paymentC.jsp">
-                <button class="btn btn-primary">
-                    <i class="fas fa-plus"></i>
-                    Add new card
-                </button>
-                </a>
-            </div>
-            
-			<div class="cards-grid">
-			  <c:forEach var="pay" items="${cards}">
-			    <c:set var="num" value="${pay.cardNumber}"/>
-			    <c:set var="name" value="${pay.cardName}"/>
-			    <c:set var="month" value="${pay.expMonth}"/>
-			    <c:set var="year" value="${pay.expYear}"/>
-			    <c:set var="cv" value="${pay.cvv}"/>
-			
-			    <div class="card-item">
-			      <img src="https://logo.clearbit.com/visa.com" alt="Visa" class="card-type">
-			      <div class="card-number">${pay.cardNumber}</div>
-			      <div class="card-details">
-			        <span>${pay.cardName}</span>
-			        <span>${pay.expMonth}/${pay.expYear}</span>
-			      </div>
-			      <div class="card-actions">
-			        
-			          <c:url value="paymentU.jsp" var="payU">
-			            <c:param name="num" value="${num}"/>
-			            <c:param name="name" value="${name}"/>
-			            <c:param name="month" value="${month}"/>
-			            <c:param name="year" value="${year}"/>
-			            <c:param name="cv" value="${cv}"/>
-			          </c:url>
-			          <a href="${payU}" class="edit-link">
-			            <i class="fas fa-edit"></i> Edit
-			          </a>
-			        
-			        <form method="post" action="deleteCard" style="display:inline;">
-			          <input type="hidden" name="cardNumber" value="${pay.cardNumber}" />
-			          <button type="submit" class="delete-btn">
-			            <i class="fas fa-trash"></i> Remove
-			          </button>
-			        </form>
-			      </div>
-			    </div>
-			  </c:forEach>
-			</div>
-
-        </div>
-    </div>    
-</body>
-</html>
+        <!-- image area -->
+        
+     <div style="text-align: center; margin-top: 40px;">
+    <img src="../images/paybg.png" alt="Online Store" style="max-width: 100%; height: auto;">
+</div>
+        
+        
+        
+  </div>
+  </body>
+  </html>      
+        
+        
+        
