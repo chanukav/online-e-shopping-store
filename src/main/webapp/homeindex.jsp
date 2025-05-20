@@ -32,370 +32,139 @@
 
 
 
-<!-- Feature Products Section -->
-<div class="container my-5">
-    <h3 class="mb-4 text-center" style="color: #e61616;">Featured Products</h3>
-    <div class="row g-4" id="featured-products">
-        <c:forEach var="product" items="${productList}">
-            <div class="col-md-3 col-sm-6">
-                <div class="card h-100 shadow-sm">
-                    <img src="${product.image}" class="card-img-top" alt="${product.name}">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">${product.name}</h5>
-                        <p class="mb-1">
-                            <c:if test="${product.originalPrice != null}">
-                                <span class="text-muted text-decoration-line-through">$${product.originalPrice}</span>
-                            </c:if>
-                            <span class="fw-bold text-danger">$${product.price}</span>
-                        </p>
-                        <div class="mb-2 text-warning">
-                            <%
-                                double rating = (Double) pageContext.getAttribute("product", PageContext.REQUEST_SCOPE).getClass().getMethod("getRating").invoke(pageContext.getAttribute("product"));
-                                int fullStars = (int) rating;
-                                boolean halfStar = rating % 1 != 0;
-                                int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-                                for (int i = 0; i < fullStars; i++) { %>
-                                    <i class="fas fa-star"></i>
-                            <%  }
-                                if (halfStar) { %>
-                                    <i class="fas fa-star-half-alt"></i>
-                            <%  }
-                                for (int i = 0; i < emptyStars; i++) { %>
-                                    <i class="far fa-star"></i>
-                            <%  }
-                            %>
-                        </div>
-                        <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-cart-plus"></i> Add to Cart
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" title="Add to Wishlist">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-                    </div>
-                </div>
+<div class="auction-container">
+    <c:forEach var="product" items="${allProduct}">
+        <div class="Route-card">
+            <div class="cart-icon" data-pid="${product.pid}">
+                <i class="fas fa-cart-plus"></i>
             </div>
-        </c:forEach>
+            <img src="WebContent/${product.pimg}" alt="${product.prodName}" 
+                 class="open-modal" 
+                 data-name="${product.prodName}" 
+                 data-category="${product.category}"
+                 data-description="${product.descrip}"
+                 data-price="Rs. ${product.pprice}0/="
+                 data-img="WebContent/${product.pimg}"
+                 data-availability="In Stock"
+                 data-pid="${product.pid}">
+            <div class="card-cont">
+                <p><strong>Product Name:</strong> ${product.prodName}</p>
+                <p><strong>Category:</strong> ${product.category}</p>
+                <p><strong>Description:</strong> ${product.descrip}</p>
+                <p><strong>Price:</strong> Rs. ${product.pprice}0/=</p>
+                
+                <form action="<%= request.getContextPath() %>/ProductDetailsServlet" method="POST">
+	                <input type="hidden" id="modalBuyPid" name="pid" value="">
+	                <button type="button" class="card-btn open-modal"
+	                    data-name="${product.prodName}" 
+	                    data-category="${product.category}"
+	                    data-description="${product.descrip}"
+	                    data-price="Rs. ${product.pprice}0/="
+	                    data-img="WebContent/${product.pimg}"
+	                    data-availability="In Stock"
+	                    data-pid="${product.pid}">
+	                    View Details
+	                </button>
+                </form>
+            </div>
+        </div>
+    </c:forEach>
+</div>
+
+<!-- Custom Modal -->
+<div class="modal" id="productModal">
+    <div class="modal-box">
+        <div class="modal-image">
+            <img id="modalImage" src="" alt="Product Image">
+        </div>
+        <div class="modal-details">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h3 id="modalName">Product Name</h3>
+            <p id="modalCategory"><strong>Category:</strong> </p>
+            <p id="modalDescription"><strong>Description:</strong> </p>
+            <p id="modalAvailability"><strong>Availability:</strong> </p>
+            <p class="price" id="modalPrice">Price</p>
+
+            <div class="modal-buttons">
+                <form action="BuyNowServlet" method="POST">
+                    <input type="hidden" id="modalBuyPid" name="pid" value="">
+                    <button type="submit" class="btn btn-buy">Buy Now</button>
+                </form>
+                <form action="AddTocartServlet" method="POST">
+	                <input type="hidden" id="modalBuyPid" name="pid" value="">
+	                <button class="btn btn-cart" id="modalAddCart">Add to Cart</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
+<script>
+    const modal = document.getElementById('productModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalName = document.getElementById('modalName');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalAvailability = document.getElementById('modalAvailability');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalClose = document.getElementById('modalClose');
+    const modalBuyPid = document.getElementById('modalBuyPid');
+    const modalAddCart = document.getElementById('modalAddCart');
 
-  <!-- New Listing Section -->
-<div class="container my-5">
-    <h3 class="mb-4 text-center" style="color: #e61616;">New Listings</h3>
-    <div class="row g-4">
-      <!-- New Listing Product Card 1 -->
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/newProduct1.jpg" class="card-img-top" alt="New Product 1">
-          <div class="card-body text-center">
-            <h5 class="card-title">New Product 1</h5>
-            <!-- Price -->
-            <p class="mb-1">
-              <span class="text-muted text-decoration-line-through">$120</span>
-              <span class="fw-bold text-danger">$99</span>
-            </p>
-            <!-- Ratings -->
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <!-- Buttons -->
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger" title="Add to Wishlist">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Repeat the card 3 more times for New Listings -->
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/newProduct2.jpg" class="card-img-top" alt="New Product 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">New Product 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$59</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
+    let currentPid = null;
 
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/newProduct2.jpg" class="card-img-top" alt="New Product 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">New Product 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$59</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
+    document.querySelectorAll('.open-modal').forEach(btn => {
+        btn.addEventListener('click', function () {
+            modalImage.src = this.dataset.img;
+            modalName.textContent = this.dataset.name;
+            modalCategory.innerHTML = "<strong>Category:</strong> " + this.dataset.category;
+            modalDescription.innerHTML = "<strong>Description:</strong> " + this.dataset.description;
+            modalAvailability.innerHTML = "<strong>Availability:</strong> " + this.dataset.availability;
+            modalPrice.textContent = this.dataset.price;
+            modalBuyPid.value = this.dataset.pid;
+            currentPid = this.dataset.pid;
+            modal.style.display = 'flex';
+        });
+    });
 
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/newProduct2.jpg" class="card-img-top" alt="New Product 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">New Product 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$59</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Add two more product cards (New Product 3, New Product 4) -->
-      <!-- ...same structure... -->
-    </div>
-  </div>
-  
-    <!-- Hot Deals Section -->
-<div class="container my-5">
-    <h3 class="mb-4 text-center" style="color: #e61616;">Hot Deals</h3>
-    <div class="row g-4">
-      <!-- Hot Deal Product Card 1 -->
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal1.jpg" class="card-img-top" alt="Hot Deal 1">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 1</h5>
-            <p class="mb-1">
-              <span class="text-muted text-decoration-line-through">$150</span>
-              <span class="fw-bold text-danger">$99</span>
-            </p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger" title="Add to Wishlist">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Repeat the card for the remaining 7 products -->
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="card h-100 shadow-sm">
-          <img src="img/hotDeal2.jpg" class="card-img-top" alt="Hot Deal 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Deal 2</h5>
-            <p class="mb-1"><span class="fw-bold text-dark">$79</span></p>
-            <div class="mb-2 text-warning">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="far fa-heart"></i>
-              </button>
-            </div>
-            <button class="btn btn-sm btn-warning mt-2 w-100">Buy It Now</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    modalClose.onclick = () => modal.style.display = "none";
+    window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
 
+    modalAddCart.onclick = () => {
+        if (!currentPid) return;
+        fetch('AddToCartServlet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'pid=' + encodeURIComponent(currentPid)
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert('Product added to cart!');
+        })
+        .catch(error => {
+            alert('Error adding to cart!');
+            console.error(error);
+        });
+    };
+
+    // Top-right cart icons
+    document.querySelectorAll('.cart-icon').forEach(icon => {
+        icon.addEventListener('click', function () {
+            const pid = this.getAttribute('data-pid');
+            fetch('AddToCartServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'pid=' + encodeURIComponent(pid)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Product added to cart!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
 
 <%@ include file="/partial/footer.jsp" %>

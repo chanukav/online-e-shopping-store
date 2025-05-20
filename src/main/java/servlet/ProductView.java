@@ -29,11 +29,11 @@ public class ProductView extends HttpServlet {
 		
 		List<Product>allProduct = ProductService.getAllProduct();
 		request.setAttribute("allProduct", allProduct);
-		RequestDispatcher dispatch = request.getRequestDispatcher("/product/AllProduct Userview.jsp");
+		RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
 		dispatch.forward(request, response);
 		
 	}
-	
+
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
