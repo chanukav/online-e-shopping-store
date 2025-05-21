@@ -70,7 +70,7 @@
                         <h5 class="card-title">Sample Product</h5>
                         <p class="card-text">Price: $29.99</p>
                         <p class="card-text">Brand: Sample Brand</p>
-                        <form action="<%= request.getContextPath() %>/AddToCart" method="post">
+                        <form action="<%= request.getContextPath() %>/" method="post">
                             <input type="hidden" name="productId" value="1">
                             <input type="hidden" name="productName" value="Sample Product">
                             <input type="hidden" name="productPrice" value="29.99">

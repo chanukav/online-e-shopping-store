@@ -53,8 +53,7 @@
                 <p><strong>Description:</strong> ${product.descrip}</p>
                 <p><strong>Price:</strong> Rs. ${product.pprice}0/=</p>
                 
-                <form action="<%= request.getContextPath() %>/ProductDetailsServlet" method="POST">
-	                <input type="hidden" id="modalBuyPid" name="pid" value="">
+	        
 	                <button type="button" class="card-btn open-modal"
 	                    data-name="${product.prodName}" 
 	                    data-category="${product.category}"
@@ -65,7 +64,6 @@
 	                    data-pid="${product.pid}">
 	                    View Details
 	                </button>
-                </form>
             </div>
         </div>
     </c:forEach>
