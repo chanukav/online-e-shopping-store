@@ -12,7 +12,7 @@ public class DBConnect {
 		
 		Class.forName("com.mysql.jdbc.Driver");
 		
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3307/gamudalk?characterEncoding=utf8",username,password);
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gamudalk?characterEncoding=utf8",username,password);
 		
 		return con;
 	}

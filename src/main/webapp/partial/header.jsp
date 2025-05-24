@@ -24,6 +24,13 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/custom2.css">
 
   <style>
+  :root {
+    --danger: #e61616; /* Bold red for danger actions */
+    --text-light: #ffffff; /* White text for contrast */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+    --transition: all 0.3s ease;
+}
      /* Top Header */
     .top-header {
       background-color: #f8f9fa;
@@ -167,6 +174,33 @@
     .all-categories-btn:hover {
       background-color: #e61616;
     }
+    .btn-out {
+    font-family: 'Inter', sans-serif; /* Modern font */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px; /* Softer corners */
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-out:hover {
+    transform: translateY(-2px); /* Subtle lift on hover */
+    box-shadow: var(--shadow-md);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: var(--text-light);
+}
+
+.btn-danger:hover {
+    background: #c91212; /* Darker red on hover */
+    color: var(--text-light);
+}
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
@@ -212,6 +246,8 @@
         </div>
            <!-- Top header-->
            
+
+           
            
            
            <!--  -->
@@ -230,20 +266,14 @@
         </div>
       </div>
     </div>
-    
-    
-     <div class="header-icons">
-         <a href="profile.jsp"><i class="fas fa-heart"></i> Wishlist</a>
+            
+  <div class="header-icons">
+       
          
        
          <a href="<%=request.getContextPath()%>/payment/userdash.jsp"><i class="fas fa-user"></i> Account</a><!--changes-->
          
-        </div>
-        <!---------------------------------button------------------------->
-        
-        
-        
-
+  </div>
 
 <div class="d-flex gap-2">    
   <!--  -<form action="login.jsp" method="post" class="m-0">
@@ -251,7 +281,7 @@
   </form>-->
 
   <form action="index.jsp" method="post" class="m-0">
-    <button type="submit" class="btn btn-danger">Sign Out</button>
+    <button type="submit" class="btn-out btn-danger">Sign Out</button>
   </form>
 </div>
 

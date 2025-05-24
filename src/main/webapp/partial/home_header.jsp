@@ -163,6 +163,58 @@
     .all-categories-btn:hover {
       background-color: #e61616;
     }
+    :root {
+    --primary: #ff6b00; /* Vibrant orange for primary actions */
+    --danger: #e61616; /* Bold red for danger actions */
+    --text-light: #ffffff; /* White text for contrast */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+    --transition: all 0.3s ease;
+}
+
+.d-flex.gap-2 {
+    display: flex;
+    gap: 1rem; /* Modernized spacing */
+    align-items: center;
+}
+
+.btn-log {
+    font-family: 'Inter', sans-serif; /* Modern font */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px; /* Softer corners */
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-log:hover {
+    transform: translateY(-2px); /* Subtle lift on hover */
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: var(--text-light);
+}
+
+.btn-primary:hover {
+    background: #e65c00; /* Darker orange on hover */
+    color: var(--text-light);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: var(--text-light);
+}
+
+.btn-danger:hover {
+    background: #c91212; /* Darker red on hover */
+    color: var(--text-light);
+}
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
@@ -185,7 +237,12 @@
       .logo-img {
           width: 90px;
         }
-      }
+        
+       .btn-log {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+ }
     
   </style>
 </head>
@@ -226,25 +283,17 @@
         </div>
       </div>
     </div>
-     <div class="header-icons">
-         <a href="profile.jsp"><i class="fas fa-heart"></i> Wishlist</a>
-         
-       
-          <!--  -<a href="Profile"><i class="fas fa-user"></i> Profile</a><!--changes-->
-        </div>
-        <!---------------------------------button------------------------->
-        
-        
+
         
 
 
 <div class="d-flex gap-2">    
   <form action="<%=request.getContextPath()%>/customer/login.jsp" method="post" class="m-0">
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn-log btn-primary">Login</button>
   </form>
 
   <form action="<%=request.getContextPath()%>/customer/register.jsp" method="post" class="m-0">
-    <button type="submit" class="btn btn-danger">Sign in</button>
+    <button type="submit" class="btn-log btn-danger">Sign in</button>
   </form>
 </div>
 
