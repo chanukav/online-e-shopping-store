@@ -236,7 +236,7 @@
          <a href="profile.jsp"><i class="fas fa-heart"></i> Wishlist</a>
          
        
-         <a href="<%=request.getContextPath()%>/Profile"><i class="fas fa-user"></i> Profile</a><!--changes-->
+         <a href="<%=request.getContextPath()%>/payment/userdash.jsp"><i class="fas fa-user"></i> Account</a><!--changes-->
          
         </div>
         <!---------------------------------button------------------------->

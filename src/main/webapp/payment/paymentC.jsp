@@ -13,11 +13,11 @@
         <h2 class="form-title">Add new card</h2>
         
         <div class="card-icons">
-            <img src="/eshopping/img/visa.png" alt="Visa" class="card-icon">
-            <img src="/eshopping/img/master.png" alt="MasterCard" class="card-icon">
-            <img src="/eshopping/img/amex.png" alt="Amex" class="card-icon">
-            <img src="/eshopping/img/discover.jpg" alt="Discover" class="card-icon">
-            <img src="/eshopping/img/jcb.png" alt="JCB" class="card-icon">
+            <img src="${pageContext.request.contextPath}/image/discover.jpg" alt="Visa" class="card-icon">
+            <img src="${pageContext.request.contextPath}/image/master.png" alt="MasterCard" class="card-icon">
+            <img src="${pageContext.request.contextPath}/image/amex.png" alt="Amex" class="card-icon">
+            <img src="${pageContext.request.contextPath}/image/discover.jpg" alt="Discover" class="card-icon">
+            <img src="${pageContext.request.contextPath}/image/jcb.png" alt="JCB" class="card-icon">
         </div>
         
         <!-- Added id="cardForm" here -->
@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label for="cardName">Holder's name</label>
                 <input type="text" id="cardName" name="cardName" 
-                       placeholder="jason momoa" required>
+                       placeholder="jacob burg" required>
             </div>
             
             <div class="form-group">
