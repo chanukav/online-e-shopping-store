@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -104,7 +105,7 @@
       background-color: #eaeaea;
     }
     
-    .cart-icon {
+    .cart-icon-header {
       position: relative;
       color: #fceaca;
       font-weight: bold;
@@ -281,7 +282,7 @@
 
           <!-- Cart -->
           <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end align-items-center">
-            <a href="#" class="cart-icon text-decoration-none">
+            <a href="#" class="cart-icon-header text-decoration-none">
               <i class="fas fa-shopping-cart fa-lg"></i>
               <span class="ms-1">My Cart</span>
               <span id="cart-count" class="cart-count">0</span>
@@ -329,19 +330,6 @@
         }
       }
     </script>
-	
-	    
-    <script>
-    
-	    function submitFormOnce() {
-		    // Check if form was already submitted
-		    if (!sessionStorage.getItem("formSubmitted")) {
-		        document.getElementById("autoSubmitForm").submit();
-		        sessionStorage.setItem("formSubmitted", "true");
-		    }
-		}
-    </script>
-	
 	
 
 </header>

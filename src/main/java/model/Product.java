@@ -6,7 +6,7 @@ public class Product implements Serializable {
     private int pid;
     private String prodName;
     private String category;
-    private String Pimg;
+    private String pimg;
     private String descrip;
     private float Pprice;
     private int Pstock;
@@ -30,12 +30,15 @@ public class Product implements Serializable {
     public void setCategory(String category) {
         this.category = category;
     }
+    
     public String getPimg() {
-        return Pimg;
+        return this.pimg;
     }
+    
     public void setPimg(String pimg) {
-        Pimg = pimg;
+        this.pimg = pimg;
     }
+    
     public String getDescrip() {
         return descrip;
     }
