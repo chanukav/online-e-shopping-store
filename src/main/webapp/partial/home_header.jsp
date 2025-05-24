@@ -189,7 +189,7 @@
     
   </style>
 </head>
-<body onload="submitFormOnce()">
+<body>
   <!-- Top Header -->
 <header>
     <div class="top-header">
@@ -243,8 +243,8 @@
     <button type="submit" class="btn btn-primary">Login</button>
   </form>
 
-  <form action="logout.jsp" method="post" class="m-0">
-    <button type="submit" class="btn btn-danger">Sign Out</button>
+  <form action="<%=request.getContextPath()%>/customer/register.jsp" method="post" class="m-0">
+    <button type="submit" class="btn btn-danger">Sign in</button>
   </form>
 </div>
 
@@ -290,10 +290,7 @@
           </div>
         </div>
         
-		<!-- Add this form in the <header> or body section -->
-		<form id="autoSubmitForm" action="<%= request.getContextPath() %>/ProductView" method="get" class="m-0">
-		</form>
-
+	
         <script>
           async function updateCartCount() {
             try {
