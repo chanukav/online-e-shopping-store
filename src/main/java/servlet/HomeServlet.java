@@ -29,9 +29,10 @@ public class HomeServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	     	
-			List<Product> allProducts = ProductService.getAllProduct(); // use your method
 
-	        request.setAttribute("productList", allProducts); // send to JSP
+	        List<Product>allProduct = ProductService.getAllProduct();
+			request.setAttribute("allProduct", allProduct);
+			
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 	        dispatcher.forward(request, response);
 	}
