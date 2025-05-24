@@ -21,7 +21,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <!-- Home page context CSS -->
-
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/custom2.css">
 
   <style>
      /* Top Header */
@@ -193,7 +193,7 @@
     
   </style>
 </head>
-<body>
+<body onload="submitFormOnce()">
   <!-- Top Header -->
 <header>
     <div class="top-header">
@@ -296,7 +296,12 @@
             </a>
           </div>
         </div>
+        
 
+		<!-- Add this form in the <header> or body section -->
+		<form id="autoSubmitForm" action="<%= request.getContextPath() %>/ProductView" method="get" class="m-0">
+		</form>
+		
         <script>
           async function updateCartCount() {
             try {
@@ -332,7 +337,21 @@
           console.error("Error:", error);
         }
       }
+      
+
     </script>
+    
+    <script>
+    
+	    function submitFormOnce() {
+		    // Check if form was already submitted
+		    if (!sessionStorage.getItem("formSubmitted")) {
+		        document.getElementById("autoSubmitForm").submit();
+		        sessionStorage.setItem("formSubmitted", "true");
+		    }
+		}
+    </script>
+
 
  
 </header>

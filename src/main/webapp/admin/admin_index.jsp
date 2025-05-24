@@ -196,7 +196,7 @@
       <a href="<%=request.getContextPath()%>/admin/admin_dashboard.jsp" class="nav-link" target="contentFrame"><i data-lucide="gauge"></i><span>Dashboard</span></a>
       <a href="<%=request.getContextPath()%>/admin/ManagerAdmin/ManagerHome.jsp" class="nav-link" target="contentFrame"><i data-lucide="shopping-cart"></i><span>Orders</span></a>
       <a href="<%=request.getContextPath()%>/ReadAllProduct" class="nav-link" target="contentFrame"><i data-lucide="box"></i><span>Products</span></a>
-      <a href="customers.jsp" class="nav-link" target="contentFrame"><i data-lucide="users"></i><span>Customers</span></a>
+      <a href="<%=request.getContextPath()%>/admincustomers" class="nav-link" target="contentFrame"><i data-lucide="users"></i><span>Customers</span></a>
       <a href="Manage_all_admins" class="nav-link" target="contentFrame"><i data-lucide="shield-check"></i><span>Admins</span></a>
       <a href="<%=request.getContextPath()%>/Manage_all_category" class="nav-link" target="contentFrame"><i class="fas fa-th-large"></i><span>Category</span></a>
 

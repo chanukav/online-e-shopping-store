@@ -30,7 +30,7 @@ public class customerService {
 	
 	public boolean validate(customer cus) {
 		try {
-			String query="select * from customer where email='"+cus.getEmail()+"'and password='"+cus.getPassword()+"'"; 
+			String query="select * from gamudalk.customer where email='"+cus.getEmail()+"'and password='"+cus.getPassword()+"'"; 
 			Statement statement= DBConnect.getConnection().createStatement();
 			
 			ResultSet  rs=statement.executeQuery(query);
@@ -46,7 +46,7 @@ public class customerService {
 	
 	public customer getone(customer cus) {
 	    try {
-	        String query = "select * from customer where email='" + cus.getEmail() + "'";
+	        String query = "select * from gamudalk.customer where email='" + cus.getEmail() + "'";
 	        System.out.println("Running query: " + query);
 	        Statement statement = DBConnect.getConnection().createStatement();
 
@@ -75,7 +75,7 @@ public class customerService {
 			
 			ArrayList<customer> listCus =new ArrayList<customer>();
 			
-			String query="select * from customer";
+			String query="select * from gamudalk.customer";
 			
 			Statement statement=DBConnect.getConnection().createStatement();
 			ResultSet rs= statement.executeQuery(query);
@@ -102,7 +102,7 @@ public class customerService {
 	
 	public customer singleDataButton(customer cus) {
 		try {
-			String query="select * from customer where email='"+cus.getEmail()+"'"; 
+			String query="select * from gamudalk.customer where email='"+cus.getEmail()+"'"; 
 			Statement statement= DBConnect.getConnection().createStatement();
 			
 			ResultSet  rs=statement.executeQuery(query);
@@ -129,7 +129,7 @@ public void updateCustomer(customer customer) {
 		
 		try {
 			
-			String query="update customer SET  name='"+customer.getName()+"',age='"+customer.getAge()+"',gender='"+customer.getGender()+"',address='"+customer.getAddress()+"',email='"+customer.getEmail()+"',password ='"+customer.getPassword()+"'where email='"+customer.getEmail()+"'";
+			String query="update gamudalk.customer SET  name='"+customer.getName()+"',age='"+customer.getAge()+"',gender='"+customer.getGender()+"',address='"+customer.getAddress()+"',email='"+customer.getEmail()+"',password ='"+customer.getPassword()+"'where email='"+customer.getEmail()+"'";
 			 Statement statement=DBConnect.getConnection().createStatement();
 			 statement.executeUpdate(query);
 		} catch (Exception e) {
@@ -140,7 +140,7 @@ public void updateCustomer(customer customer) {
 	
 	public void deleteCustomer(customer cus) {
 		try {
-			String query="Delete from customer where email= '"+cus.getEmail()+"'";
+			String query="Delete from gamudalk.customer where email= '"+cus.getEmail()+"'";
 			
 			Statement statement=DBConnect.getConnection().createStatement();
 			statement.execute(query);

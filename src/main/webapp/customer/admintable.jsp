@@ -34,9 +34,8 @@
         text-align: center;
         vertical-align: middle;
     }
-
-    .btn-custom {
-        background-color: #f85506;
+     .btn-custom {
+        background-color: orange;
         color: white;
         border: none;
         border-radius: 8px;
@@ -45,9 +44,26 @@
         transition: background-color 0.3s ease;
         text-decoration: none;
     }
-
     .btn-custom:hover {
-        background-color: #e61616;
+        background-color: #04c238;
+        color: white;
+    }
+    
+         .btn-customadduser {
+        background-color: #04c238;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+    
+
+   
+    .btn-customadduser:hover {
+        background-color: #0a7628 ;
         color: white;
     }
 
@@ -75,7 +91,7 @@
 
 <div class="header-container">
     <h2>Customer Profile List</h2>
-    <a href="<%=request.getContextPath()%>/admin/customer/userregister2.jsp" class="btn btn-custom">Add User</a>
+    <a href="<%=request.getContextPath()%>/customer/userregister2.jsp" class="btn btn-customadduser">Add User</a>
 </div>
 
 <table class="table table-bordered table-hover">
@@ -103,7 +119,7 @@
             <td>
               <form action="singleDataButton" method="post">
                   <input type="hidden" name="email" value="${cus.email}">
-                  <button type="submit" class="btn btn-custom">View</button>
+                  <button type="submit" class="btn btn-custom">Update</button>
               </form>
             </td>
             <td>
