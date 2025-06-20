@@ -29,6 +29,7 @@ public class ProductView extends HttpServlet {
 		
 		List<Product>allProduct = ProductService.getAllProduct();
 		request.setAttribute("allProduct", allProduct);
+		
 		RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
 		dispatch.forward(request, response);
 		

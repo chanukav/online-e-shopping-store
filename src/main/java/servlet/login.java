@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Admin;
 import model.customer;
 import services.customerService;
 
@@ -41,13 +42,17 @@ public class login extends HttpServlet {
 		boolean status=service.validate(cus);
 		
 		if(status) {
-			
+			customer loginedCus = service.getone(cus);
 //			
 			HttpSession session = request.getSession();
-			session.setAttribute("email",cus.getEmail() );
+			session.setAttribute("customer", loginedCus); // Use the same key everywhere
+
+			
+			// Optionally: set a timeout (in seconds)
+			session.setMaxInactiveInterval(60 * 60); // 30 minutes
 			
 			
-			RequestDispatcher dispatcher=request.getRequestDispatcher("/homeindex.jsp");
+			RequestDispatcher dispatcher=request.getRequestDispatcher("/index.jsp");
 			
 //			
 			dispatcher.forward(request, response);

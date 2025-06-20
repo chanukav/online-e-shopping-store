@@ -48,10 +48,12 @@ public class addCustomer extends HttpServlet {
 	    if ("admin".equalsIgnoreCase(source)) {
 	        response.sendRedirect("admincustomers");
 	    } else {
-	    	HttpSession session = request.getSession();
-			session.setAttribute("email",cus.getEmail() );
+			customer registerCus = service.getone(cus);
 	    	
-	        response.sendRedirect("homeindex.jsp");
+			HttpSession session = request.getSession();
+			session.setAttribute("customer", registerCus);
+	    	
+	        response.sendRedirect("index.jsp");
 	    }
 	}
 

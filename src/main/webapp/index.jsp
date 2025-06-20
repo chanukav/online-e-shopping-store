@@ -1,4 +1,4 @@
-<%@ include file="/partial/home_header.jsp" %>
+<%@ include file="/partial/header.jsp" %>
 <%@ page import="java.lang.Math" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -14,7 +14,7 @@
     <div class="carousel-item active">
       <img src="${pageContext.request.contextPath}/image/Banner_GamudaLK.webp" class="d-block w-100" alt="Banner_1">
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item"> 
       <img src="${pageContext.request.contextPath}/image/Banner2_GamudaLK.webp" class="d-block w-100" alt="Banner_2">
     </div>
     <div class="carousel-item">
