@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.Admin" %>
 <%
@@ -173,7 +174,7 @@
 	<nav class="nav flex-column">
 	  <a href="dashboard.jsp" class="nav-link" target="contentFrame"><i data-lucide="gauge"></i><span>Dashboard</span></a>
 	  <a href="orders.jsp" class="nav-link" target="contentFrame"><i data-lucide="shopping-cart"></i><span>Orders</span></a>
-	  <a href="products.jsp" class="nav-link" target="contentFrame"><i data-lucide="box"></i><span>Products</span></a>
+	  <a href="<%=request.getContextPath()%>/ReadAllProduct" class="nav-link" target="contentFrame"><i data-lucide="box"></i><span>Products</span></a>
 	  <a href="customers.jsp" class="nav-link" target="contentFrame"><i data-lucide="users"></i><span>Customers</span></a>
 	  <a href="Manage_all_admins" class="nav-link" target="contentFrame"><i data-lucide="shield-check"></i><span>Admins</span></a>
 	  <a href="billing.jsp" class="nav-link" target="contentFrame"><i data-lucide="line-chart"></i><span>Billing</span></a>
