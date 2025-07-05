@@ -10,54 +10,101 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f7fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin-top: 3rem;
+        }
+        h2 {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
         }
         .cart-table {
-            background: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: #fcffff; /* White background */
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cart-table:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        .table th {
+            color: #333;
+            font-weight: 600;
+            border-bottom: 2px solid #fe980f; /* Yellow border */
+        }
+        .table td {
+            vertical-align: middle;
+            padding: 1rem;
+            border-bottom: 1px solid #fceaca; /* Gray border */
         }
         .btn-continue {
-            background: linear-gradient(90deg, #fe980f, #f85506);
-            color: #fcffff;
+            background: linear-gradient(90deg, #fe980f, #f85506); /* Yellow to Orange */
+            color: #fcffff; /* White text */
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
         .btn-continue:hover {
-            background: linear-gradient(90deg, #e61616, #f85506);
+            background: linear-gradient(90deg, #e61616, #f85506); /* Red to Orange */
+            transform: translateY(-2px);
         }
         .btn-remove {
-            background: linear-gradient(90deg, #dc3545, #c82333);
-            color: #fcffff;
+            background: linear-gradient(90deg, #e61616, #f85506); /* Red to Orange */
+            color: #fcffff; /* White text */
             border: none;
-            padding: 8px 12px;
+            padding: 8px 16px;
             border-radius: 8px;
             font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
         .btn-remove:hover {
-            background: linear-gradient(90deg, #c82333, #b21f2d);
+            background: linear-gradient(90deg, #c82333, #e61616); /* Darker red shades */
             transform: translateY(-2px);
         }
         .btn-quantity {
-            background: linear-gradient(90deg, #fe980f, #f85506);
-            color: #fcffff;
+            background: linear-gradient(90deg, #fe980f, #f85506); /* Yellow to Orange */
+            color: #fcffff; /* White text */
             border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-size: 1rem;
+            transition: background 0.3s ease;
         }
         .btn-quantity:hover {
-            background: linear-gradient(90deg, #e61616, #f85506);
+            background: linear-gradient(90deg, #e61616, #f85506); /* Red to Orange */
+        }
+        .btn-quantity:disabled {
+            background: #fceaca; /* Gray */
+            color: #999;
+            cursor: not-allowed;
         }
         .quantity-input {
-            width: 60px;
+            width: 70px;
             text-align: center;
-            border: 1px solid #fe980f;
-            border-radius: 5px;
-            margin: 0 5px;
+            border: 1px solid #fe980f; /* Yellow border */
+            border-radius: 6px;
+            background: #fcffff; /* White background */
+            padding: 6px;
+            font-size: 1rem;
+            color: #333;
         }
         .alert {
             position: fixed;
@@ -65,7 +112,40 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            transition: opacity 0.5s ease;
+            background: #fcffff; /* White background */
+            color: #333;
+            border: 1px solid #fe980f; /* Yellow border */
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .alert.fade-out {
+            animation: slideOut 0.5s ease forwards;
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        @media (max-width: 768px) {
+            .cart-table {
+                padding: 1rem;
+            }
+            .table td, .table th {
+                font-size: 0.9rem;
+                padding: 0.75rem;
+            }
+            .quantity-input {
+                width: 50px;
+            }
+            .btn-continue, .btn-remove, .btn-quantity {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -165,7 +245,7 @@
         if (message) {
             message.style.display = 'block';
             setTimeout(() => {
-                message.style.opacity = '0';
+                message.classList.add('fade-out');
                 setTimeout(() => message.style.display = 'none', 500);
             }, 3000);
         }
