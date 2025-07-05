@@ -1,7 +1,8 @@
-<%@ include file="/partial/home_header.jsp" %>
+<%@ include file="/partial/header.jsp" %>
 <%@ page import="java.lang.Math" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="model.Product" %>
 
 <!-- run HomeServlet -->
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
@@ -14,7 +15,7 @@
     <div class="carousel-item active">
       <img src="${pageContext.request.contextPath}/image/Banner_GamudaLK.webp" class="d-block w-100" alt="Banner_1">
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item"> 
       <img src="${pageContext.request.contextPath}/image/Banner2_GamudaLK.webp" class="d-block w-100" alt="Banner_2">
     </div>
     <div class="carousel-item">
@@ -31,7 +32,7 @@
   </button>
 </div>
 
-    <h3 class="mb-4 text-center">Featured Products</h3>
+<h3 class="mb-4 text-center">Featured Products</h3>
 
   <div class="auction-container">
     <c:forEach var="product" items="${allProduct}">
@@ -49,9 +50,9 @@
                  data-availability="In Stock"
                  data-pid="${product.pid}">
             <div class="card-cont">
-                <p><strong>Product Name:</strong> ${product.prodName}</p>
-                <p><strong>Category:</strong> ${product.category}</p>
-                <p><strong>Description:</strong> ${product.descrip}</p>
+                <p><strong>${product.prodName}</strong></p>
+                <!--<p><strong>Category:</strong> ${product.category}</p>  -->
+                <!--<p><strong>Description:</strong> ${product.descrip}</p> -->
                 <p><strong>Price:</strong> Rs. ${product.pprice}0/=</p>
                 <button type="button" class="card-btn open-modal"
                     data-name="${product.prodName}" 
@@ -65,7 +66,7 @@
                 </button>
             </div>
         </div>
-    </c:forEach>
+       </c:forEach>
 </div>
 
 <!-- Custom Modal -->

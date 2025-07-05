@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Admin;
 import model.customer;
 import services.customerService;
 
@@ -31,34 +32,27 @@ public class login extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		customer cus=new customer();
-		
-		cus.setEmail(request.getParameter("email"));
-		cus.setPassword(request.getParameter("password"));
-		
-		customerService service=new customerService();
-		boolean status=service.validate(cus);
-		
-		if(status) {
-			
-//			
-			HttpSession session = request.getSession();
-			session.setAttribute("email",cus.getEmail() );
-			
-			
-			RequestDispatcher dispatcher=request.getRequestDispatcher("/homeindex.jsp");
-			
-//			
-			dispatcher.forward(request, response);
-			
-		}
-		else {
-			
-			RequestDispatcher dispatcher=request.getRequestDispatcher("/customer/login.jsp");
-			dispatcher.forward(request, response);
-		}
+	    customer cus = new customer();
+	    cus.setEmail(request.getParameter("email"));
+	    cus.setPassword(request.getParameter("password"));
 
+	    customerService service = new customerService();
+	    boolean status = service.validate(cus);
+
+	    if (status) {
+	        customer loginedCus = service.getone(cus);
+
+	        HttpSession session = request.getSession();
+	        session.setAttribute("customer", loginedCus);
+	        session.setMaxInactiveInterval(60 * 60); // 1 hour
+
+	        response.sendRedirect("HomeServlet");
+	    } else {
+	        request.setAttribute("error", "Invalid email or password");
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("/customer/login.jsp");
+	        dispatcher.forward(request, response);
+	    }
 	}
+
 
 }

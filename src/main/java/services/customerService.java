@@ -151,6 +151,12 @@ public void updateCustomer(customer customer) {
 			e.printStackTrace();
 		}
 	}
+
+
+	public customer getCustomerByEmailAndPassword(String email, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

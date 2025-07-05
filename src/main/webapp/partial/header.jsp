@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="model.customer" %>
+<%
+    customer cus = (customer) session.getAttribute("customer");
+    if (cus != null) {
+        // logged in
+    }
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +70,41 @@
     .top-header select:focus {
       outline: none;
     }
+    .user-link {
+    background-color: none; /* Warm yellow/orange */
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+	  .user-link:hover {
+	    background-color: #fcffff;
+	    color: #fff;
+	    text-decoration: none;
+	    transform: scale(1.03);
+	  }
+	
+	  .user-link i {
+	    font-size: 1rem;
+	  }
+	
+	  .user-link span {
+	    white-space: nowrap;
+	  }
+	  .btn-modern {
+	    padding: 8px 20px;
+	    font-weight: 600;
+	    border-radius: 30px;
+	    font-size: 0.95rem;
+	    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	    transition: all 0.3s ease;
+	  }
+	
+	  .btn-modern:hover {
+	    transform: translateY(-2px);
+	    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+	  }
 
     /* Middle Header */
     .logo-img {
@@ -245,12 +287,9 @@
           </select>
         </div>
            <!-- Top header-->
+              
            
-
-           
-           
-           
-           <!--  -->
+    <!--  -->
     <div class="bottom-header">
       <div class="container">
         <div class="row align-items-center">
@@ -267,27 +306,39 @@
       </div>
     </div>
             
-  <div class="header-icons">
-       
-         
-       
-         <a href="<%=request.getContextPath()%>/payment/userdash.jsp"><i class="fas fa-user"></i> Account</a><!--changes-->
-         
-  </div>
 
-<div class="d-flex gap-2">    
-  <!--  -<form action="login.jsp" method="post" class="m-0">
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>-->
+<div class="d-flex gap-2">
+		<% if (session.getAttribute("customer") != null) { %>
+			  <div class="header-icons">
+						<div class="container text-center">
+						  <div class="row row-cols-auto">
+						    <div class="col">
+						    	<a href="<%=request.getContextPath()%>/payment/userdash.jsp" class="user-link d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm">
+								  <i class="fas fa-user"></i>
+								  <span><%= cus.getEmail() %></span>
+								</a>
+						    </div>
+						    <div class="col">
+						    	<form action="logoutservlet" method="post" class="m-0">
+			    					<button type="submit" class="btn-out btn-danger">Sign Out</button>
+			 					</form>
+						    </div>
+						  </div>
+					</div>
+			  </div>
+	    <% } else { %>
+				<div class="d-flex gap-2">    
+				  <form action="<%=request.getContextPath()%>/customer/login.jsp" method="post" class="m-0">
+				    <button type="submit" class="btn btn-modern btn-primary">Login</button>
+				  </form>
+				  <form action="<%=request.getContextPath()%>/customer/register.jsp" method="post" class="m-0">
+				    <button type="submit" class="btn btn-modern btn-danger">Sign in</button>
+				  </form>
+				</div>
 
-  <form action="index.jsp" method="post" class="m-0">
-    <button type="submit" class="btn-out btn-danger">Sign Out</button>
-  </form>
+	    <% } %>
+	</div>
 </div>
-
-      
-      
-    </div>
 
     <!-- Middle Header -->
     <div class="middle-header">
