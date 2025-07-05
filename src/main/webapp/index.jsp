@@ -50,9 +50,9 @@
                  data-availability="In Stock"
                  data-pid="${product.pid}">
             <div class="card-cont">
-                <p><strong>Product Name:</strong> ${product.prodName}</p>
-                <p><strong>Category:</strong> ${product.category}</p>
-                <p><strong>Description:</strong> ${product.descrip}</p>
+                <p><strong>${product.prodName}</strong></p>
+                <!--<p><strong>Category:</strong> ${product.category}</p>  -->
+                <!--<p><strong>Description:</strong> ${product.descrip}</p> -->
                 <p><strong>Price:</strong> Rs. ${product.pprice}0/=</p>
                 <button type="button" class="card-btn open-modal"
                     data-name="${product.prodName}" 

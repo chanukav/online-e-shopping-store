@@ -186,7 +186,7 @@
 <!-- Sidebar -->
 <div class="d-flex">
   <div id="sidebar" class="sidebar d-flex flex-column">
-    <a href="<%=request.getContextPath()%>/index.jsp" class="text-decoration-none">
+    <a href="ProductView" class="text-decoration-none">
       <div class="p-3">
         <h4 class="logo-full">Gamuda.LK</h4>
         <h4 class="logo-icon">G.LK</h4>
