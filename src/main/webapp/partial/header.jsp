@@ -379,9 +379,9 @@
         </div>
         
 
-		<!-- Add this form in the <header> or body section -->
-		<form id="autoSubmitForm" action="<%= request.getContextPath() %>/ProductView" method="get" class="m-0">
-		</form>
+		<!-- 		<form id="autoSubmitForm" action="<%= request.getContextPath() %>/ProductView" method="get" class="m-0">
+		</form> -->
+
 		
         <script>
           async function updateCartCount() {
