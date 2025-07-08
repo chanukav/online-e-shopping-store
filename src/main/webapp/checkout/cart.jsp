@@ -8,6 +8,12 @@
     <title>Shopping Cart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
+    <link rel="icon" type="image/svg+xml" href="<%= request.getContextPath() %>/image/favicon.svg">
+	<link rel="shortcut icon" href="<%= request.getContextPath() %>/image/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="<%= request.getContextPath() %>/image/apple-touch-icon.png">
+	<link rel="manifest" href="<%= request.getContextPath() %>/image/site.webmanifest">
+    
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -186,7 +192,7 @@
                     %>
                     <tr>
                         <td><%= item.getProduct().getProdName() %></td>
-                        <td>$<%= String.format("%.2f", item.getProduct().getPprice()) %></td>
+                        <td>LKR. <%= String.format("%.2f", item.getProduct().getPprice()) %></td>
                         <td>
                             <form action="<%= request.getContextPath() %>/UpdateCartQuantity" method="post" style="display: inline;">
                                 <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
@@ -200,7 +206,7 @@
                                 <button type="submit" class="btn btn-quantity">+</button>
                             </form>
                         </td>
-                        <td>$<%= String.format("%.2f", itemTotal) %></td>
+                        <td>LKR. <%= String.format("%.2f", itemTotal) %></td>
                         <td>
                             <form action="<%= request.getContextPath() %>/RemoveFromCart" method="post">
                                 <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
@@ -226,13 +232,13 @@
                 if (cart != null && !cart.isEmpty()) {
             %>
             <div class="text-end mb-3">
-                <h5>Cart Total: $<%= String.format("%.2f", cartTotal) %></h5>
+                <h5>Cart Total: LKR. <%= String.format("%.2f", cartTotal) %></h5>
             </div>
             <%
                 }
             %>
             <div class="text-end">
-                <a href="<%= request.getContextPath() %>/products.jsp" class="btn btn-continue">
+                <a href="<%= request.getContextPath() %>/ReadAllProduct?source=user" class="btn btn-continue">
                     <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
                 </a>
             </div>
