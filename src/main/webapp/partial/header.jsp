@@ -29,6 +29,7 @@
   
   <!-- Home page context CSS -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/custom2.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/category.css">
 
   <style>
   :root {
@@ -243,6 +244,46 @@
     background: #c91212; /* Darker red on hover */
     color: var(--text-light);
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
+.featured-heading {
+  color: #e61616;
+  font-weight: 700;
+  border-left: 2px solid #f85506;
+  display: inline-block;
+  padding-left: 0.25rem;
+  padding-top: 0.5rem;
+  margin:0px;
+}
+
+.featured-heading {
+  color: #e61616;
+  font-weight: 700;
+  border-left: 2px solid #f85506;
+  display: inline-block;
+  padding-left: 0.25rem;
+  padding-top: 0.5rem;
+  margin:0px;
+}
+
+.seemore-heading {
+  color: #e61616;
+  font-weight: 700;
+  border-bottom: 2px solid #f85506;
+  padding-bottom: 0.25rem;
+  cursor: pointer;
+  text-align:right;
+  text-decoration: none;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.seemore-heading:hover {
+  color: #f85506;
+  border-color: #e61616;
+}
+
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
@@ -346,7 +387,7 @@
         <div class="row align-items-center text-center text-md-start">
 		<!-- Logo -->
 		<div class="col-12 col-md-3 mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
-		  <a href="<%= request.getContextPath() %>/index.jsp" class="logo">
+		  <a href="HomeServlet" class="logo">
 		    <img src="<%= request.getContextPath() %>/image/glogo.webp" class="logo-img" alt="GamudaLk.logo">
 		  </a>
 		</div>
@@ -432,9 +473,6 @@
 		    }
 		}
     </script>
-
-
- 
 </header>
 
 

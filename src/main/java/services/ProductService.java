@@ -73,7 +73,7 @@ public class ProductService {
 		    e.printStackTrace();
 		    return null;
 		}
-	}
+}
 	
 	public void updateProduct(Product pro) {
 		try {

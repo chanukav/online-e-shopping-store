@@ -47,6 +47,7 @@ public class login extends HttpServlet {
 	        session.setMaxInactiveInterval(60 * 60); // 1 hour
 
 	        response.sendRedirect("HomeServlet");
+	        
 	    } else {
 	        request.setAttribute("error", "Invalid email or password");
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("/customer/login.jsp");

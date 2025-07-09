@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.CartItem, java.util.List" %>
+<%@ page import="model.customer" %>
+<%
+    customer cus = (customer) session.getAttribute("customer");
+    if (cus == null) {
+        response.sendRedirect(request.getContextPath() + "/customer/login.jsp");
+        return;
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
