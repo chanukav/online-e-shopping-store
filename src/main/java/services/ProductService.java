@@ -21,11 +21,11 @@ public class ProductService {
 	public void regProduct(Product pro) {
 		try {
 			
-			String query = "INSERT INTO product(pname,category,descrip,proImg,price,pStk,pBrnd) VALUES (?,?,?,?,?,?,?)";
+			String query = "INSERT INTO product(pname,category_id,descrip,proImg,price,pStk,pBrnd) VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement preparedStatement = DBConnect.getConnection().prepareStatement(query);
 			
 			preparedStatement.setString(1,pro.getProdName());
-			preparedStatement.setString(2,pro.getCategory());
+			preparedStatement.setInt(2, pro.getCategoryId());
 			preparedStatement.setString(3,pro.getDescrip());
 			preparedStatement.setString(4,pro.getPimg());
 			preparedStatement.setFloat(5,pro.getPprice());
@@ -56,7 +56,7 @@ public class ProductService {
 				
 				pro.setPid(rs.getInt(1));
 				pro.setProdName(rs.getString(2));
-				pro.setCategory(rs.getString(3));
+				pro.setCategoryId(rs.getInt(3));
 				pro.setDescrip(rs.getString(4));
 				pro.setPimg(rs.getString(5));
 				pro.setPprice(rs.getFloat(6));
@@ -77,11 +77,11 @@ public class ProductService {
 	
 	public void updateProduct(Product pro) {
 		try {
-		String query = "UPDATE product SET pname = ?, category = ?, descrip = ?, proImg = ?, price = ?,pStk = ?, pBrnd =? WHERE pid = ?";
+		String query = "UPDATE product SET pname = ?, category_id = ?, descrip = ?, proImg = ?, price = ?,pStk = ?, pBrnd =? WHERE pid = ?";
 		PreparedStatement preparedStatement = DBConnect.getConnection().prepareStatement(query);
 		
 		preparedStatement.setString(1, pro.getProdName());
-		preparedStatement.setString(2,pro.getCategory());
+		preparedStatement.setInt(2, pro.getCategoryId());
 		preparedStatement.setString(3, pro.getDescrip());
 		preparedStatement.setString(4, pro.getPimg());
 		preparedStatement.setFloat(5,pro.getPprice());
@@ -125,7 +125,7 @@ public class ProductService {
                 Product pro = new Product();
                 pro.setPid(rs.getInt("pid"));
                 pro.setProdName(rs.getString("pname"));
-                pro.setCategory(rs.getString("category"));
+                pro.setCategoryId(rs.getInt("category"));
                 pro.setDescrip(rs.getString("descrip"));
                 pro.setPimg(rs.getString("proImg"));
                 pro.setPprice(rs.getFloat("price"));
@@ -140,6 +140,32 @@ public class ProductService {
         return productList;
     }
 
-	
+	public static List<Product> getProductsByCategoryId(int categoryId) throws ClassNotFoundException {
+	    ArrayList<Product> products = new ArrayList<>();
+	    try {
+	        String query = "SELECT * FROM product WHERE category_id = ?";
+	        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+	        ps.setInt(1, categoryId);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Product pro = new Product();
+	            pro.setPid(rs.getInt("pid"));
+	            pro.setProdName(rs.getString("pname"));
+	            pro.setCategoryId(rs.getInt("category_id"));
+	            pro.setDescrip(rs.getString("descrip"));
+	            pro.setPimg(rs.getString("proImg"));
+	            pro.setPprice(rs.getFloat("price"));
+	            pro.setPstock(rs.getInt("pStk"));
+	            pro.setPbrand(rs.getString("pBrnd"));
+
+	            products.add(pro);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return products;
+	}
+
 
 }

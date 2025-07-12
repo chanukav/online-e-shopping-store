@@ -34,7 +34,7 @@
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-laptop fa-2x"></i>
-          <p>Electronics</p>
+          <a href="productsByCategory?categoryId=19">Electronics</a>
         </div>
       </div>
 
@@ -386,10 +386,52 @@
         alert('Error adding to cart!');
         console.error('Error:', error);
       });
-
-
-
     });
   });
 </script>
+
+<div class="container-fluid p-0">
+  <img src="${pageContext.request.contextPath}/image/Banner4_GamudaLK.webp" class="w-100 d-block" />
+</div>
+
+
+  <div class="container my-5">
+    <div class="row g-4">
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="feature-card">
+          <i class="fas fa-truck-fast feature-icon icon-red"></i>
+          <h6 class="feature-title">Faster Delivery</h6>
+          <p class="feature-description">Delivery in 24/H</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="feature-card">
+          <i class="fas fa-rotate-left feature-icon icon-yellow"></i>
+          <h6 class="feature-title">24 Hours Return</h6>
+          <p class="feature-description">100% money-back guarantee</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="feature-card">
+          <i class="fas fa-lock feature-icon icon-orange"></i>
+          <h6 class="feature-title">Secure Payment</h6>
+          <p class="feature-description">Your Money is Safe</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="feature-card">
+          <i class="fas fa-headset feature-icon icon-red"></i>
+          <h6 class="feature-title">Support 24/7</h6>
+          <p class="feature-description">Live contact / Message</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
 <%@ include file="/partial/footer.jsp" %>

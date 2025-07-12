@@ -284,6 +284,47 @@ img {
   border-color: #e61616;
 }
 
+    .feature-card {
+      background-color: #fcffff;
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .icon-red {
+      color: #e61616;
+    }
+
+    .icon-yellow {
+      color: #fe980f;
+    }
+
+    .icon-orange {
+      color: #f85506;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-description {
+      color: #555;
+      font-size: 0.95rem;
+    }
+
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {

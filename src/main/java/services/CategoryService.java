@@ -45,7 +45,7 @@ public class CategoryService {
     }
 
     // Get All Categories
-    public ArrayList<Category> getAllCategories() {
+    public static ArrayList<Category> getAllCategories() {
         ArrayList<Category> list = new ArrayList<>();
         try {
             String query = "SELECT * FROM gamudalk.categories";
