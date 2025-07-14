@@ -4,6 +4,7 @@ public class Product {
     private int pid;
     private String prodName;
     private int categoryId;
+    private String category;
     private String descrip;
     private String pimg;
     private float pprice;
@@ -33,6 +34,13 @@ public class Product {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getDescrip() {

@@ -43,37 +43,40 @@ public class ProductService {
 		}
 	}
 	
-	public static List<Product>getAllProduct(){
-		ArrayList<Product>allProduct = new ArrayList<Product>();
-		try {
-			
-			String query = "SELECT * FROM product";
-			Statement statement = DBConnect.getConnection().createStatement();
-			ResultSet rs = statement.executeQuery(query);
-			
-			while(rs.next()) {
-				Product pro = new Product();
-				
-				pro.setPid(rs.getInt(1));
-				pro.setProdName(rs.getString(2));
-				pro.setCategoryId(rs.getInt(3));
-				pro.setDescrip(rs.getString(4));
-				pro.setPimg(rs.getString(5));
-				pro.setPprice(rs.getFloat(6));
-				pro.setPstock(rs.getInt(7));
-				pro.setPbrand(rs.getString(8));
-				
-				allProduct.add(pro);
-			}return allProduct;
-			
-		} catch (SQLException e) {
-		    System.out.println("Database error: " + e.getMessage());
-		    return null;
-		} catch (Exception e) {
-		    e.printStackTrace();
-		    return null;
-		}
-}
+	public static List<Product> getAllProduct() {
+	    ArrayList<Product> allProduct = new ArrayList<Product>();
+	    try {
+	        String query = "SELECT p.pid, p.pname, p.category_id, p.descrip, p.proImg, p.price, p.pStk, p.pBrnd, c.name AS category " +
+	                       "FROM product p LEFT JOIN categories c ON p.category_id = c.category_id";
+	        Statement statement = DBConnect.getConnection().createStatement();
+	        ResultSet rs = statement.executeQuery(query);
+
+	        while (rs.next()) {
+	            Product pro = new Product();
+
+	            pro.setPid(rs.getInt("pid"));
+	            pro.setProdName(rs.getString("pname"));
+	            pro.setCategoryId(rs.getInt("category_id"));
+	            pro.setDescrip(rs.getString("descrip"));
+	            pro.setPimg(rs.getString("proImg"));
+	            pro.setPprice(rs.getFloat("price"));
+	            pro.setPstock(rs.getInt("pStk"));
+	            pro.setPbrand(rs.getString("pBrnd"));
+	            pro.setCategory(rs.getString("category")); // NEW LINE
+
+	            allProduct.add(pro);
+	        }
+	        return allProduct;
+
+	    } catch (SQLException e) {
+	        System.out.println("Database error: " + e.getMessage());
+	        return null;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
 	
 	public void updateProduct(Product pro) {
 		try {
@@ -143,7 +146,8 @@ public class ProductService {
 	public static List<Product> getProductsByCategoryId(int categoryId) throws ClassNotFoundException {
 	    ArrayList<Product> products = new ArrayList<>();
 	    try {
-	        String query = "SELECT * FROM product WHERE category_id = ?";
+	        String query = "SELECT p.pid, p.pname, p.category_id, p.descrip, p.proImg, p.price, p.pStk, p.pBrnd, c.name AS category " +
+	                       "FROM product p LEFT JOIN categories c ON p.category_id = c.category_id WHERE p.category_id = ?";
 	        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
 	        ps.setInt(1, categoryId);
 	        ResultSet rs = ps.executeQuery();
@@ -158,6 +162,7 @@ public class ProductService {
 	            pro.setPprice(rs.getFloat("price"));
 	            pro.setPstock(rs.getInt("pStk"));
 	            pro.setPbrand(rs.getString("pBrnd"));
+	            pro.setCategory(rs.getString("category"));  // category name from join
 
 	            products.add(pro);
 	        }
@@ -166,6 +171,7 @@ public class ProductService {
 	    }
 	    return products;
 	}
+
 
 
 }

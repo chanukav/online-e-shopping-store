@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="java.util.List" %>
 <%@ page import="model.customer" %>
+<%@ page import="model.Product" %>
+<%@ page import="model.Category" %>
 <%
     customer cus = (customer) session.getAttribute("customer");
     if (cus != null) {
@@ -30,6 +35,8 @@
   <!-- Home page context CSS -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/custom2.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/category.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/productcard.css">
+
 
   <style>
   :root {
@@ -159,7 +166,7 @@
       background-color: #eaeaea;
     }
     
-    .cart-icon {
+    .cart-icon-header {
       position: relative;
       color: #fceaca;
       font-weight: bold;
@@ -244,7 +251,7 @@
     background: #c91212; /* Darker red on hover */
     color: var(--text-light);
 }
-img {
+.img {
   max-width: 100%;
   height: auto;
 }
@@ -283,47 +290,6 @@ img {
   color: #f85506;
   border-color: #e61616;
 }
-
-    .feature-card {
-      background-color: #fcffff;
-      border-radius: 16px;
-      padding: 24px 16px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    }
-
-    .feature-icon {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-    }
-
-    .icon-red {
-      color: #e61616;
-    }
-
-    .icon-yellow {
-      color: #fe980f;
-    }
-
-    .icon-orange {
-      color: #f85506;
-    }
-
-    .feature-title {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .feature-description {
-      color: #555;
-      font-size: 0.95rem;
-    }
 
 
     /* Responsive Adjustments */
@@ -452,7 +418,7 @@ img {
 
           <!-- Cart -->
           <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end align-items-center">
-            <a href="<%= request.getContextPath() %>/checkout/cart.jsp" class="cart-icon text-decoration-none">
+            <a href="<%= request.getContextPath() %>/checkout/cart.jsp" class="cart-icon-header text-decoration-none">
               <i class="fas fa-shopping-cart fa-lg"></i>
               <span class="ms-1">My Cart</span>
               <span id="cart-count" class="cart-count">0</span>
