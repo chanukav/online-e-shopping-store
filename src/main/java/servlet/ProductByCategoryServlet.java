@@ -20,6 +20,9 @@ import services.ProductService;
 @WebServlet("/productsByCategory")
 public class ProductByCategoryServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    
+    Category selectedCategory = null;
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,13 +30,17 @@ public class ProductByCategoryServlet extends HttpServlet {
         if (catIdParam != null && !catIdParam.isEmpty()) {
             int categoryId = Integer.parseInt(catIdParam);
             List<Product> products = null;
-			try {
-				products = ProductService.getProductsByCategoryId(categoryId);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            try {
+                products = ProductService.getProductsByCategoryId(categoryId);
+                selectedCategory = CategoryService.getCategoryById(categoryId);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             request.setAttribute("products", products);
+        }
+
+        if (selectedCategory != null) {
+            request.setAttribute("selectedCategoryName", selectedCategory.getName());
         }
 
         // Optionally also load all categories for sidebar/filter

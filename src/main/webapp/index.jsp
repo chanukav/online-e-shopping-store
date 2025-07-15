@@ -41,13 +41,14 @@
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-tshirt fa-2x"></i>
-          <p>Clothing</p>
+          <a href="productsByCategory?categoryId=20">Clothing</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-shoe-prints fa-2x"></i>
+          <a href="productsByCategory?categoryId=21">Footwear</a>
           <p>Footwear</p>
         </div>
       </div>
@@ -118,8 +119,6 @@
 
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <div>
@@ -197,60 +196,6 @@
   </div>
 </div>
 
-<script>
-  const modal = document.getElementById('productModal');
-  const modalImage = document.getElementById('modalImage');
-  const modalName = document.getElementById('modalName');
-  const modalCategory = document.getElementById('modalCategory');
-  const modalDescription = document.getElementById('modalDescription');
-  const modalAvailability = document.getElementById('modalAvailability');
-  const modalPrice = document.getElementById('modalPrice');
-  const modalClose = document.getElementById('modalClose');
-  const modalBuyPid = document.getElementById('modalBuyPid');
-  const modalCartProductId = document.getElementById('modalCartProductId');
-  const modalCartProductName = document.getElementById('modalCartProductName');
-  const modalCartProductPrice = document.getElementById('modalCartProductPrice');
-
-  document.querySelectorAll('.open-modal').forEach(btn => {
-    btn.addEventListener('click', function () {
-      modalImage.src = this.dataset.img;
-      modalName.textContent = this.dataset.name;
-      modalCategory.innerHTML = "<strong>Category:</strong> " + this.dataset.category;
-      modalDescription.innerHTML = "<strong>Description:</strong> " + this.dataset.description;
-      modalAvailability.innerHTML = "<strong>Availability:</strong> " + this.dataset.availability;
-      modalPrice.textContent = this.dataset.price;
-      modalBuyPid.value = this.dataset.pid;
-      modalCartProductId.value = this.dataset.pid;
-      modalCartProductName.value = this.dataset.name;
-      modalCartProductPrice.value = this.dataset.price.replace('Rs. ', '').replace('/=', '');
-      modal.style.display = 'flex';
-
-    });
-  });
-
-  modalClose.onclick = () => modal.style.display = "none";
-  window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
-
-  document.querySelectorAll('.cart-icon-product').forEach(icon => {
-    icon.addEventListener('click', function () {
-      const pid = this.dataset.pid;
-      fetch('AddToCartServlet', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'pid=' + encodeURIComponent(pid)
-      })
-      .then(response => response.text())
-      .then(data => alert('Product added to cart!'))
-      .catch(error => {
-        alert('Error adding to cart!');
-        console.error('Error:', error);
-      });
-
-
-
-    });
-  });
-</script>
 
 <div class="container text-center">
   <div class="row">
@@ -263,8 +208,11 @@
   </div>
 </div>
 
+
+
+
 <div>
-	<h5 class="mb-4 text-start featured-heading">Featured Products</h5>
+	<h5 class="mb-4 text-start featured-heading">Newly Added</h5>
 	<div class="auction-container">
 	  <c:forEach var="product" items="${allProduct}" varStatus="status">
 	  	<c:if test="${status.index < 8}">
@@ -325,12 +273,12 @@
           <button type="submit" class="btn btn-buy">Buy Now</button>
         </form>
         <form action="${pageContext.request.contextPath}/AddToCart" method="POST" id="modalAddToCartForm">
-          <input type="hidden" id="modalCartProductId" name="productId">
-          <input type="hidden" id="modalCartProductName" name="productName">
-          <input type="hidden" id="modalCartProductPrice" name="productPrice">
-          <input type="hidden" name="quantity" value="1">
-          <button type="submit" class="btn btn-cart">
-            <i class="fas fa-cart-plus"></i> Add to Cart
+	          <input type="hidden" id="modalCartProductId" name="productId">
+	          <input type="hidden" id="modalCartProductName" name="productName">
+	          <input type="hidden" id="modalCartProductPrice" name="productPrice">
+	          <input type="hidden" name="quantity" value="1">
+	          <button type="submit" class="btn btn-cart">
+            	<i class="fas fa-cart-plus"></i> Add to Cart
           </button>
         </form>
       </div>
@@ -338,57 +286,12 @@
   </div>
 </div>
 
-<script>
-  const modal = document.getElementById('productModal');
-  const modalImage = document.getElementById('modalImage');
-  const modalName = document.getElementById('modalName');
-  const modalCategory = document.getElementById('modalCategory');
-  const modalDescription = document.getElementById('modalDescription');
-  const modalAvailability = document.getElementById('modalAvailability');
-  const modalPrice = document.getElementById('modalPrice');
-  const modalClose = document.getElementById('modalClose');
-  const modalBuyPid = document.getElementById('modalBuyPid');
-  const modalCartProductId = document.getElementById('modalCartProductId');
-  const modalCartProductName = document.getElementById('modalCartProductName');
-  const modalCartProductPrice = document.getElementById('modalCartProductPrice');
 
-  document.querySelectorAll('.open-modal').forEach(btn => {
-    btn.addEventListener('click', function () {
-      modalImage.src = this.dataset.img;
-      modalName.textContent = this.dataset.name;
-      modalCategory.innerHTML = "<strong>Category:</strong> " + this.dataset.category;
-      modalDescription.innerHTML = "<strong>Description:</strong> " + this.dataset.description;
-      modalAvailability.innerHTML = "<strong>Availability:</strong> " + this.dataset.availability;
-      modalPrice.textContent = this.dataset.price;
-      modalBuyPid.value = this.dataset.pid;
-      modalCartProductId.value = this.dataset.pid;
-      modalCartProductName.value = this.dataset.name;
-      modalCartProductPrice.value = this.dataset.price.replace('Rs. ', '').replace('/=', '');
-      modal.style.display = 'flex';
 
-    });
-  });
 
-  modalClose.onclick = () => modal.style.display = "none";
-  window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
+<script src="${pageContext.request.contextPath}/js/product-modal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  document.querySelectorAll('.cart-icon-product').forEach(icon => {
-    icon.addEventListener('click', function () {
-      const pid = this.dataset.pid;
-      fetch('AddToCartServlet', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'pid=' + encodeURIComponent(pid)
-      })
-      .then(response => response.text())
-      .then(data => alert('Product added to cart!'))
-      .catch(error => {
-        alert('Error adding to cart!');
-        console.error('Error:', error);
-      });
-    });
-  });
-</script>
 
 <div class="container-fluid p-0">
   <img src="${pageContext.request.contextPath}/image/Banner4_GamudaLK.webp" class="w-100 d-block" />
@@ -396,7 +299,7 @@
 
 
   <div class="container my-5">
-    <div class="row g-4">
+    <div class="row g-4"> 
 
       <div class="col-12 col-sm-6 col-md-3">
         <div class="feature-card">

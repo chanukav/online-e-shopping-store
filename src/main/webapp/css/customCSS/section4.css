@@ -1,0 +1,61 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.feature-card {
+  background: linear-gradient(145deg, #fcffff, #f0f0f0);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.icon-red {
+  color: #e61616;
+  text-shadow: 0 0 8px rgba(230, 22, 22, 0.3);
+}
+
+.icon-yellow {
+  color: #fe980f;
+  text-shadow: 0 0 8px rgba(254, 152, 15, 0.3);
+}
+
+.icon-orange {
+  color: #f85506;
+  text-shadow: 0 0 8px rgba(248, 85, 6, 0.3);
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.feature-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+  .feature-card {
+    margin-bottom: 20px;
+  }
+}

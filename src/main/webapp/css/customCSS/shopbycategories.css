@@ -1,0 +1,62 @@
+/* custom-styles.css */
+
+/* Color palette
+#e61616 - red
+#fe980f - yellow
+#fcffff - white
+#f85506 - orange
+*/
+
+.sidebar {
+  background: #fcffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.sidebar h3 {
+  color: #e61616;
+}
+
+.sidebar ul {
+  padding-left: 0;
+}
+
+.sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar a {
+  color: #f85506;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar a:hover, .sidebar a:focus {
+  background: #fe980f;
+  color: #fcffff;
+}
+
+.featured-heading {
+  color: #e61616;
+}
+
+.seemore-heading {
+  color: #fe980f;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.seemore-heading:hover {
+  color: #e61616;
+  text-decoration: underline;
+}
+
+/* Responsive tweaks if needed */
+@media (max-width: 767.98px) {
+  .sidebar {
+    margin-bottom: 2rem;
+  }
+}

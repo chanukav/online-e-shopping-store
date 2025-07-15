@@ -36,9 +36,10 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/custom2.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/category.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/productcard.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/section4.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/shopbycategories.css">
 
-
-  <style>
+<style>
   :root {
     --danger: #e61616; /* Bold red for danger actions */
     --text-light: #ffffff; /* White text for contrast */

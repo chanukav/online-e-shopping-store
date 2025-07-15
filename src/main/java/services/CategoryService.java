@@ -24,7 +24,7 @@ public class CategoryService {
     }
 
     // Get One Category by ID
-    public Category getCategoryById(int id) {
+    public static Category getCategoryById(int id) {
         try {
             String query = "SELECT * FROM gamudalk.categories WHERE category_id = " + id;
             Statement statement = DBConnect.getConnection().createStatement();
