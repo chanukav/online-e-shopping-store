@@ -16,6 +16,14 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
+.category-card a {
+	margin: 0;
+	font-weight: 600;
+  	color: #e61616;
+	text-decoration:none;
+}
+
+
 .category-card i {
   color: #f85506;
   margin-bottom: 0.5rem;

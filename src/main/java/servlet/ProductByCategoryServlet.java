@@ -33,11 +33,13 @@ public class ProductByCategoryServlet extends HttpServlet {
             try {
                 products = ProductService.getProductsByCategoryId(categoryId);
                 selectedCategory = CategoryService.getCategoryById(categoryId);
+                request.setAttribute("selectedCategoryId", categoryId); // ✅ Add this line
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
             request.setAttribute("products", products);
         }
+
 
         if (selectedCategory != null) {
             request.setAttribute("selectedCategoryName", selectedCategory.getName());

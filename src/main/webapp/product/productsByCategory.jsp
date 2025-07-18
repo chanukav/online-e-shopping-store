@@ -5,24 +5,26 @@
 <div class="container-fluid mt-4">
   <div class="row">
     <!-- Sidebar: Categories -->
-    <aside class="col-md-3 mb-4">
-      <div class="sidebar p-3 rounded shadow-sm" style="background:#fcffff;">
-        <ul class="list-unstyled">
-          <c:forEach var="category" items="${categories}">
-            <li>
-              <a href="productsByCategory?categoryId=${category.categoryId}" 
-				class="d-block py-2 px-3 rounded text-decoration-none category-link"
-				data-category-name="${category.name}"
-                 style="color:#f85506;"
-                 onmouseover="this.style.background='#fe980f';this.style.color='#fcffff';"
-                 onmouseout="this.style.background='';this.style.color='#f85506';">
-                <i class="fas fa-tag me-2"></i> ${category.name}
-              </a>
-            </li>
-          </c:forEach>
-        </ul>
-      </div>
-    </aside>
+	<aside class="col-md-3 mb-4">
+	  <div class="sidebar p-3 rounded shadow-sm" style="background:#fcffff;">
+	    <ul class="list-unstyled">
+	      <c:forEach var="category" items="${categories}">
+	        <c:set var="isSelected" value="${category.categoryId == selectedCategoryId}" />
+	        <li>
+	          <a href="productsByCategory?categoryId=${category.categoryId}" 
+	             class="d-block py-2 px-3 rounded text-decoration-none category-link"
+	             data-category-name="${category.name}"
+	             style="color:${isSelected ? '#fcffff' : '#f85506'}; background-color:${isSelected ? '#fe980f' : 'transparent'};"
+	             onmouseover="this.style.background='#fe980f';this.style.color='#fcffff';"
+	             onmouseout="this.style.background='${isSelected ? '#fe980f' : ''}';this.style.color='${isSelected ? '#fcffff' : '#f85506'}';">
+	            <i class="fas fa-tag me-2"></i> ${category.name}
+	          </a>
+	        </li>
+	      </c:forEach>
+	    </ul>
+	  </div>
+	</aside>
+
 
     <!-- Main Content: Products -->
     <main class="col-md-9">

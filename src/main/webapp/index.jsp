@@ -48,64 +48,63 @@
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-shoe-prints fa-2x"></i>
-          <a href="productsByCategory?categoryId=21">Footwear</a>
-          <p>Footwear</p>
+          <a href="productsByCategory?categoryId=21">Footwears</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-couch fa-2x"></i>
-          <p>Furniture</p>
+          <a href="productsByCategory?categoryId=22">Furniture</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-utensils fa-2x"></i>
-          <p>Kitchen</p>
+          <a href="productsByCategory?categoryId=23">Kitchen</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-book fa-2x"></i>
-          <p>Books</p>
+          <a href="productsByCategory?categoryId=24">Books</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-heart fa-2x"></i>
-          <p>Beauty</p>
+          <a href="productsByCategory?categoryId=25">Beauty</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-baby fa-2x"></i>
-          <p>Baby</p>
+          <a href="productsByCategory?categoryId=26">Baby</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-futbol fa-2x"></i>
-          <p>Sports</p>
+          <a href="productsByCategory?categoryId=27">Sports</a>
         </div>
       </div>
 
       <div class="col-6 col-md-4 col-lg-2">
         <div class="category-card text-center">
           <i class="fas fa-gift fa-2x"></i>
-          <p>Gifts</p>
+          <a href="productsByCategory?categoryId=28">Gifts</a>
         </div>
       </div>
       
 		<div class="col-6 col-md-4 col-lg-2">
 		  <div class="category-card text-center">
 		    <i class="fas fa-paw fa-2x"></i>
-		    <p>Pet Supplies</p>
+		    <a href="productsByCategory?categoryId=29">Pet Supplies</a>
 		  </div>
 		</div>
 
@@ -113,7 +112,7 @@
 		<div class="col-6 col-md-4 col-lg-2">
 		  <div class="category-card text-center">
 		    <i class="fas fa-layer-group fa-2x"></i>
-		    <p>More..</p>
+		    <a href="productsByCategory?categoryId=19">More..</a>
 		  </div>
 		</div>
 

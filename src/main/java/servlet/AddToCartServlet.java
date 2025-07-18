@@ -2,9 +2,12 @@ package servlet;
 
 import model.Product;
 import model.CartItem;
+import model.customer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,68 +17,68 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/AddToCart")
 public class AddToCartServlet extends HttpServlet {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    HttpSession session = request.getSession();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	    String productIdStr = request.getParameter("productId");
-	    String productName = request.getParameter("productName");
-	    String productPriceStr = request.getParameter("productPrice");
-	    String quantityStr = request.getParameter("quantity");
+        HttpSession session = request.getSession();
+        customer loggedCustomer = (customer) session.getAttribute("customer");
 
-	    if (productIdStr == null || productIdStr.trim().isEmpty() ||
-	        productName == null || productName.trim().isEmpty() ||
-	        productPriceStr == null || productPriceStr.trim().isEmpty() ||
-	        quantityStr == null || quantityStr.trim().isEmpty()) {
+        // 🔒 Check if customer is logged in
+        if (loggedCustomer == null) {
+            // Save the cart action temporarily
+            session.setAttribute("pendingAddToCart_productId", request.getParameter("productId"));
+            session.setAttribute("pendingAddToCart_productName", request.getParameter("productName"));
+            session.setAttribute("pendingAddToCart_productPrice", request.getParameter("productPrice"));
+            session.setAttribute("pendingAddToCart_quantity", request.getParameter("quantity"));
+            session.setAttribute("redirectAfterLogin", "ResumeAddToCart");
 
-	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or empty product fields.");
-	        return;
-	    }
+            response.sendRedirect(request.getContextPath() + "/customer/login.jsp");
+            return;
+        }
 
-	    int productId;
-	    float productPrice;
-	    int quantity;
+        // ✅ Proceed to add to cart
+        String productIdStr = request.getParameter("productId");
+        String productName = request.getParameter("productName");
+        String productPriceStr = request.getParameter("productPrice");
+        String quantityStr = request.getParameter("quantity");
 
-	    try {
-	        productId = Integer.parseInt(productIdStr.trim());
-	        productPrice = Float.parseFloat(productPriceStr.trim());
-	        quantity = Integer.parseInt(quantityStr.trim());
-	    } catch (NumberFormatException e) {
-	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format in product fields.");
-	        return;
-	    }
+        if (productIdStr == null || productName == null || productPriceStr == null || quantityStr == null ||
+            productIdStr.trim().isEmpty() || productName.trim().isEmpty() || productPriceStr.trim().isEmpty() || quantityStr.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing product fields.");
+            return;
+        }
 
-	    Product product = new Product();
-	    product.setPid(productId);
-	    product.setProdName(productName);
-	    product.setPprice(productPrice);
+        int productId = Integer.parseInt(productIdStr.trim());
+        float productPrice = Float.parseFloat(productPriceStr.trim());
+        int quantity = Integer.parseInt(quantityStr.trim());
 
-	    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-	    if (cart == null) {
-	        cart = new ArrayList<>();
-	        session.setAttribute("cart", cart);
-	    }
+        Product product = new Product();
+        product.setPid(productId);
+        product.setProdName(productName);
+        product.setPprice(productPrice);
 
-	    boolean exists = false;
-	    for (CartItem item : cart) {
-	        if (item.getProduct().getPid() == productId) {
-	            item.setQuantity(item.getQuantity() + quantity);
-	            exists = true;
-	            break;
-	        }
-	    }
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ArrayList<>();
+            session.setAttribute("cart", cart);
+        }
 
-	    if (!exists) {
-	        cart.add(new CartItem(product, quantity));
-	    }
+        boolean exists = false;
+        for (CartItem item : cart) {
+            if (item.getProduct().getPid() == productId) {
+                item.setQuantity(item.getQuantity() + quantity);
+                exists = true;
+                break;
+            }
+        }
 
-	    session.setAttribute("cartMessage", "Product added to cart successfully!");
-	    response.sendRedirect(request.getContextPath() + "/checkout/cart.jsp");
-	}
+        if (!exists) {
+            cart.add(new CartItem(product, quantity));
+        }
 
+        session.setAttribute("cartMessage", "Product added to cart successfully!");
+        response.sendRedirect(request.getContextPath() + "/checkout/cart.jsp");
+    }
 }
