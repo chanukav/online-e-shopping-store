@@ -161,7 +161,7 @@
     <div class="container">
         <div class="admin-header">
             <h1 class="page-title">Product Management</h1>
-            <a href="admin/admin_product/AddProduct.jsp" class="btn">Add New Product</a>
+            <a href="<%=request.getContextPath()%>/AddProduct" class="btn">Add New Product</a>
         </div>
 
         <div class="data-grid">
@@ -184,7 +184,7 @@
                         <tr>
                             <td>${product.pid}</td>
                             <td>${product.prodName}</td>
-                            <td>${product.category}</td>
+                            <td>${product.categoryId}</td>
                             <td>${product.descrip}</td>
                             <td>Rs. ${product.pprice}</td>
                             <td>${product.pstock}</td>
@@ -197,7 +197,7 @@
                                     <form action="admin/admin_product/updatProduct.jsp" method="POST">
                                         <input type="hidden" name="pid" value="${product.pid}">
                                         <input type="hidden" name="prodName" value="${product.prodName}">
-                                        <input type="hidden" name="category" value="${product.category}">
+                                        <input type="hidden" name="category" value="${product.categoryId}">
                                         <input type="hidden" name="descrip" value="${product.descrip}">
                                         <input type="hidden" name="pprice" value="${product.pprice}">
                                         <input type="hidden" name="pstock" value="${product.pstock}">

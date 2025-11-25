@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,7 +114,7 @@
 
         .valid {
             border-color: green !important;
-        }
+         }
 
         .invalid {
             border-color: red !important;
@@ -133,20 +134,15 @@
                     <input type="text" id="productName" name="productName" required onkeyup="validateField(this)">
                 </div>
 
-                <div class="form-group">
-                    <label for="productCategory">Category*</label>
-                    <select id="productCategory" name="productCategory" required onchange="validateField(this)">
-                        <option value="">Select a category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="fashion">Fashion</option>
-                        <option value="home">Home & Garden</option>
-                        <option value="beauty">Beauty</option>
-                        <option value="sports">Sports</option>
-                        <option value="toys">Toys & Games</option>
-                        <option value="food">Food & Beverages</option>
-                        <option value="health">Health & Wellness</option>
-                    </select>
-                </div>
+			    <div class="form-group">
+			        <label for="productCategory">Category*</label>
+			        <select id="productCategory" name="productCategory" required class="form-control">
+			            <option value="">Select a category</option>
+			            <c:forEach var="category" items="${categories}">
+			                <option value="${category.categoryId}">${category.name}</option>
+			            </c:forEach>
+			        </select>
+			    </div>
 
                 <div class="form-group">
                     <label for="productDescription">Description*</label>

@@ -43,7 +43,7 @@ public class UpdateProduct extends HttpServlet {
 		Product pro = new Product();
 		pro.setPid(Integer.parseInt(request.getParameter("pid")));
 		pro.setProdName(request.getParameter("prodName"));
-		pro.setCategory(request.getParameter("category"));
+		pro.setCategoryId(Integer.parseInt("category"));
 		pro.setDescrip(request.getParameter("descrip"));
 		
 		

@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="java.util.List" %>
 <%@ page import="model.customer" %>
+<%@ page import="model.Product" %>
+<%@ page import="model.Category" %>
 <%
     customer cus = (customer) session.getAttribute("customer");
     if (cus != null) {
@@ -29,8 +34,12 @@
   
   <!-- Home page context CSS -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/custom2.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/category.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/productcard.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/section4.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/customCSS/shopbycategories.css">
 
-  <style>
+<style>
   :root {
     --danger: #e61616; /* Bold red for danger actions */
     --text-light: #ffffff; /* White text for contrast */
@@ -158,7 +167,7 @@
       background-color: #eaeaea;
     }
     
-    .cart-icon {
+    .cart-icon-header {
       position: relative;
       color: #fceaca;
       font-weight: bold;
@@ -243,6 +252,46 @@
     background: #c91212; /* Darker red on hover */
     color: var(--text-light);
 }
+.img {
+  max-width: 100%;
+  height: auto;
+}
+.featured-heading {
+  color: #e61616;
+  font-weight: 700;
+  border-left: 2px solid #f85506;
+  display: inline-block;
+  padding-left: 0.25rem;
+  padding-top: 0.5rem;
+  margin:0px;
+}
+
+.featured-heading {
+  color: #e61616;
+  font-weight: 700;
+  border-left: 2px solid #f85506;
+  display: inline-block;
+  padding-left: 0.25rem;
+  padding-top: 0.5rem;
+  margin:0px;
+}
+
+.seemore-heading {
+  color: #e61616;
+  font-weight: 700;
+  border-bottom: 2px solid #f85506;
+  padding-bottom: 0.25rem;
+  cursor: pointer;
+  text-align:right;
+  text-decoration: none;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.seemore-heading:hover {
+  color: #f85506;
+  border-color: #e61616;
+}
+
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
@@ -346,7 +395,7 @@
         <div class="row align-items-center text-center text-md-start">
 		<!-- Logo -->
 		<div class="col-12 col-md-3 mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
-		  <a href="<%= request.getContextPath() %>/index.jsp" class="logo">
+		  <a href="HomeServlet" class="logo">
 		    <img src="<%= request.getContextPath() %>/image/glogo.webp" class="logo-img" alt="GamudaLk.logo">
 		  </a>
 		</div>
@@ -370,7 +419,7 @@
 
           <!-- Cart -->
           <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end align-items-center">
-            <a href="<%= request.getContextPath() %>/checkout/cart.jsp" class="cart-icon text-decoration-none">
+            <a href="<%= request.getContextPath() %>/checkout/cart.jsp" class="cart-icon-header text-decoration-none">
               <i class="fas fa-shopping-cart fa-lg"></i>
               <span class="ms-1">My Cart</span>
               <span id="cart-count" class="cart-count">0</span>
@@ -379,9 +428,9 @@
         </div>
         
 
-		<!-- Add this form in the <header> or body section -->
-		<form id="autoSubmitForm" action="<%= request.getContextPath() %>/ProductView" method="get" class="m-0">
-		</form>
+		<!-- 		<form id="autoSubmitForm" action="<%= request.getContextPath() %>/ProductView" method="get" class="m-0">
+		</form> -->
+
 		
         <script>
           async function updateCartCount() {
@@ -432,9 +481,6 @@
 		    }
 		}
     </script>
-
-
- 
 </header>
 
 

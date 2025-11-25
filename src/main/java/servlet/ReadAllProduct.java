@@ -20,21 +20,32 @@ public class ReadAllProduct extends HttpServlet {
 
     public ReadAllProduct() {
         super();
-       
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		List<Product>allProduct = ProductService.getAllProduct();
+
+		// Get the source parameter to identify where the request came from
+		String source = request.getParameter("source");
+
+		List<Product> allProduct = ProductService.getAllProduct();
 		request.setAttribute("allProduct", allProduct);
-		RequestDispatcher dispatch = request.getRequestDispatcher("/admin/admin_product/Allproduct.jsp");
+
+		RequestDispatcher dispatch;
+
+		// Redirect to different JSP pages based on 'source'
+		if ("admin".equalsIgnoreCase(source)) {
+			dispatch = request.getRequestDispatcher("/admin/admin_product/Allproduct.jsp");
+		} else if ("user".equalsIgnoreCase(source)) {
+			dispatch = request.getRequestDispatcher("/product/AllProductUserview.jsp");
+		} else {
+			// Default/fallback page if 'source' is missing or unrecognized
+			dispatch = request.getRequestDispatcher("/error.jsp");
+		}
+
 		dispatch.forward(request, response);
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		doGet(request, response);
 	}
-
 }

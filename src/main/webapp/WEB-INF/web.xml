@@ -4,6 +4,20 @@
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-inst..." xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web..." id="WebApp_ID" version="3.0" >
 
+<welcome-file-list>
+    <welcome-file>index</welcome-file>
+</welcome-file-list>
+
+<servlet>
+    <servlet-name>HomeServlet</servlet-name>
+    <servlet-class>servlet.HomeServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>HomeServlet</servlet-name>
+    <url-pattern>/index</url-pattern>
+</servlet-mapping>
+
 <servlet>
 	<servlet-name>Add_Admin</servlet-name>
 	<servlet-class>servlet.Add_Admin</servlet-class>

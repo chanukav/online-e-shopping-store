@@ -40,41 +40,43 @@ public class SaveProduct extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Product pro = new Product();
-		
-		pro.setProdName(request.getParameter("productName"));
-		pro.setCategory(request.getParameter("productCategory"));
-		pro.setDescrip(request.getParameter("productDescription"));
-		
-		
-		// Handle file upload
-        Part filePart = request.getPart("productImages");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String filePath = File.separator + fileName;
+	    Product pro = new Product();
 
-     // Get path to webapp/images directory
-        String imagePath = getServletContext().getRealPath("/WebContent");
-        File imageDir = new File(imagePath);
-        if (!imageDir.exists()) imageDir.mkdirs();
-        
-        
-        String savePath = imagePath + File.separator + fileName;
-        filePart.write(savePath);
-        
-        // Save file to server
-        
-        pro.setPimg(filePath);
-        
-        pro.setPprice(Float.parseFloat(request.getParameter("productPrice")));
-        pro.setPstock(Integer.parseInt(request.getParameter("productStock")));
-        pro.setPbrand(request.getParameter("productBrand"));
-        
-        ProductService service = new ProductService();
-        service.regProduct(pro);
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ReadAllProduct");
-        dispatcher.forward(request, response);
+	    // Get text fields
+	    pro.setProdName(request.getParameter("productName"));
+
+	    // Parse categoryId correctly
+	    String categoryParam = request.getParameter("productCategory");
+	    int categoryId = Integer.parseInt(categoryParam);
+	    pro.setCategoryId(categoryId);
+
+	    pro.setDescrip(request.getParameter("productDescription"));
+	    pro.setPprice(Float.parseFloat(request.getParameter("productPrice")));
+	    pro.setPstock(Integer.parseInt(request.getParameter("productStock")));
+	    pro.setPbrand(request.getParameter("productBrand"));
+
+	    // Handle file upload
+	    Part filePart = request.getPart("productImages");
+	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+	    String filePath = File.separator + fileName;
+
+	    // Get path to webapp/images directory (adjust if needed)
+	    String imagePath = getServletContext().getRealPath("/WebContent");
+	    File imageDir = new File(imagePath);
+	    if (!imageDir.exists()) imageDir.mkdirs();
+
+	    String savePath = imagePath + File.separator + fileName;
+	    filePart.write(savePath);
+
+	    pro.setPimg(filePath);
+
+	    // Save product
+	    ProductService service = new ProductService();
+	    service.regProduct(pro);
+
+	    // Redirect or forward
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("ReadAllProduct");
+	    dispatcher.forward(request, response);
 	}
 
 }
