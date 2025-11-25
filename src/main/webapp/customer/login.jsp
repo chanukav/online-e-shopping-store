@@ -194,8 +194,7 @@
     }
 
     .primary-btn,
-    .secondary-btn,
-    .admin-btn {
+    .secondary-btn {
       padding: 14px 16px;
       font-weight: 600;
       border-radius: 12px;
@@ -218,16 +217,29 @@
     }
 
     .admin-btn {
+      padding: 6px 12px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px dashed #ff3c00;
+      cursor: pointer;
+      font-size: 0.75rem;
       background: transparent;
       color: #ff3c00;
-      border: 1.5px dashed #ff3c00;
+      transition: all 0.2s ease;
+      align-self: center;
+      margin-top: 4px;
     }
 
     .primary-btn:hover,
-    .secondary-btn:hover,
-    .admin-btn:hover {
+    .secondary-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 26px rgba(255, 60, 0, 0.2);
+    }
+
+    .admin-btn:hover {
+      background: rgba(255, 60, 0, 0.05);
+      border-color: #ff7100;
+      color: #ff7100;
     }
 
     .bottom-note {
