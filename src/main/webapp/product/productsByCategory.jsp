@@ -93,7 +93,7 @@
       <img id="modalImage"  alt="Product Image" loading="lazy">
     </div>
     <div class="modal-details">
-      <span class="modal-close" id="modalClose" aria-label="Close modal">×</span>
+      <span class="modal-close" id="modalClose" aria-label="Close modal">ï¿½</span>
       <h3 id="modalName">Product Name</h3>
       <p id="modalCategory"><strong>Category:</strong> </p>
       <p id="modalDescription"><strong>Description:</strong> </p>
