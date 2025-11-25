@@ -2,173 +2,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  
   <title>Online E‑Shopping Store | Login</title>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="icon" href="image/favicon.png" type="image/png">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-    :root {
-      --brand-yellow: #fe980f;
-      --brand-white: #fffaf5;
-      --brand-gray: #fceaca;
-      --brand-orange: #f85506;
-      --brand-red: #e61616;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #fef9f5, #ffe0c1); /* Light, attractive background */
-    }
-
-    .card {
-      background-color: var(--brand-white);
-      width: 360px;
-      padding: 2.5rem 2rem;
-      border-radius: 1.5rem;
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      animation: fadeIn 0.8s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .card h1 {
-      color: var(--brand-orange);
-      font-size: 1.75rem;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p {
-      color: #333;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    label {
-      font-weight: 500;
-      color: #555;
-    }
-
-    input[type="email"],
-    input[type="password"] {
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--brand-gray);
-      border-radius: 0.5rem;
-      background: var(--brand-gray);
-      font-size: 0.95rem;
-      transition: border-color 0.2s;
-    }
-
-    input:focus {
-      border-color: var(--brand-orange);
-      outline: none;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
-    }
-
-    .actions a {
-      color: var(--brand-red);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .actions a:hover {
-      color: var(--brand-orange);
-    }
-
-    .btn-login {
-      width: 100%;
-      background-color: var(--brand-red);
-      color: var(--brand-white);
-      border: none;
-      padding: 0.85rem 0;
-      border-radius: 0.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s, transform 0.1s;
-    }
-
-    .btn-login:hover {
-      background-color: var(--brand-orange);
-    }
-
-    .btn-login:active {
-      transform: scale(0.97);
-    }
-
-    .admin-link {
-      text-align: center;
-      margin-top: 1rem;
-    }
-
-    .admin-link a {
-      color: var(--brand-yellow);
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .admin-link a:hover {
-      color: var(--brand-orange);
-    }
-  </style>
 </head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+  /* login.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-wrapper {
+  background-color: white;
+  width: 90%;
+  max-width: 950px;
+  display: flex;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0,0,0,0.1);
+  border: 8px solid #ff3c00;
+}
+
+.login-card {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+.left-section {
+  flex: 1;
+  background: #f7f7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.left-section img {
+  width: 100%;
+  max-width: 300px;
+}
+
+.right-section {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+}
+
+.right-section h2 {
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #1a1a1a;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.form-options span {
+  margin-left: 5px;
+}
+
+.form-options a {
+  color: #ff3c00;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.login-btn,
+.create-btn {
+  flex: 1;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.login-btn {
+  background-color: #ff3c00;
+  color: white;
+}
+
+.create-btn {
+  background-color: #f3f3f3;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.login-btn:hover {
+  background-color: #e93800;
+}
+
+.create-btn:hover {
+  background-color: #e6e6e6;
+}
+
+/* Toggle Switch */
+.custom-toggle {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+}
+
+.custom-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.custom-toggle input:checked + .slider {
+  background-color: #ff3c00;
+}
+
+.custom-toggle input:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+</style>
 <body>
-  <main class="card" role="main">
-    <h1>Sign In</h1>
-    <p>Welcome back to Online E‑Shopping Store</p>
-    <form action="<%=request.getContextPath()%>/login" method="POST">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="" required />
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="left-section">
+        <img src="<%=request.getContextPath()%>/image/login-illustration.jpg" alt="Shopping Illustration">
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="" required />
+      <div class="right-section">
+        <h2>Welcome Back. Please Log In<br>To Your Account.</h2>
+        <form class="login-form" action="<%=request.getContextPath()%>/login" method="POST">
+          <input type="email" placeholder="abcemail@gmail.com" required />
+          <input type="password" placeholder="********" required />
+
+          <div class="form-options">
+            <label class="custom-toggle">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+            <span>Remember Password</span>
+            <a href="#">Forget Password ?</a>
+          </div>
+
+          <div class="form-buttons">
+            <button type="submit" class="login-btn">Login</button>
+            <a href="<%=request.getContextPath()%>/customer/register.jsp"><button type="button" class="create-btn">Create Account</button></a>
+          </div>
+        </form>
       </div>
-      <div class="actions">
-        <a href="/forgot-password">Forgot password?</a>
-      </div>
-      <button class="btn-login" type="submit">Log In</button>
-    </form>
-    <div class="admin-link">
-      <a href="${pageContext.request.contextPath}/admin/admin_index.jsp">Log in as Admin</a>
     </div>
-    <p style="text-align:center; font-size:0.85rem">
-      Don't have an account? 
-      <a href="<%=request.getContextPath()%>/customer/register.jsp" style="color:var(--brand-red); font-weight:600;">Create Account</a>
-    </p>
-  </main>
+  </div>
 </body>
 </html>
