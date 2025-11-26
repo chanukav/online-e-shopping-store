@@ -172,6 +172,45 @@ public class ProductService {
 	    return products;
 	}
 
+    public static List<Product> searchProducts(String keyword) throws ClassNotFoundException {
+        ArrayList<Product> products = new ArrayList<>();
+        if (keyword == null) {
+            return products;
+        }
+        String trimmed = keyword.trim();
+        if (trimmed.isEmpty()) {
+            return products;
+        }
+        try {
+            String query = "SELECT p.pid, p.pname, p.category_id, p.descrip, p.proImg, p.price, p.pStk, p.pBrnd, c.name AS category " +
+                    "FROM product p LEFT JOIN categories c ON p.category_id = c.category_id " +
+                    "WHERE LOWER(p.pname) LIKE ? OR LOWER(p.descrip) LIKE ?";
+            PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+            String like = "%" + trimmed.toLowerCase() + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setPid(rs.getInt("pid"));
+                pro.setProdName(rs.getString("pname"));
+                pro.setCategoryId(rs.getInt("category_id"));
+                pro.setDescrip(rs.getString("descrip"));
+                pro.setPimg(rs.getString("proImg"));
+                pro.setPprice(rs.getFloat("price"));
+                pro.setPstock(rs.getInt("pStk"));
+                pro.setPbrand(rs.getString("pBrnd"));
+                pro.setCategory(rs.getString("category"));
+
+                products.add(pro);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
 
 
 }

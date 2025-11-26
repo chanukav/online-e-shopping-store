@@ -27,12 +27,13 @@ public class AddToCartServlet extends HttpServlet {
 
         // 🔒 Check if customer is logged in
         if (loggedCustomer == null) {
-            // Save the cart action temporarily
-            session.setAttribute("pendingAddToCart_productId", request.getParameter("productId"));
-            session.setAttribute("pendingAddToCart_productName", request.getParameter("productName"));
-            session.setAttribute("pendingAddToCart_productPrice", request.getParameter("productPrice"));
-            session.setAttribute("pendingAddToCart_quantity", request.getParameter("quantity"));
-            session.setAttribute("redirectAfterLogin", "ResumeAddToCart");
+            // Just send user to login; after login they will go to home page
+            // Clear any previous redirect flags
+            session.removeAttribute("redirectAfterLogin");
+            session.removeAttribute("pendingAddToCart_productId");
+            session.removeAttribute("pendingAddToCart_productName");
+            session.removeAttribute("pendingAddToCart_productPrice");
+            session.removeAttribute("pendingAddToCart_quantity");
 
             response.sendRedirect(request.getContextPath() + "/customer/login.jsp");
             return;

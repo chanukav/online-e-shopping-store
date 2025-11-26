@@ -38,14 +38,8 @@ public class login extends HttpServlet {
             session.setAttribute("customer", loginedCus);
             session.setMaxInactiveInterval(60 * 60); // 1 hour
 
-            // 🚀 Check if there is a redirect instruction after login
-            String redirectAction = (String) session.getAttribute("redirectAfterLogin");
-            if ("ResumeAddToCart".equals(redirectAction)) {
-                session.removeAttribute("redirectAfterLogin");
-                response.sendRedirect("ResumeAddToCart");
-                return;
-            }
-
+            // After successful login always go to home page
+            session.removeAttribute("redirectAfterLogin");
             response.sendRedirect("HomeServlet");
         } else {
             request.setAttribute("error", "Invalid email or password");

@@ -294,7 +294,7 @@
 
 
     /* Responsive Adjustments */
-    @media (max-width: 768px) {
+  @media (max-width: 768px) {
       .search-form {
         display: none;
       }
@@ -317,6 +317,10 @@
       }
     
   </style>
+
+  <script>
+    window.appContextPath = '<%= request.getContextPath() %>';
+  </script>
 </head>
 <body onload="submitFormOnce()">
   <!-- Top Header -->
@@ -410,7 +414,7 @@
                 <li><a class="dropdown-item" href="#">Clothing</a></li>
                 <li><a class="dropdown-item" href="#">Accessories</a></li>
               </ul>
-              <input type="text" id="searchInput" class="form-control" placeholder="Search products..." aria-label="Search">
+              <input type="text" id="searchInput" class="form-control" placeholder="Search products..." aria-label="Search" onkeyup="if(event.key==='Enter'){searchProducts();}">
               <button class="btn_search" type="button" onclick="searchProducts()">
                 <i class="fas fa-search"></i>
               </button>
@@ -453,22 +457,16 @@
     </div>
 
     <script>
-      async function searchProducts() {
-        const keyword = document.getElementById("searchInput").value.toLowerCase();
-        try {
-          const response = await fetch('<%= request.getContextPath() %>/search?keyword=' + encodeURIComponent(keyword));
-          if (response.ok) {
-            const results = await response.json();
-            console.log("Search Results:", results);
-          } else {
-            console.error("Error fetching search results:", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error:", error);
+      function searchProducts() {
+        const input = document.getElementById("searchInput");
+        if (!input) return;
+        const keyword = input.value.trim();
+        if (!keyword) {
+          return;
         }
+        const base = window.appContextPath || '';
+        window.location.href = base + '/SearchProduct?keyword=' + encodeURIComponent(keyword);
       }
-      
-
     </script>
     
     <script>

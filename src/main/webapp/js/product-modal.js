@@ -31,23 +31,50 @@ document.addEventListener('click', function (e) {
   modal.style.display = 'flex';
 });
 
-// Event delegation for Add to Cart from icon
+// Event delegation for Add to Cart from icon (quick add)
 document.addEventListener('click', function (e) {
   const cartIcon = e.target.closest('.cart-icon-product');
   if (!cartIcon) return;
 
-  const pid = cartIcon.dataset.pid;
-  fetch('AddToCartServlet', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: 'pid=' + encodeURIComponent(pid)
-  })
-  .then(response => response.text())
-  .then(data => alert('Product added to cart!'))
-  .catch(error => {
-    alert('Error adding to cart!');
-    console.error('Error:', error);
-  });
+  const card = cartIcon.closest('.Route-card');
+  const trigger = card ? card.querySelector('.open-modal') : null;
+  if (!trigger) return;
+
+  const pid = trigger.dataset.pid;
+  const name = trigger.dataset.name;
+  let price = trigger.dataset.price || '';
+  price = price.replace('Rs.', '').replace('Rs', '').replace('/=', '').trim();
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = (window.appContextPath || '') + '/AddToCart';
+
+  const idInput = document.createElement('input');
+  idInput.type = 'hidden';
+  idInput.name = 'productId';
+  idInput.value = pid;
+  form.appendChild(idInput);
+
+  const nameInput = document.createElement('input');
+  nameInput.type = 'hidden';
+  nameInput.name = 'productName';
+  nameInput.value = name;
+  form.appendChild(nameInput);
+
+  const priceInput = document.createElement('input');
+  priceInput.type = 'hidden';
+  priceInput.name = 'productPrice';
+  priceInput.value = price;
+  form.appendChild(priceInput);
+
+  const qtyInput = document.createElement('input');
+  qtyInput.type = 'hidden';
+  qtyInput.name = 'quantity';
+  qtyInput.value = '1';
+  form.appendChild(qtyInput);
+
+  document.body.appendChild(form);
+  form.submit();
 });
 
 // Close modal button

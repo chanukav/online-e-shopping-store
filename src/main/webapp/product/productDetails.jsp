@@ -220,8 +220,20 @@ header {
                         </div>
                         <p>${product.descrip}</p>
                         <div class="action-buttons">
-                            <button class="btn btn-primary">Buy Now</button>
-                            <button class="btn btn-outline">Add to Cart</button>
+                            <!-- Buy Now (placeholder – implement checkout flow as needed) -->
+                            <form action="BuyNowServlet" method="POST">
+                                <input type="hidden" name="pid" value="${product.pid}" />
+                                <button type="submit" class="btn btn-primary">Buy Now</button>
+                            </form>
+
+                            <!-- Add to Cart -> uses same servlet as modal -->
+                            <form action="${pageContext.request.contextPath}/AddToCart" method="POST">
+                                <input type="hidden" name="productId" value="${product.pid}" />
+                                <input type="hidden" name="productName" value="${product.prodName}" />
+                                <input type="hidden" name="productPrice" value="${product.pprice}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-outline">Add to Cart</button>
+                            </form>
                         </div>
                     </div>
                 </div>

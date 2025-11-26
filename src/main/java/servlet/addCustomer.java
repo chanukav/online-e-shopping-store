@@ -53,7 +53,7 @@ public class addCustomer extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("customer", registerCus);
 	    	
-	        response.sendRedirect("index.jsp");
+	        response.sendRedirect("HomeServlet");
 	    }
 	}
 
