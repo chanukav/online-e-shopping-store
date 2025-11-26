@@ -199,7 +199,7 @@ header {
             <c:when test="${not empty product}">
                 <div class="product-details">
                     <div class="product-gallery">
-                        <img src="WebContent/${product.pimg}" alt="${product.prodName}">
+                        <img src="${pageContext.request.contextPath}/${product.pimg}" alt="${product.prodName}">
                     </div>
                     <div class="product-info">
                         <h1>${product.prodName}</h1>

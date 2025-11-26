@@ -52,8 +52,13 @@ public class DeleteProduct extends HttpServlet {
 
 		// 3) Delete physical image file (if any)
 		if (existing != null && existing.getPimg() != null) {
-			String logicalPath = existing.getPimg();      // e.g. "images/xyz.png"
-			String fileName = logicalPath;
+			String logicalPath = existing.getPimg();      // e.g. "images/xyz.png" or "WebContent\\xyz.png"
+			if (logicalPath != null) {
+				logicalPath = logicalPath.trim();
+			}
+
+			// Normalize slashes so we can reliably extract the file name
+			String fileName = logicalPath.replace("\\", "/");
 
 			// Strip leading folder if present
 			int lastSlash = fileName.lastIndexOf('/');

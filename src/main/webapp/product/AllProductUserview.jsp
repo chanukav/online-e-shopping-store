@@ -13,14 +13,14 @@
             <div class="cart-icon-product" data-pid="${product.pid}">
                 <i class="fas fa-cart-plus"></i>
             </div>
-            <img src="${pageContext.request.contextPath}/images/${product.pimg}"" 
+            <img src="${pageContext.request.contextPath}/${product.pimg}" 
                  alt="${fn:escapeXml(product.prodName)}"
                  class="open-modal"
                  data-name="${fn:escapeXml(product.prodName)}"
                  data-category="${fn:escapeXml(product.category)}"
                  data-description="${fn:escapeXml(product.descrip)}"
                  data-price="${product.pprice}"
-                 data-img="WebContent/${product.pimg}"
+                 data-img="${pageContext.request.contextPath}/${product.pimg}"
                  data-availability="In Stock"
                  data-pid="${product.pid}"
                  loading="lazy">
@@ -32,7 +32,7 @@
                         data-category="${fn:escapeXml(product.category)}"
                         data-description="${fn:escapeXml(product.descrip)}"
                         data-price="${product.pprice}"
-                        data-img="${pageContext.request.contextPath}/images/${product.pimg}"
+                        data-img="${pageContext.request.contextPath}/${product.pimg}"
                         data-availability="In Stock"
                         data-pid="${product.pid}">
                     View Details
