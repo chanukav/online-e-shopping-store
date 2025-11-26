@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 public class productimages extends HttpServlet {
 
     // CHANGE THIS to your local images folder path!
-    private static final String BASE_IMAGE_PATH = "D:/GamudaLk/product/";
+    public static final String BASE_IMAGE_PATH = "D:/GamudaLk/product/";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

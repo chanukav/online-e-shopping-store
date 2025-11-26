@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,24 +21,6 @@
             padding: 0;
             color: var(--dark);
             background-color: #f5f5f5;
-        }
-
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
         }
 
         .container {
@@ -77,10 +59,6 @@
             font-size: 1rem;
         }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-        }
-
         textarea {
             min-height: 100px;
             resize: vertical;
@@ -110,11 +88,12 @@
             border-radius: 4px;
             font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
         }
 
         .valid {
             border-color: green !important;
-         }
+        }
 
         .invalid {
             border-color: red !important;
@@ -122,37 +101,44 @@
     </style>
 </head>
 <body>
-    
 
     <div class="container">
         <div class="form-container">
             <h1>Add New Product</h1>
 
-            <form id="productForm" action="<%=request.getContextPath()%>/SaveProduct" method="POST" enctype="multipart/form-data">
+            <form id="productForm"
+                  action="<%=request.getContextPath()%>/SaveProduct"
+                  method="POST"
+                  enctype="multipart/form-data">
+
                 <div class="form-group">
                     <label for="productName">Product Name*</label>
-                    <input type="text" id="productName" name="productName" required onkeyup="validateField(this)">
+                    <input type="text" id="productName" name="productName"
+                           required onkeyup="validateField(this)">
                 </div>
 
-			    <div class="form-group">
-			        <label for="productCategory">Category*</label>
-			        <select id="productCategory" name="productCategory" required class="form-control">
-			            <option value="">Select a category</option>
-			            <c:forEach var="category" items="${categories}">
-			                <option value="${category.categoryId}">${category.name}</option>
-			            </c:forEach>
-			        </select>
-			    </div>
+                <div class="form-group">
+                    <label for="productCategory">Category*</label>
+                    <select id="productCategory" name="productCategory"
+                            required class="form-control">
+                        <option value="">Select a category</option>
+                        <c:forEach var="category" items="${categories}">
+                            <option value="${category.categoryId}">${category.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="productDescription">Description*</label>
-                    <textarea id="productDescription" name="productDescription" required onkeyup="validateField(this)"></textarea>
+                    <textarea id="productDescription" name="productDescription"
+                              required onkeyup="validateField(this)"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="productImages">Product Images*</label>
                     <div class="image-upload">
-                        <input type="file" id="productImages" name="productImages" accept="image/*" required onchange="validateField(this)">
+                        <input type="file" id="productImages" name="productImages"
+                               accept="image/*" required onchange="validateField(this)">
                     </div>
                 </div>
 
@@ -160,20 +146,23 @@
                     <div class="form-col">
                         <div class="form-group">
                             <label for="productPrice">Price*</label>
-                            <input type="number" id="productPrice" name="productPrice" min="0" step="0.01" required onkeyup="validateField(this)">
+                            <input type="number" id="productPrice" name="productPrice"
+                                   min="0" step="0.01" required onkeyup="validateField(this)">
                         </div>
                     </div>
                     <div class="form-col">
                         <div class="form-group">
                             <label for="productStock">Stock Quantity*</label>
-                            <input type="number" id="productStock" name="productStock" min="0" required onkeyup="validateField(this)">
+                            <input type="number" id="productStock" name="productStock"
+                                   min="0" required onkeyup="validateField(this)">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="productBrand">Brand</label>
-                    <input type="text" id="productBrand" name="productBrand" onkeyup="validateField(this)">
+                    <input type="text" id="productBrand" name="productBrand"
+                           onkeyup="validateField(this)">
                 </div>
 
                 <button type="submit" class="btn">Submit Product</button>
@@ -187,8 +176,7 @@ function validateField(field) {
     let isValid = true;
 
     if (id === "productName") {
-        const regex = /^[A-Za-z\s]+$/;
-        isValid = regex.test(field.value.trim());
+        isValid = field.value.trim() !== "";
     } else if (id === "productDescription" || id === "productBrand") {
         isValid = field.value.trim() !== "";
     } else if (id === "productCategory") {
@@ -203,7 +191,6 @@ function validateField(field) {
         isValid = field.files && field.files.length > 0;
     }
 
-    // Apply class for visual feedback
     field.classList.remove('valid', 'invalid');
     if (isValid) {
         field.classList.add('valid');

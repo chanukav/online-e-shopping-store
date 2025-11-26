@@ -23,24 +23,6 @@
             background-color: #f5f5f5;
         }
 
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-
         .container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -114,99 +96,144 @@
         .btn:hover {
             background-color: #e65a00;
         }
-       input[readonly] {
-   	  background-color: #f5f5f5;
-      border: 1px dashed red;
-      color: #666;
-      cursor: not-allowed;
-	}
+
+        input[readonly] {
+            background-color: #f5f5f5;
+            border: 1px dashed red;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .valid {
+            border-color: green !important;
+        }
+
+        .invalid {
+            border-color: red !important;
+        }
     </style>
 </head>
 <body>
-    
+
+<%
+    String rawImageParam = request.getParameter("pimg");
+    String currentImageFile = rawImageParam;
+    if (currentImageFile != null) {
+        currentImageFile = currentImageFile.replace("\\", "/");
+        int lastSlash = currentImageFile.lastIndexOf('/');
+        if (lastSlash >= 0) {
+            currentImageFile = currentImageFile.substring(lastSlash + 1);
+        }
+        if (currentImageFile.isEmpty()) {
+            currentImageFile = null;
+        }
+    }
+
+    String currentImageSrc = null;
+    if (currentImageFile != null) {
+        currentImageSrc = request.getContextPath() + "/images/" + currentImageFile;
+    }
+    request.setAttribute("currentImageFile", currentImageFile);
+    request.setAttribute("currentImageSrc", currentImageSrc);
+%>
 
     <div class="container">
         <div class="form-container">
             <h1>Update Product</h1>
 
-            <form id="productForm" action="<%=request.getContextPath()%>/UpdateProduct" method="POST" enctype="multipart/form-data">
-
+            <form id="productForm"
+                  action="<%=request.getContextPath()%>/UpdateProduct"
+                  method="POST"
+                  enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="productId">Product ID</label>
-                    <input type="text" id="productId" name="pid" readonly value="${param.pid}">
+                    <input type="text" id="productId" name="pid"
+                           readonly value="${param.pid}">
                 </div>
-
 
                 <div class="form-group">
                     <label for="productName">Product Name*</label>
-                    <input type="text" id="productName" name="prodName" required value="${param.prodName}">
+                    <input type="text" id="productName" name="prodName"
+                           required value="${param.prodName}">
                 </div>
-
 
                 <div class="form-group">
                     <label for="productCategory">Category*</label>
-                    <select id="productCategory" name="category" required>
+                    <select id="productCategory" name="category"
+                            required class="form-control">
                         <option value="">Select Category</option>
-                        <option value="electronics" ${param.category == 'electronics' ? 'selected' : ''}>Electronics</option>
-                        <option value="fashion" ${param.category == 'fashion' ? 'selected' : ''}>Fashion</option>
-                        <option value="home" ${param.category == 'home' ? 'selected' : ''}>Home & Garden</option>
-                        <option value="beauty" ${param.category == 'beauty' ? 'selected' : ''}>Beauty</option>
-                        <option value="sports" ${param.category == 'sports' ? 'selected' : ''}>Sports</option>
-                        <option value="toys" ${param.category == 'toys' ? 'selected' : ''}>Toys & Games</option>
-                        <option value="food" ${param.category == 'food' ? 'selected' : ''}>Food & Beverages</option>
-                        <option value="health" ${param.category == 'health' ? 'selected' : ''}>Health & Wellness</option>
+                        <c:forEach var="category" items="${categories}">
+                            <option value="${category.categoryId}"
+                                ${category.categoryId == param.category ? 'selected' : ''}>
+                                ${category.name}
+                            </option>
+                        </c:forEach>
                     </select>
                 </div>
 
-
                 <div class="form-group">
                     <label for="productDescription">Description*</label>
-                    <textarea id="productDescription" name="descrip" required>${param.descrip}</textarea>
+                    <textarea id="productDescription" name="descrip"
+                              required>${param.descrip}</textarea>
                 </div>
 
+                <!-- Show current image -->
+                <c:if test="${not empty currentImageSrc}">
+                    <div class="form-group">
+                        <label>Current Image</label><br>
+                        <img src="${currentImageSrc}"
+                             width="120" alt="Current Image" />
+                    </div>
+                </c:if>
+
+                <!-- Preserve old image path if no new file is chosen -->
+                <input type="hidden" name="existingPimg" value="${currentImageFile}"/>
 
                 <div class="form-group">
-                    <label for="productImages">Product Image*</label>
+                    <label for="productImages">Upload New Image (optional)</label>
                     <div class="image-upload">
-                        <input type="file" id="productImages" name="pimg" accept="image/*">
-
+                        <input type="file" id="productImages" name="pimg"
+                               accept="image/*">
                     </div>
-                 </div>
+                </div>
 
                 <div class="form-row">
                     <div class="form-col">
                         <div class="form-group">
                             <label for="productPrice">Price* (Rs.)</label>
-                            <input type="number" id="productPrice" name="pprice" min="0" step="0.01" required value="${param.pprice}">
+                            <input type="number" id="productPrice" name="pprice"
+                                   min="0" step="0.01" required value="${param.pprice}">
                         </div>
                     </div>
 
                     <div class="form-col">
                         <div class="form-group">
                             <label for="productStock">Stock Quantity*</label>
-                            <input type="number" id="productStock" name="pstock" min="0" required value="${param.pstock}">
+                            <input type="number" id="productStock" name="pstock"
+                                   min="0" required value="${param.pstock}">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="productBrand">Brand</label>
-                    <input type="text" id="productBrand" name="pbrand" value="${param.pbrand}">
+                    <input type="text" id="productBrand" name="pbrand"
+                           value="${param.pbrand}">
                 </div>
 
-                <button type="submit" class="btn">Update  Product</button>
+                <button type="submit" class="btn">Update Product</button>
             </form>
         </div>
     </div>
-    <script>
+
+<script>
 function validateField(field) {
     const id = field.id;
     let isValid = true;
 
     if (id === "productName") {
-        const regex = /^[A-Za-z\s]+$/;
-        isValid = regex.test(field.value.trim());
+        isValid = field.value.trim() !== "";
     } else if (id === "productDescription" || id === "productBrand") {
         isValid = field.value.trim() !== "";
     } else if (id === "productCategory") {
@@ -217,11 +244,9 @@ function validateField(field) {
     } else if (id === "productStock") {
         const stock = parseInt(field.value);
         isValid = !isNaN(stock) && stock >= 0;
-    } else if (id === "productImages") {
-        isValid = field.files && field.files.length > 0;
     }
+    // productImages is OPTIONAL on update, so we don't validate it as required
 
-    // Apply class for visual feedback
     field.classList.remove('valid', 'invalid');
     if (isValid) {
         field.classList.add('valid');
@@ -238,9 +263,9 @@ document.getElementById('productForm').addEventListener('submit', function(event
         "productName",
         "productCategory",
         "productDescription",
-        "productImages",
         "productPrice",
         "productStock"
+        // NOT including "productImages" here (optional)
     ];
 
     fields.forEach(id => {
@@ -248,6 +273,11 @@ document.getElementById('productForm').addEventListener('submit', function(event
         const valid = validateField(field);
         if (!valid) isValid = false;
     });
+
+    if (!isValid) {
+        event.preventDefault();
+        alert("Please correct the highlighted fields before submitting.");
+    }
 });
 </script>
 </body>

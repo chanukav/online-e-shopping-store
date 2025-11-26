@@ -156,12 +156,15 @@
     </style>
 </head>
 <body>
-    
 
     <div class="container">
         <div class="admin-header">
             <h1 class="page-title">Product Management</h1>
-            <a href="<%=request.getContextPath()%>/AddProduct" class="btn">Add New Product</a>
+            <!-- Go through reusable servlet to Add Product -->
+            <a href="${pageContext.request.contextPath}/Manage_all_category?view=addProduct"
+               class="btn">
+                Add New Product
+            </a>
         </div>
 
         <div class="data-grid">
@@ -190,11 +193,16 @@
                             <td>${product.pstock}</td>
                             <td>${product.pbrand}</td>
                             <td>
-                                <img src="WebContent/${product.pimg}" width="100" alt="Product Image">
+                                <img class="product-img"
+                                     src="${pageContext.request.contextPath}/${product.pimg}"
+                                     alt="Product Image">
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <form action="admin/admin_product/updatProduct.jsp" method="POST">
+                                    <!-- UPDATE → go through Manage_all_category so categories are loaded -->
+                                    <form action="${pageContext.request.contextPath}/Manage_all_category" method="POST">
+                                        <input type="hidden" name="view" value="updateProduct"/>
+
                                         <input type="hidden" name="pid" value="${product.pid}">
                                         <input type="hidden" name="prodName" value="${product.prodName}">
                                         <input type="hidden" name="category" value="${product.categoryId}">
@@ -202,12 +210,16 @@
                                         <input type="hidden" name="pprice" value="${product.pprice}">
                                         <input type="hidden" name="pstock" value="${product.pstock}">
                                         <input type="hidden" name="pbrand" value="${product.pbrand}">
-                                        <input type="hidden" name="pimg" value="WebContent/${product.pimg}">
+                                        <input type="hidden" name="pimg" value="${product.pimg}">
+
                                         <button type="submit" class="update-button">Update</button>
                                     </form>
 
-                                    <form action="DeleteProduct" method="POST" onsubmit="return confirm('Are you sure delete that product?');">
-                                        <input type="hidden" name="pid" value="${product.pid}" >
+                                    <!-- DELETE -->
+                                    <form action="${pageContext.request.contextPath}/DeleteProduct"
+                                          method="POST"
+                                          onsubmit="return confirm('Are you sure delete that product?');">
+                                        <input type="hidden" name="pid" value="${product.pid}">
                                         <button type="submit" class="delete-button">Delete</button>
                                     </form>
                                 </div>

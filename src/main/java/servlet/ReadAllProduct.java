@@ -32,15 +32,16 @@ public class ReadAllProduct extends HttpServlet {
 
 		RequestDispatcher dispatch;
 
-		// Redirect to different JSP pages based on 'source'
-		if ("admin".equalsIgnoreCase(source)) {
-			dispatch = request.getRequestDispatcher("/admin/admin_product/Allproduct.jsp");
-		} else if ("user".equalsIgnoreCase(source)) {
-			dispatch = request.getRequestDispatcher("/product/AllProductUserview.jsp");
-		} else {
-			// Default/fallback page if 'source' is missing or unrecognized
-			dispatch = request.getRequestDispatcher("/error.jsp");
-		}
+        // Redirect to different JSP pages based on 'source'
+        if ("admin".equalsIgnoreCase(source)) {
+            dispatch = request.getRequestDispatcher("/admin/admin_product/Allproduct.jsp");
+        } else if ("user".equalsIgnoreCase(source)) {
+            dispatch = request.getRequestDispatcher("/product/AllProductUserview.jsp");
+        } else {
+            // Default to admin list when source is missing or invalid
+            request.setAttribute("message", "Showing admin product list because no source was specified.");
+            dispatch = request.getRequestDispatcher("/admin/admin_product/Allproduct.jsp");
+        }
 
 		dispatch.forward(request, response);
 	}

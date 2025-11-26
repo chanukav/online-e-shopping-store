@@ -57,18 +57,19 @@ public class SaveProduct extends HttpServlet {
 
 	    // Handle file upload
 	    Part filePart = request.getPart("productImages");
-	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-	    String filePath = File.separator + fileName;
+	    String submittedName = getSubmittedFileName(filePart);
+	    if (submittedName == null || submittedName.trim().isEmpty()) {
+	        throw new ServletException("Product image is required.");
+	    }
+	    String fileName = Paths.get(submittedName).getFileName().toString();
 
-	    // Get path to webapp/images directory (adjust if needed)
-	    String imagePath = getServletContext().getRealPath("/WebContent");
-	    File imageDir = new File(imagePath);
+	    File imageDir = new File(productimages.BASE_IMAGE_PATH);
 	    if (!imageDir.exists()) imageDir.mkdirs();
 
-	    String savePath = imagePath + File.separator + fileName;
-	    filePart.write(savePath);
+	    File destination = new File(imageDir, fileName);
+	    filePart.write(destination.getAbsolutePath());
 
-	    pro.setPimg(filePath);
+	    pro.setPimg(buildImagePath(fileName));
 
 	    // Save product
 	    ProductService service = new ProductService();
@@ -79,4 +80,30 @@ public class SaveProduct extends HttpServlet {
 	    dispatcher.forward(request, response);
 	}
 
+    private String getSubmittedFileName(Part part) {
+        if (part == null) {
+            return null;
+        }
+        String header = part.getHeader("content-disposition");
+        if (header == null) {
+            return null;
+        }
+        for (String cd : header.split(";")) {
+            String trimmed = cd.trim();
+            if (trimmed.startsWith("filename")) {
+                String fileName = trimmed.substring(trimmed.indexOf('=') + 1).trim().replace("\"", "");
+                if (!fileName.isEmpty()) {
+                    return fileName;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String buildImagePath(String fileName) {
+        if (fileName == null || fileName.trim().isEmpty()) {
+            return null;
+        }
+        return "images/" + fileName;
+    }
 }
