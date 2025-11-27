@@ -9,7 +9,7 @@
         background-color: #fcffff;
         font-family: 'Segoe UI', sans-serif;
         margin: 0;
-        padding: 0;dilan
+        padding: 0;
     }
 
     .form-wrapper {
