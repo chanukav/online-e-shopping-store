@@ -7,6 +7,16 @@
         response.sendRedirect(request.getContextPath() + "/customer/login.jsp");
         return;
     }
+    
+    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+    double cartTotal = 0.0;
+    int itemCount = 0;
+    if (cart != null) {
+        for (CartItem item : cart) {
+            cartTotal += (item.getProduct().getPprice() * item.getQuantity());
+            itemCount += item.getQuantity();
+        }
+    }
 %>
 
 <!DOCTYPE html>
@@ -15,253 +25,409 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     
     <link rel="icon" type="image/svg+xml" href="<%= request.getContextPath() %>/image/favicon.svg">
-	<link rel="shortcut icon" href="<%= request.getContextPath() %>/image/favicon.ico">
-	<link rel="apple-touch-icon" sizes="180x180" href="<%= request.getContextPath() %>/image/apple-touch-icon.png">
-	<link rel="manifest" href="<%= request.getContextPath() %>/image/site.webmanifest">
+    <link rel="shortcut icon" href="<%= request.getContextPath() %>/image/favicon.ico">
     
     <style>
+        :root {
+            --brand-color: #f85506; /* Your specific orange */
+            --brand-hover: #d64400; /* Darker orange for hover */
+            --bg-tint: #fff8f5;     /* Very subtle orange tint for background */
+            --text-dark: #1a1a1a;
+            --text-muted: #737373;
+            --card-radius: 16px;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-tint);
+            color: var(--text-dark);
+            padding-bottom: 60px;
         }
-        .container {
-            max-width: 1200px;
+
+        .page-header {
             margin-top: 3rem;
-        }
-        h2 {
-            font-weight: 700;
-            color: #333;
             margin-bottom: 2rem;
-            text-align: center;
         }
-        .cart-table {
-            background: #fcffff; /* White background */
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .page-title {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-dark);
         }
-        .cart-table:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+
+        /* --- Cards with subtle accent --- */
+        .cart-card, .summary-card {
+            background: white;
+            border-radius: var(--card-radius);
+            border: none;
+            /* Soft shadow */
+            box-shadow: 0 10px 40px rgba(248, 85, 6, 0.05); 
+            overflow: hidden;
+            margin-bottom: 20px;
+            /* Top accent line in your color */
+            border-top: 4px solid var(--brand-color);
         }
-        .table {
-            margin-bottom: 0;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-        }
-        .table th {
-            color: #333;
+
+        /* --- Table Styling --- */
+        .table { margin-bottom: 0; }
+        
+        .table thead th {
+            background-color: white;
+            border-bottom: 2px solid #f0f0f0;
+            color: var(--text-muted);
             font-weight: 600;
-            border-bottom: 2px solid #fe980f; /* Yellow border */
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            padding: 1.5rem;
         }
+        
         .table td {
             vertical-align: middle;
-            padding: 1rem;
-            border-bottom: 1px solid #fceaca; /* Gray border */
+            padding: 1.5rem;
+            border-bottom: 1px solid #f5f5f5;
         }
-        .btn-continue {
-            background: linear-gradient(90deg, #fe980f, #f85506); /* Yellow to Orange */
-            color: #fcffff; /* White text */
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background 0.3s ease, transform 0.2s ease;
+
+        /* --- Product Info --- */
+        .product-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        .btn-continue:hover {
-            background: linear-gradient(90deg, #e61616, #f85506); /* Red to Orange */
-            transform: translateY(-2px);
+        .img-placeholder {
+            width: 64px;
+            height: 64px;
+            background: var(--bg-tint);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-color);
+            font-size: 1.5rem;
         }
-        .btn-remove {
-            background: linear-gradient(90deg, #e61616, #f85506); /* Red to Orange */
-            color: #fcffff; /* White text */
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
+        .prod-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-dark);
+        }
+        .prod-price {
+            color: var(--text-muted);
             font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.3s ease, transform 0.2s ease;
         }
-        .btn-remove:hover {
-            background: linear-gradient(90deg, #c82333, #e61616); /* Darker red shades */
-            transform: translateY(-2px);
+
+        /* --- Embedded Quantity Pill --- */
+        .qty-pill {
+            display: inline-flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 50px;
+            padding: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
-        .btn-quantity {
-            background: linear-gradient(90deg, #fe980f, #f85506); /* Yellow to Orange */
-            color: #fcffff; /* White text */
+        
+        .btn-qty {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: background 0.3s ease;
+            background: transparent;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.8rem;
         }
-        .btn-quantity:hover {
-            background: linear-gradient(90deg, #e61616, #f85506); /* Red to Orange */
+        
+        .btn-qty:hover:not(:disabled) {
+            background: var(--bg-tint);
+            color: var(--brand-color);
         }
-        .btn-quantity:disabled {
-            background: #fceaca; /* Gray */
-            color: #999;
+        
+        .btn-qty:disabled {
+            opacity: 0.3;
             cursor: not-allowed;
         }
-        .quantity-input {
-            width: 70px;
+        
+        .qty-input {
+            width: 36px;
             text-align: center;
-            border: 1px solid #fe980f; /* Yellow border */
-            border-radius: 6px;
-            background: #fcffff; /* White background */
-            padding: 6px;
-            font-size: 1rem;
-            color: #333;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
         }
-        .alert {
+
+        /* --- Action Buttons --- */
+        .btn-trash {
+            border: none;
+            background: transparent;
+            color: #d1d1d1;
+            transition: all 0.2s;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .btn-trash:hover {
+            background: #fff0f0;
+            color: #ff4d4d;
+        }
+
+        /* --- Summary Section --- */
+        .summary-card { padding: 2rem; }
+        .summary-header {
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed #eee;
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: var(--brand-color); /* Total in Orange */
+        }
+
+        /* --- Main Orange Button --- */
+        .btn-primary-orange {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(248, 85, 6, 0.3); /* Glowing orange shadow */
+        }
+        .btn-primary-orange:hover {
+            background-color: var(--brand-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(248, 85, 6, 0.4);
+            color: white;
+        }
+
+        /* --- Secondary Link --- */
+        .btn-link-secondary {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .btn-link-secondary:hover {
+            color: var(--brand-color);
+            text-decoration: underline;
+        }
+
+        /* --- Empty State --- */
+        .empty-cart-box {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 10px 40px rgba(248, 85, 6, 0.05);
+        }
+        .empty-icon {
+            font-size: 4rem;
+            color: #ffe0d1; /* Very light orange icon */
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- Alert --- */
+        .alert-float {
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1000;
-            display: none;
-            background: #fcffff; /* White background */
-            color: #333;
-            border: 1px solid #fe980f; /* Yellow border */
+            z-index: 1050;
+            border-left: 5px solid var(--brand-color);
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.5s ease forwards;
+            display: none;
+            animation: slideIn 0.4s ease-out;
         }
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        .alert.fade-out {
-            animation: slideOut 0.5s ease forwards;
-        }
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-        @media (max-width: 768px) {
-            .cart-table {
-                padding: 1rem;
-            }
-            .table td, .table th {
-                font-size: 0.9rem;
-                padding: 0.75rem;
-            }
-            .quantity-input {
-                width: 50px;
-            }
-            .btn-continue, .btn-remove, .btn-quantity {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-            }
+            from { transform: translateX(120%); }
+            to { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Your Cart</h2>
-        <!-- Display success message -->
-        <%
-            String cartMessage = (String) session.getAttribute("cartMessage");
-            if (cartMessage != null) {
-        %>
-        <div class="alert alert-success" id="cartMessage">
-            <%= cartMessage %>
+
+    <div class="container page-header">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="page-title">Shopping Cart</h2>
+            <% if (itemCount > 0) { %>
+                <span class="text-muted"><%= itemCount %> items</span>
+            <% } %>
         </div>
-        <%
-            session.removeAttribute("cartMessage");
-            }
-        %>
-        <div class="cart-table">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-                        double cartTotal = 0.0;
-                        if (cart != null && !cart.isEmpty()) {
-                            for (CartItem item : cart) {
-                                double itemTotal = item.getProduct().getPprice() * item.getQuantity();
-                                cartTotal += itemTotal;
-                    %>
-                    <tr>
-                        <td><%= item.getProduct().getProdName() %></td>
-                        <td>LKR. <%= String.format("%.2f", item.getProduct().getPprice()) %></td>
-                        <td>
-                            <form action="<%= request.getContextPath() %>/UpdateCartQuantity" method="post" style="display: inline;">
-                                <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
-                                <input type="hidden" name="action" value="decrease">
-                                <button type="submit" class="btn btn-quantity" <%= item.getQuantity() == 1 ? "disabled" : "" %>>−</button>
-                            </form>
-                            <input type="text" class="quantity-input" value="<%= item.getQuantity() %>" readonly>
-                            <form action="<%= request.getContextPath() %>/UpdateCartQuantity" method="post" style="display: inline;">
-                                <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
-                                <input type="hidden" name="action" value="increase">
-                                <button type="submit" class="btn btn-quantity">+</button>
-                            </form>
-                        </td>
-                        <td>LKR. <%= String.format("%.2f", itemTotal) %></td>
-                        <td>
-                            <form action="<%= request.getContextPath() %>/RemoveFromCart" method="post">
-                                <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
-                                <button type="submit" class="btn btn-remove">
-                                    <i class="fas fa-trash-alt me-2"></i>Remove
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <%
-                            }
-                        } else {
-                    %>
-                    <tr>
-                        <td colspan="5" class="text-center">Your cart is empty</td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table>
-            <%
-                if (cart != null && !cart.isEmpty()) {
-            %>
-            <div class="text-end mb-3">
-                <h5>Cart Total: LKR. <%= String.format("%.2f", cartTotal) %></h5>
+
+        <% String cartMessage = (String) session.getAttribute("cartMessage"); %>
+        <div class="alert alert-float p-3" id="cartMessage">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle me-3 fs-4" style="color: var(--brand-color);"></i>
+                <div>
+                    <h6 class="mb-0 fw-bold">Updated</h6>
+                    <small class="text-muted"><%= cartMessage != null ? cartMessage : "" %></small>
+                </div>
             </div>
-            <%
-                }
-            %>
-            <div class="text-end">
-                <a href="<%= request.getContextPath() %>/ReadAllProduct?source=user" class="btn btn-continue">
-                    <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+        </div>
+        <% if (cartMessage != null) session.removeAttribute("cartMessage"); %>
+
+
+        <% if (cart != null && !cart.isEmpty()) { %>
+        <div class="row g-4">
+            
+            <div class="col-lg-8">
+                <div class="cart-card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="45%">Product</th>
+                                    <th width="20%" class="text-center">Qty</th>
+                                    <th width="20%" class="text-end">Total</th>
+                                    <th width="15%" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (CartItem item : cart) { 
+                                    double itemTotal = item.getProduct().getPprice() * item.getQuantity(); 
+                                %>
+                                <tr>
+                                    <td>
+                                        <div class="product-wrapper">
+                                            <div class="img-placeholder">
+                                                <i class="fas fa-shopping-bag"></i>
+                                            </div>
+                                            <div>
+                                                <div class="prod-title"><%= item.getProduct().getProdName() %></div>
+                                                <div class="prod-price">LKR. <%= String.format("%.2f", item.getProduct().getPprice()) %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="text-center">
+                                        <div class="qty-pill">
+                                            <form action="<%= request.getContextPath() %>/UpdateCartQuantity" method="post" class="d-inline">
+                                                <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
+                                                <input type="hidden" name="action" value="decrease">
+                                                <button type="submit" class="btn-qty" <%= item.getQuantity() == 1 ? "disabled" : "" %>>
+                                                    <i class="fas fa-minus small"></i>
+                                                </button>
+                                            </form>
+                                            
+                                            <input type="text" class="qty-input" value="<%= item.getQuantity() %>" readonly>
+                                            
+                                            <form action="<%= request.getContextPath() %>/UpdateCartQuantity" method="post" class="d-inline">
+                                                <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
+                                                <input type="hidden" name="action" value="increase">
+                                                <button type="submit" class="btn-qty">
+                                                    <i class="fas fa-plus small"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="text-end fw-bold">
+                                        LKR. <%= String.format("%.2f", itemTotal) %>
+                                    </td>
+                                    
+                                    <td class="text-center">
+                                        <form action="<%= request.getContextPath() %>/RemoveFromCart" method="post">
+                                            <input type="hidden" name="productId" value="<%= item.getProduct().getPid() %>">
+                                            <button type="submit" class="btn-trash" title="Remove Item">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="summary-card">
+                    <h5 class="summary-header">Order Summary</h5>
+                    
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span>LKR. <%= String.format("%.2f", cartTotal) %></span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Shipping Estimate</span>
+                        <span style="color: var(--brand-color);">Calculated next step</span>
+                    </div>
+                    
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span>LKR. <%= String.format("%.2f", cartTotal) %></span>
+                    </div>
+                    
+                    <a href="<%= request.getContextPath() %>/ReadAllProduct?source=user" class="btn btn-primary-orange">
+                         Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                    
+                    <a href="<%= request.getContextPath() %>/ReadAllProduct?source=user" class="btn-link-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <% } else { %>
+            
+            <div class="empty-cart-box">
+                <i class="fas fa-shopping-basket empty-icon"></i>
+                <h3>Your cart is empty</h3>
+                <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+                <a href="<%= request.getContextPath() %>/ReadAllProduct?source=user" class="btn btn-primary-orange" style="max-width: 250px; margin: 0 auto;">
+                    Start Shopping
                 </a>
             </div>
-        </div>
+            
+        <% } %>
+        
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Show and auto-hide success message
-        const message = document.getElementById('cartMessage');
-        if (message) {
-            message.style.display = 'block';
+        // JS to handle the alert fading
+        const messageDiv = document.getElementById('cartMessage');
+        const hasMessage = "<%= cartMessage != null %>" === "true";
+        
+        if (hasMessage && messageDiv) {
+            messageDiv.style.display = 'block';
             setTimeout(() => {
-                message.classList.add('fade-out');
-                setTimeout(() => message.style.display = 'none', 500);
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => messageDiv.remove(), 500);
             }, 3000);
         }
     </script>
