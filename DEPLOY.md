@@ -46,7 +46,7 @@ docker run -p 8080:8080 -e DB_URL="jdbc:mysql://host.docker.internal:3306/gamuda
 ```
 (Note: `host.docker.internal` allows the container to access your local MySQL).
 
-<!-- docker run -d -p 8080:8080 -e DB_URL="jdbc:mysql://host.docker.internal:3306/gamudalk" -e DB_USER="root" -e DB_PASSWORD="DEShV*0202*" --name eshop-container eshop -->
+<!-- docker run -d -p 8080:8080 -e DB_URL="jdbc:mysql://host.docker.internal:3306/gamudalk" -e DB_USER="root" -e DB_PASSWORD="yourpassword" --name eshop-container eshop -->
 
 
 

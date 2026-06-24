@@ -9,4 +9,4 @@ services:
     environment:
       DB_URL: jdbc:mysql://host.docker.internal:3306/gamudalk
       DB_USER: root
-      DB_PASSWORD: DEShV*0202*
+      DB_PASSWORD: your_password_here

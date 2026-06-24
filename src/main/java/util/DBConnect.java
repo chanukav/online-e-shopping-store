@@ -18,7 +18,7 @@ public class DBConnect {
 			username = "root";
 		}
 		if (password == null || password.isEmpty()) {
-			password = "DEShV*0202*";
+			password = "";
 		}
 
 		Class.forName("com.mysql.jdbc.Driver");

@@ -62,12 +62,11 @@ src/
 3.  **Database Configuration**
     -   Make sure your MySQL server is running.
     -   Create a database named `gamudalk`.
-    -   Update the database credentials in `src/main/java/util/DBConnect.java`:
-        ```java
-        String username = "your_mysql_username";
-        String password = "your_mysql_password";
-        ```
-    -   *Note: Ensure you create the necessary tables (Customer, Product, Category, etc.) in your database.*
+    -   Configure database credentials via environment variables:
+        *   `DB_URL`: Your database JDBC URL (defaults to `jdbc:mysql://localhost:3306/gamudalk?characterEncoding=utf8`)
+        *   `DB_USER`: Your MySQL username (defaults to `root`)
+        *   `DB_PASSWORD`: Your MySQL password (defaults to an empty string `""`)
+    -   *Note: Ensure you create the necessary tables (Customer, Product, Category, etc.) in your database. Default fallback values can be found in [DBConnect.java](file:///C:/Users/chanuka/git/online-e-shopping-store/src/main/java/util/DBConnect.java).*
 
 4.  **Run the Application**
     -   Right-click on the project in Project Explorer.
