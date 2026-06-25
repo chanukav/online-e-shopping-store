@@ -36,6 +36,8 @@ A comprehensive web-based e-commerce application built using Java Servlets, JSP,
 ## 📂 Project Structure
 
 ```text
+db/
+└── gamudalk.sql         # Database schema and backup SQL file
 src/
 ├── main/
 │   ├── java/
@@ -54,7 +56,7 @@ src/
 
 ### Option A: Local Development (Manual Tomcat)
 1. **Prerequisites**: Java Development Kit (JDK) 17, Apache Tomcat 9.0, MySQL Server.
-2. **Database Setup**: Create a local schema named `gamudalk` and import the table structures.
+2. **Database Setup**: Create a local schema named `gamudalk` and import the table structures from `db/gamudalk.sql` in this repository.
 3. Configure these environment variables for database credentials:
    * `DB_URL`: `jdbc:mysql://localhost:3306/gamudalk?characterEncoding=utf8`
    * `DB_USER`: Your MySQL username (defaults to `root`)

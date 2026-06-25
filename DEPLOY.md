@@ -59,15 +59,16 @@ Because the RDS instance is private, you cannot connect to it directly over the 
 5. Click **Test Connection**. Click **Continue Anyway** if a version warning popup appears. Save the connection once it succeeds.
 
 ### Importing your Database:
-1. Open your **Local MySQL Connection** (localhost).
-2. Go to the **Administration** tab > **Data Export**.
-3. Select the `gamudalk` schema, select **Export to Self-Contained File**, select **Dump Structure and Data**, and click **Start Export**.
-4. Disconnect and open your new **AWS RDS (SSH Tunnel)** connection.
-5. In the Query tab, run:
+If you want to import the baseline database schema provided in this repository:
+1. Open your new **AWS RDS (SSH Tunnel)** connection in MySQL Workbench.
+2. In the Query tab, run:
    ```sql
    CREATE DATABASE gamudalk CHARACTER SET utf8 COLLATE utf8_general_ci;
    ```
-6. Go to **Administration** > **Data Import/Restore** > **Import from Self-Contained File** > Choose your backup SQL file. Select `gamudalk` as the default target schema, and click **Start Import**.
+3. Go to the **Administration** tab > **Data Import/Restore**.
+4. Select **Import from Self-Contained File** and choose the `db/gamudalk.sql` file from your cloned repository directory.
+5. In the **Default Target Schema** dropdown, select `gamudalk`.
+6. Click **Start Import**.
 
 ---
 
