@@ -1,61 +1,98 @@
 # AWS Deployment & CI/CD Guide for Online E-Shopping Store
 
-## Overview
-This project has been updated to support modern deployment using **Docker** and **Maven**. This guide outlines how to deploy the application to Amazon Web Services (AWS) using the Free Tier and set up a CI/CD pipeline with **Jenkins**.
+This guide outlines how to deploy the application to Amazon Web Services (AWS) using the Free Tier and set up a robust CI/CD pipeline using **Docker**, **Maven**, and **Jenkins**.
 
-## Architecture & Costs
-To keep costs within your $100 budget (and mostly free if your account is within the first 12 months), we will use:
-- **Compute**: AWS EC2 `t2.micro` or `t3.micro` (Free Tier eligible - 750 hours/month). We will run both Jenkins and the Dockerized app on this instance.
-- **Database**: AWS RDS MySQL `db.t3.micro` or `db.t4g.micro` (Free Tier eligible - 750 hours/month).
+---
+
+## 🏗️ Architecture & Cost Optimization
+To deploy this application within the AWS Free Tier, we use:
+- **Compute Server**: AWS EC2 `t2.micro` or `t3.micro` instance (Ubuntu 22.04 LTS, 1GB RAM, 8GB SSD).
+- **Database Server**: AWS RDS MySQL `db.t3.micro` instance.
+- **CI/CD Orchestrator**: Jenkins running directly on the EC2 instance.
+- **Runtime Environment**: Docker containers running on the EC2 instance.
 
 > [!CAUTION]
-> A `t2.micro` instance has 1GB of RAM. Jenkins and Java applications are memory-intensive. Setting up a swap file on the EC2 instance is **critical** to prevent the instance from freezing or crashing.
+> A `t2.micro` instance has only 1GB of RAM. Running Jenkins, Java, and Docker builds on a single instance will exhaust the memory, causing the server to freeze. **Creating a Swap File (documented below) is mandatory.**
 
 ---
 
-## Part 1: Setting up the Database (AWS RDS)
+## 🗄️ Part 1: Setting up the AWS RDS Database
 
 1. Go to the **AWS RDS Console**.
-2. Click **Create database**.
-3. Choose **Standard create** and select **MySQL**.
-4. In the **Templates** section, select **Free tier** (this is very important to avoid costs).
-5. **Settings**:
-   - Provide a DB instance identifier (e.g., `eshop-db`).
-   - Set the Master username (e.g., `admin`).
-   - Set an Auto-generate password or provide a Master password. **Save this password**.
-6. **Connectivity**:
-   - Set **Public access** to **Yes** (if you want to access it from your local machine for testing) or **No** (safer, only EC2 can access). If No, make sure your EC2 instance and RDS are in the same VPC.
-   - Expand **Additional configuration** and specify an **Initial database name** (e.g., `gamudalk`).
-7. Click **Create database**. It will take a few minutes. Once active, note the **Endpoint** URL.
+2. Click **Create database** > Choose **Standard create** > Select **MySQL**.
+3. Under **Templates**, select **Free tier** (critical to avoid accidental charges).
+4. **Settings**:
+   * **DB instance identifier**: `eshop-db`
+   * **Master username**: `admin`
+   * **Master password**: Choose a strong password and save it (e.g. `your_rds_password`).
+5. **Connectivity**:
+   * **Public access**: Select **No** (best security practice; we will connect via SSH tunnel).
+   * Expand **Additional configuration** and specify the **Initial database name**: `gamudalk`.
+6. Click **Create database**. This takes about 5 minutes. Once active, note down the **Endpoint** URL.
+
+### Configure RDS Inbound Rules (Security Group)
+You must permit incoming traffic on port `3306` from both your EC2 instance and your local computer.
+1. Select your database in the RDS Console and click on the **VPC security groups** link.
+2. Select the security group from the list, click the **Inbound rules** tab, and select **Edit inbound rules**.
+3. Add the following rules:
+   * **Rule 1 (For Local PC)**: Type: `MYSQL/Aurora` (Port `3306`) | Source: `My IP` | Description: *Local Workbench*
+   * **Rule 2 (For EC2 Server)**: Type: `MYSQL/Aurora` (Port `3306`) | Source: Select your EC2 Security Group ID | Description: *EC2 Application*
+4. Click **Save rules**.
 
 ---
 
-## Part 2: Launching the EC2 Instance
+## 🔌 Part 2: Connecting MySQL Workbench & Importing Local Data
 
-1. Go to the **AWS EC2 Console**.
-2. Click **Launch instances**.
-3. Name it (e.g., `Jenkins-Eshop-Server`).
-4. **AMI**: Select **Ubuntu Server 22.04 LTS** (Free tier eligible).
-5. **Instance type**: Select `t2.micro` or `t3.micro`.
-6. **Key pair**: Create a new key pair (e.g., `eshop-key.pem`) and download it. You'll need it to SSH into the server.
-7. **Network settings**:
-   - Create a security group.
-   - Allow **SSH traffic from Anywhere**.
-   - Allow **HTTP traffic from Anywhere** (Port 80/8080).
-   - Allow **Custom TCP** on port `8080` (for Tomcat and Jenkins).
-8. Click **Launch instance**.
+Because the RDS instance is private, you cannot connect to it directly over the internet. You must tunnel your connection through your EC2 instance using SSH.
+
+1. Open **MySQL Workbench** on your local machine.
+2. Click the **`+`** icon next to **MySQL Connections** to create a new connection.
+3. Set the **Connection Method** dropdown to: **`Standard TCP/IP over SSH`**.
+4. Configure the fields:
+   * **SSH Hostname**: Your EC2 Instance Public IP (e.g., `54.x.x.x`).
+   * **SSH Username**: `ubuntu`
+   * **SSH Key File**: Browse and select your downloaded EC2 `.pem` key pair file.
+   * **MySQL Hostname**: Paste your **RDS Endpoint** URL.
+   * **MySQL Server Port**: `3306`
+   * **Username**: `admin`
+   * **Password**: Click *Store in Vault...* and enter your RDS master password.
+5. Click **Test Connection**. Click **Continue Anyway** if a version warning popup appears. Save the connection once it succeeds.
+
+### Importing your Database:
+1. Open your **Local MySQL Connection** (localhost).
+2. Go to the **Administration** tab > **Data Export**.
+3. Select the `gamudalk` schema, select **Export to Self-Contained File**, select **Dump Structure and Data**, and click **Start Export**.
+4. Disconnect and open your new **AWS RDS (SSH Tunnel)** connection.
+5. In the Query tab, run:
+   ```sql
+   CREATE DATABASE gamudalk CHARACTER SET utf8 COLLATE utf8_general_ci;
+   ```
+6. Go to **Administration** > **Data Import/Restore** > **Import from Self-Contained File** > Choose your backup SQL file. Select `gamudalk` as the default target schema, and click **Start Import**.
 
 ---
 
-## Part 3: Server Configuration & Installation
+## 🚀 Part 3: Launching & Configuring the EC2 Instance
 
-SSH into your new EC2 instance using your terminal or Git Bash:
+### 1. Launching EC2
+1. Go to the **AWS EC2 Console** > **Launch instances**.
+2. **Name**: `Jenkins-Eshop-Server`
+3. **AMI**: **Ubuntu Server 22.04 LTS** (Free tier eligible).
+4. **Key pair**: Select or create a key pair (`eshop-key.pem`).
+5. **Network settings**:
+   * Allow SSH traffic from Anywhere (or My IP).
+   * Allow HTTP traffic from Anywhere (Port 80).
+   * Add Custom TCP Rule: Port **`8080`** from Anywhere (for Jenkins web interface).
+6. Click **Launch instance**.
+
+### 2. Configure EC2 Server (SSH Commands)
+Connect to your EC2 instance from your terminal:
 ```bash
 ssh -i "eshop-key.pem" ubuntu@<YOUR_EC2_PUBLIC_IP>
 ```
 
-### 1. Create a Swap File (CRITICAL)
-Since the `t2.micro` only has 1GB RAM, we need to add a 2GB swap file. Run these commands:
+Execute these setup commands in order:
+
+#### A. Create a 2GB Swap File (Mandatory)
 ```bash
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
@@ -65,58 +102,89 @@ sudo cp /etc/fstab /etc/fstab.bak
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 ```
 
-### 2. Install Java (OpenJDK 17)
+#### B. Install Java 21 & Jenkins (2026 Key Setup)
 ```bash
 sudo apt update
-sudo apt install -y fontconfig openjdk-17-jre
-```
+sudo apt install -y fontconfig openjdk-21-jre net-tools
 
-### 3. Install Jenkins
-```bash
+# Fetch official 2026 verification key
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
-  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+
+# Add the repository to apt sources
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/" | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Install Jenkins
 sudo apt-get update
 sudo apt-get install -y jenkins
 ```
 
-### 4. Install Docker
+#### C. Install Docker & Configure Permissions
 ```bash
 sudo apt install -y docker.io
 sudo systemctl enable --now docker
-# Add ubuntu and jenkins users to the docker group so they can run commands without sudo
+
+# Add users to the docker group
 sudo usermod -aG docker ubuntu
 sudo usermod -aG docker jenkins
-# Reboot the instance for group changes to take effect
-sudo reboot
+
+# Restart Jenkins to apply group changes dynamically
+sudo systemctl restart jenkins
 ```
 
 ---
 
-## Part 4: Jenkins Pipeline Configuration
+## ⚙️ Part 4: Jenkins Configuration
 
-1. After rebooting, go to `http://<YOUR_EC2_PUBLIC_IP>:8080` in your browser.
-2. Get the initial admin password:
-   ```bash
-   sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-   ```
-3. Install suggested plugins and create your admin account.
-4. **Create a Pipeline**:
-   - Click **New Item** -> Name it `Eshop-Deploy` -> Select **Pipeline** -> OK.
-5. **Configure GitHub Webhook** (Optional but recommended):
-   - In your GitHub repo Settings -> Webhooks, add payload URL `http://<YOUR_EC2_PUBLIC_IP>:8080/github-webhook/`.
-   - In Jenkins, under Build Triggers, check **GitHub hook trigger for GITScm polling**.
-6. **Pipeline Script**:
-   Scroll down to the Pipeline section and paste the following declarative pipeline script:
+1. In your browser, open `http://<YOUR_EC2_PUBLIC_IP>:8080`.
+2. Manage and unlock your Jenkins instance with these helpful commands:
+
+| Action | Command |
+| --- | --- |
+| **Get Unlock Password** | `sudo cat /var/lib/jenkins/secrets/initialAdminPassword` |
+| **Check Jenkins Status** | `sudo systemctl status jenkins` |
+| **Restart Jenkins Service** | `sudo systemctl restart jenkins` |
+3. Install recommended plugins and create your admin account.
+
+### 1. Enable Built-In Node Executors (Required)
+Modern Jenkins disables running builds on the controller (built-in) node by default. Since you are running a single-server setup, you must enable it:
+1. Go to **Manage Jenkins** > **Nodes**.
+2. Click the gear icon next to **Built-In Node** > click **Configure**.
+3. Change **Number of executors** from `0` to `1` (or `2`).
+4. Click **Save**.
+
+### 2. Lower Disk Space Thresholds (Recommended)
+Since EC2 instances have limited space, Jenkins might take the node offline if free space drops below 1GB.
+1. Go to **Manage Jenkins** > **Nodes** > click **Configure Monitors** (left sidebar).
+2. Find **Free Disk Space** and change the threshold from `1GiB` to `200MiB`.
+3. Find **Free Temp Space** and change the threshold from `1GiB` to `200MiB`.
+4. Click **Save**. Go back to the **Built-In Node** and click **Bring this node back online** if it is offline.
+
+### 3. Add GitHub Personal Access Token (PAT)
+Password authentication is deprecated on GitHub. You must use a Personal Access Token:
+1. In GitHub: Go to **Settings** > **Developer settings** > **Personal access tokens (classic)** > Generate a classic token with the `repo` scope. Copy the token.
+2. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
+   * **Kind**: `Username with password`
+   * **Username**: Your GitHub username.
+   * **Password**: Paste your GitHub Personal Access Token.
+   * **ID**: `github-token`
+3. Click **Create**.
+
+---
+
+## 🛠️ Part 5: Pipeline & Docker Configuration
+
+1. In Jenkins: Click **New Item** > Name it `Eshop-Deploy` > Select **Pipeline** > Click **OK**.
+2. In the configuration window, scroll down to the **Pipeline** script and paste the following:
 
 ```groovy
 pipeline {
     agent any
 
     environment {
-        // Update these with your RDS Endpoint and Credentials
+        // Update these with your RDS Endpoint and credentials
         DB_URL = 'jdbc:mysql://eshop-db.cr68guouud9p.ap-south-1.rds.amazonaws.com:3306/gamudalk?characterEncoding=utf8'
         DB_USER = 'admin'
         DB_PASSWORD = 'your_rds_password'
@@ -125,7 +193,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/yourusername/online-e-shopping-store.git' // UPDATE YOUR REPO URL
+                // Ensure to replace this with your repo URL
+                git branch: 'main', 
+                    credentialsId: 'github-token', 
+                    url: 'https://github.com/chanukav/online-e-shopping-store.git'
             }
         }
         
@@ -156,10 +227,26 @@ pipeline {
     }
 }
 ```
+3. Click **Save** and select **Build Now** to launch the deployment.
 
-> [!NOTE]
-> We map port `8080` from the container to port `80` on the host, so you can access the app just by going to `http://<YOUR_EC2_PUBLIC_IP>`.
+---
 
-7. Save and click **Build Now**.
+## 🧹 Part 6: Maintenance & Disk Cleanup
+If your EC2 storage is full, run this cleanup command periodically on the EC2 terminal:
+```bash
+# Deletes unused docker containers, images, volumes, and build caches
+docker system prune -a -f --volumes
+docker builder prune -a -f
+sudo apt-get clean
+sudo journalctl --vacuum-time=1d
+sudo rm -rf /tmp/*
+```
 
-Your application will be built, containerized, and deployed automatically! You can check the Jenkins console output to monitor the build process.
+---
+
+## ⚠️ Notes on Docker Base Images (cgroups v2 JVM bug)
+* If Tomcat fails with a `NullPointerException` regarding `CgroupInfo.getMountPoint()` in the logs, it is because older Java 17 versions do not support modern Linux kernels utilizing cgroup v2. 
+* To prevent this, always build your application using a patched, active JDK distribution like Eclipse Temurin in your `Dockerfile`:
+  ```dockerfile
+  FROM tomcat:9.0-jre17-temurin
+  ```

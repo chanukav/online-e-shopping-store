@@ -1,6 +1,8 @@
 # Online E-Shopping Store
 
-A comprehensive web-based e-commerce application built using Java Servlets, JSP, and MySQL. This project facilitates a complete online shopping experience for customers and provides robust management tools for admins.
+A comprehensive web-based e-commerce application built using Java Servlets, JSP, and MySQL. This project has been updated to support containerized execution and automated CI/CD deployment pipelines on Amazon Web Services (AWS).
+
+---
 
 ## 🚀 Features
 
@@ -17,67 +19,62 @@ A comprehensive web-based e-commerce application built using Java Servlets, JSP,
 - **Manager Handling**: Manage store managers.
 - **Inventory Control**: Monitor stock levels.
 
+---
+
 ## 🛠️ Tech Stack
 
-- **Backend**: Java (Servlets), JDBC
+- **Backend**: Java 17 (Servlets), JDBC
 - **Frontend**: JSP, HTML, CSS, JavaScript
-- **Database**: MySQL
-- **Server**: Apache Tomcat
-- **IDE**: Eclipse (Recommended)
+- **Database**: MySQL 8.4 (AWS RDS / Local)
+- **Containerization**: Docker
+- **Build Tool**: Maven (POM dependencies configuration)
+- **CI/CD Pipeline**: Jenkins (Declarative Pipeline)
+- **Deployment Platform**: AWS EC2 (Ubuntu 22.04 LTS)
+
+---
 
 ## 📂 Project Structure
 
-```
+```text
 src/
 ├── main/
 │   ├── java/
 │   │   ├── model/       # Data models (Product, Customer, etc.)
 │   │   ├── services/    # Business logic (ProductService, etc.)
 │   │   ├── servlet/     # Controllers (Servlets)
-│   │   └── util/        # Utility classes (DB Connection)
+│   │   └── util/        # Utility classes (DBConnect.java)
 │   └── webapp/          # Views (JSP), Styles (CSS), Scripts (JS)
+├── Dockerfile           # Multi-stage build (Maven -> Tomcat JRE 17)
+└── docker-compose.yml   # Local orchestration configuration
 ```
+
+---
 
 ## ⚙️ Setup & Installation
 
-### Prerequisites
-- Java Development Kit (JDK) 8 or higher
-- Apache Tomcat Server (v8.5 or v9.0 recommended)
-- MySQL Server
-- Eclipse IDE for Enterprise Java Developers
+### Option A: Local Development (Manual Tomcat)
+1. **Prerequisites**: Java Development Kit (JDK) 17, Apache Tomcat 9.0, MySQL Server.
+2. **Database Setup**: Create a local schema named `gamudalk` and import the table structures.
+3. Configure these environment variables for database credentials:
+   * `DB_URL`: `jdbc:mysql://localhost:3306/gamudalk?characterEncoding=utf8`
+   * `DB_USER`: Your MySQL username (defaults to `root`)
+   * `DB_PASSWORD`: Your MySQL password
+4. Run the project in Eclipse or your preferred IDE using **Run on Server** pointing to Tomcat 9.
 
-### Installation Steps
+### Option B: Local Development (Docker Compose)
+If you have **Docker Desktop** installed, run the entire app and connect to a local database with one command:
+```bash
+docker-compose up --build
+```
+The application will be available at `http://localhost:8080`.
 
-1.  **Clone the Repository**
-    ```bash
-    git clone https://github.com/chanukav/online-e-shopping-store.git
-    ```
+### Option C: AWS Production Deployment (Docker + Jenkins CI/CD)
+To set up your database in **AWS RDS**, launch a host in **AWS EC2**, install Docker, configure Jenkins pipelines, and set up continuous integration, please follow our comprehensive step-by-step guide:
 
-2.  **Import into Eclipse**
-    -   Open Eclipse.
-    -   Go to `File` > `Open Projects from File System...`.
-    -   Select the cloned repository folder.
-    -   Click `Finish`.
+👉 **[AWS Deployment & CI/CD Guide (DEPLOY.md)](file:///c:/Users/chanuka/git/online-e-shopping-store/DEPLOY.md)**
 
-3.  **Database Configuration**
-    -   Make sure your MySQL server is running.
-    -   Create a database named `gamudalk`.
-    -   Configure database credentials via environment variables:
-        *   `DB_URL`: Your database JDBC URL (defaults to `jdbc:mysql://localhost:3306/gamudalk?characterEncoding=utf8`)
-        *   `DB_USER`: Your MySQL username (defaults to `root`)
-        *   `DB_PASSWORD`: Your MySQL password (defaults to an empty string `""`)
-    -   *Note: Ensure you create the necessary tables (Customer, Product, Category, etc.) in your database. Default fallback values can be found in [DBConnect.java](file:///C:/Users/chanuka/git/online-e-shopping-store/src/main/java/util/DBConnect.java).*
-
-4.  **Run the Application**
-    -   Right-click on the project in Project Explorer.
-    -   Select `Run As` > `Run on Server`.
-    -   Choose your configured Apache Tomcat server.
-    -   The application should launch in your default browser.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please fork the repository and create a pull request for any feature enhancements or bug fixes.
+---
 
 ## 📄 License
 
-This project is open-source and available for use and modification.
+This project is open-source and available under the [MIT License](file:///c:/Users/chanuka/git/online-e-shopping-store/LICENSE).
