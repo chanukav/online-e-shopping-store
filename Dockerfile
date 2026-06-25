@@ -6,7 +6,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests && rm -rf /root/.m2/repository
 
 # Run stage
-FROM tomcat:9.0-jdk17-openjdk-slim
+FROM tomcat:9.0-jdk17-temurin-slim
 # Remove default webapps to keep image small and clean
 RUN rm -rf /usr/local/tomcat/webapps/*
 # Copy the WAR file to ROOT.war to serve at root context
