@@ -79,11 +79,6 @@ To set up your database in **AWS RDS**, launch a host in **AWS EC2**, install Do
 
 ## 📸 Screenshots
 
-<details>
-<summary>Click to view screenshots</summary>
-
-<br>
-
 ![Screenshot 1](screenshots/1.jpg)
 ![Screenshot 2](screenshots/2.jpg)
 ![Screenshot 3](screenshots/3.jpg)
@@ -99,8 +94,6 @@ To set up your database in **AWS RDS**, launch a host in **AWS EC2**, install Do
 ![Screenshot 13](screenshots/13.jpg)
 ![Screenshot 14](screenshots/14.jpg)
 ![Screenshot 15](screenshots/15.jpg)
-
-</details>
 
 ---
 

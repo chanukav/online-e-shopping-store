@@ -186,7 +186,7 @@ pipeline {
 
     environment {
         // Update these with your RDS Endpoint and credentials
-        DB_URL = 'jdbc:mysql://eshop-db.cr68guouud9p.ap-south-1.rds.amazonaws.com:3306/gamudalk?characterEncoding=utf8'
+        DB_URL = 'jdbc:mysql://<YOUR_RDS_ENDPOINT_URL>:3306/gamudalk?characterEncoding=utf8'
         DB_USER = 'admin'
         DB_PASSWORD = 'your_rds_password'
     }
