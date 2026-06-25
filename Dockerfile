@@ -3,7 +3,7 @@ FROM maven:3.8.7-openjdk-18-slim AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests && rm -rf /root/.m2/repository
 
 # Run stage
 FROM tomcat:9.0-jdk17-openjdk-slim
