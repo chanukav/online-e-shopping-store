@@ -30,7 +30,7 @@ pipeline {
                             
                             # Run the new container
                             docker run -d \
-                              -p 80:8080 \
+                              -p 8080:8080 \
                               -e DB_URL="${DB_URL}" \
                               -e DB_USER="${DB_CREDS_USR}" \
                               -e DB_PASSWORD="${DB_CREDS_PSW}" \
@@ -47,7 +47,7 @@ pipeline {
                             
                             # Run the new container
                             docker run -d `
-                              -p 80:8080 `
+                              -p 8080:8080 `
                               -e DB_URL="$env:DB_URL" `
                               -e DB_USER="$env:DB_CREDS_USR" `
                               -e DB_PASSWORD="$env:DB_CREDS_PSW" `
