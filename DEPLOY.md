@@ -173,62 +173,43 @@ Password authentication is deprecated on GitHub. You must use a Personal Access 
    * **ID**: `github-token`
 3. Click **Create**.
 
+### 4. Add RDS Database Endpoint URL (Secret Text)
+To prevent exposing infrastructure details in public git repository, store the database URL in Jenkins:
+1. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
+   * **Kind**: `Secret text`
+   * **Secret**: Paste your database connection URL (e.g. `jdbc:mysql://eshop-db.cr68guouud9p.ap-south-1.rds.amazonaws.com:3306/gamudalk?characterEncoding=utf8`)
+   * **ID**: `rds-db-url`
+   * **Description**: `AWS RDS Database JDBC URL`
+2. Click **Create**.
+
+### 5. Add RDS Database Credentials (Username with Password)
+Store your database credentials securely in Jenkins:
+1. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
+   * **Kind**: `Username with password`
+   * **Username**: Enter your RDS Master username (e.g. `admin`).
+   * **Password**: Enter your RDS Master password.
+   * **ID**: `rds-db-credentials`
+   * **Description**: `AWS RDS MySQL database credentials`
+2. Click **Create**.
+
 ---
 
 ## 🛠️ Part 5: Pipeline & Docker Configuration
 
+To configure Jenkins to pull the `Jenkinsfile` directly from Git:
+
 1. In Jenkins: Click **New Item** > Name it `Eshop-Deploy` > Select **Pipeline** > Click **OK**.
-2. In the configuration window, scroll down to the **Pipeline** script and paste the following:
+2. In the configuration window, scroll down to the **Pipeline** section.
+3. Change the **Definition** dropdown from **Pipeline script** to **Pipeline script from SCM**.
+4. Configure the **SCM** settings:
+   * **SCM**: Select **Git**.
+   * **Repository URL**: `https://github.com/chanukav/online-e-shopping-store.git` (Update this with your own repository URL if you have a private fork).
+   * **Credentials**: Select your GitHub credentials (`github-token` created in Part 4, Step 3).
+   * **Branch Specifier (blank for 'any')**: Change it to `*/main` (or the branch you want to build).
+5. In **Script Path**, ensure it is set to `Jenkinsfile` (this points to the file at the root of the repository).
+6. Click **Save**.
+7. Select **Build Now** from the left sidebar to launch your deployment pipeline.
 
-```groovy
-pipeline {
-    agent any
-
-    environment {
-        // Update these with your RDS Endpoint and credentials
-        DB_URL = 'jdbc:mysql://<YOUR_RDS_ENDPOINT_URL>:3306/gamudalk?characterEncoding=utf8'
-        DB_USER = 'admin'
-        DB_PASSWORD = 'your_rds_password'
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                // Ensure to replace this with your repo URL
-                git branch: 'main', 
-                    credentialsId: 'github-token', 
-                    url: 'https://github.com/chanukav/online-e-shopping-store.git'
-            }
-        }
-        
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t eshop-app .'
-            }
-        }
-        
-        stage('Deploy Container') {
-            steps {
-                sh '''
-                    # Stop and remove the old container if it exists
-                    docker stop eshop-container || true
-                    docker rm eshop-container || true
-                    
-                    # Run the new container
-                    docker run -d \
-                      -p 80:8080 \
-                      -e DB_URL="${DB_URL}" \
-                      -e DB_USER="${DB_USER}" \
-                      -e DB_PASSWORD="${DB_PASSWORD}" \
-                      --name eshop-container \
-                      eshop-app
-                '''
-            }
-        }
-    }
-}
-```
-3. Click **Save** and select **Build Now** to launch the deployment.
 
 ---
 
