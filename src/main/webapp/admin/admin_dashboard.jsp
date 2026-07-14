@@ -49,11 +49,9 @@
             Statement stmt = null;
             ResultSet rs = null;
             int userCount = 0, adminCount = 0, orderCount = 0, productCount = 0;
-            
             try {
                 // Database connection
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "your_username", "your_password");
+                conn = util.DBConnect.getConnection();
                 stmt = conn.createStatement();
                 
                 // Count total users (excluding admins)

@@ -135,7 +135,7 @@ Password authentication is deprecated on GitHub. You must use a Personal Access 
 To prevent exposing infrastructure details in public git repository, store the database URL in Jenkins:
 1. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
    * **Kind**: `Secret text`
-   * **Secret**: Paste your database connection URL (e.g. `jdbc:mysql://eshop-db.cr68guouud9p.ap-south-1.rds.amazonaws.com:3306/gamudalk?characterEncoding=utf8`)
+   * **Secret**: Paste your **full database JDBC connection URL** (e.g. `jdbc:mysql://eshop-db.cr68guouud9p.ap-south-1.rds.amazonaws.com:3306/gamudalk?characterEncoding=utf8`). **Do not paste just the raw hostname/endpoint.**
    * **ID**: `rds-db-url`
    * **Description**: `AWS RDS Database JDBC URL`
 2. Click **Create**.
@@ -175,7 +175,10 @@ To run build steps directly on the EC2 server, set up the EC2 instance as a buil
      * Click **Add**.
      * Select your global Git tool (e.g. **(Default)** or **Default**) from the **Key** dropdown.
      * In **Home**, type `/usr/bin/git` (the path to the Git client on Ubuntu EC2 instance).
-4. Click **Save**. The agent will start connecting. Check the node status to ensure it goes online (In-service).
+ 4. Click **Save**. The agent will start connecting. Check the node status to ensure it goes online (In-service).
+
+> [!TIP]
+> If the build fails with a docker permission error (`permission denied while trying to connect to the docker API`), it means the Jenkins SSH connection was established before the `docker` group changes took effect on the EC2 server. To resolve this, go to **Manage Jenkins** > **Nodes** > **ec2-agent**, click **Disconnect**, and then click **Launch agent** to reconnect it.
 
 ---
 
