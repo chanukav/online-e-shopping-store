@@ -170,6 +170,11 @@ To run build steps directly on the EC2 server, set up the EC2 instance as a buil
        * Click **Add**.
      * Select `ubuntu (ec2-ssh-key)` in the Credentials dropdown.
      * **Host Key Verification Strategy**: Select **Non-verifying Verification Strategy**.
+   * **Node Properties** (at the bottom of the page):
+     * Check **Tool Locations**.
+     * Click **Add**.
+     * Select your global Git tool (e.g. **(Default)** or **Default**) from the **Key** dropdown.
+     * In **Home**, type `/usr/bin/git` (the path to the Git client on Ubuntu EC2 instance).
 4. Click **Save**. The agent will start connecting. Check the node status to ensure it goes online (In-service).
 
 ---
