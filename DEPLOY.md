@@ -76,13 +76,12 @@ If you want to import the baseline database schema provided in this repository:
 
 ### 1. Launching EC2
 1. Go to the **AWS EC2 Console** > **Launch instances**.
-2. **Name**: `Jenkins-Eshop-Server`
+2. **Name**: `Eshop-Production-Server`
 3. **AMI**: **Ubuntu Server 22.04 LTS** (Free tier eligible).
 4. **Key pair**: Select or create a key pair (`eshop-key.pem`).
 5. **Network settings**:
    * Allow SSH traffic from Anywhere (or My IP).
    * Allow HTTP traffic from Anywhere (Port 80).
-   * Add Custom TCP Rule: Port **`8080`** from Anywhere (for Jenkins web interface).
 6. Click **Launch instance**.
 
 ### 2. Configure EC2 Server (SSH Commands)
@@ -103,67 +102,26 @@ sudo cp /etc/fstab /etc/fstab.bak
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 ```
 
-#### B. Install Java 21 & Jenkins (2026 Key Setup)
+#### B. Install Java 21, Git, & Docker
 ```bash
 sudo apt update
-sudo apt install -y fontconfig openjdk-21-jre net-tools
+sudo apt install -y git fontconfig openjdk-21-jre net-tools docker.io
 
-# Fetch official 2026 verification key
-sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
-  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
-
-# Add the repository to apt sources
-echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian-stable binary/" | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-
-# Install Jenkins
-sudo apt-get update
-sudo apt-get install -y jenkins
-```
-
-#### C. Install Docker & Configure Permissions
-```bash
-sudo apt install -y docker.io
+# Enable Docker service
 sudo systemctl enable --now docker
 
-# Add users to the docker group
+# Allow the default ubuntu user to run Docker commands without sudo
 sudo usermod -aG docker ubuntu
-sudo usermod -aG docker jenkins
-
-# Restart Jenkins to apply group changes dynamically
-sudo systemctl restart jenkins
 ```
 
 ---
 
-## ⚙️ Part 4: Jenkins Configuration
+## ⚙️ Part 4: Jenkins Configuration (Local PC)
 
-1. In your browser, open `http://<YOUR_EC2_PUBLIC_IP>:8080`.
-2. Manage and unlock your Jenkins instance with these helpful commands:
+1. Open Jenkins in your browser on your local machine (usually at `http://localhost:8080`).
+2. Complete the initial unlock setup and install the recommended plugins.
 
-| Action | Command |
-| --- | --- |
-| **Get Unlock Password** | `sudo cat /var/lib/jenkins/secrets/initialAdminPassword` |
-| **Check Jenkins Status** | `sudo systemctl status jenkins` |
-| **Restart Jenkins Service** | `sudo systemctl restart jenkins` |
-3. Install recommended plugins and create your admin account.
-
-### 1. Enable Built-In Node Executors (Required)
-Modern Jenkins disables running builds on the controller (built-in) node by default. Since you are running a single-server setup, you must enable it:
-1. Go to **Manage Jenkins** > **Nodes**.
-2. Click the gear icon next to **Built-In Node** > click **Configure**.
-3. Change **Number of executors** from `0` to `1` (or `2`).
-4. Click **Save**.
-
-### 2. Lower Disk Space Thresholds (Recommended)
-Since EC2 instances have limited space, Jenkins might take the node offline if free space drops below 1GB.
-1. Go to **Manage Jenkins** > **Nodes** > click **Configure Monitors** (left sidebar).
-2. Find **Free Disk Space** and change the threshold from `1GiB` to `200MiB`.
-3. Find **Free Temp Space** and change the threshold from `1GiB` to `200MiB`.
-4. Click **Save**. Go back to the **Built-In Node** and click **Bring this node back online** if it is offline.
-
-### 3. Add GitHub Personal Access Token (PAT)
+### 1. Add GitHub Personal Access Token (PAT)
 Password authentication is deprecated on GitHub. You must use a Personal Access Token:
 1. In GitHub: Go to **Settings** > **Developer settings** > **Personal access tokens (classic)** > Generate a classic token with the `repo` scope. Copy the token.
 2. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
@@ -173,7 +131,7 @@ Password authentication is deprecated on GitHub. You must use a Personal Access 
    * **ID**: `github-token`
 3. Click **Create**.
 
-### 4. Add RDS Database Endpoint URL (Secret Text)
+### 2. Add RDS Database Endpoint URL (Secret Text)
 To prevent exposing infrastructure details in public git repository, store the database URL in Jenkins:
 1. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
    * **Kind**: `Secret text`
@@ -182,7 +140,7 @@ To prevent exposing infrastructure details in public git repository, store the d
    * **Description**: `AWS RDS Database JDBC URL`
 2. Click **Create**.
 
-### 5. Add RDS Database Credentials (Username with Password)
+### 3. Add RDS Database Credentials (Username with Password)
 Store your database credentials securely in Jenkins:
 1. In Jenkins: Go to **Manage Jenkins** > **Credentials** > **(global)** > **Add Credentials**.
    * **Kind**: `Username with password`
@@ -191,6 +149,28 @@ Store your database credentials securely in Jenkins:
    * **ID**: `rds-db-credentials`
    * **Description**: `AWS RDS MySQL database credentials`
 2. Click **Create**.
+
+### 4. Configure EC2 Build Agent (SSH Node)
+To run build steps directly on the EC2 server, set up the EC2 instance as a build agent:
+1. In Jenkins: Go to **Manage Jenkins** > **Nodes** > **New Node**.
+2. Set **Node name** to `ec2-agent`, select **Permanent Agent**, and click **Create**.
+3. Configure the fields:
+   * **Description**: `AWS EC2 Production Build Agent`
+   * **Number of executors**: `1`
+   * **Remote root directory**: `/home/ubuntu/jenkins`
+   * **Labels**: `ec2-agent`
+   * **Usage**: `Only build jobs with label expressions matching this node`
+   * **Launch method**: Select **Launch agents via SSH**.
+     * **Host**: Enter your EC2 Public IP address.
+     * **Credentials**: Click **Add** > **Jenkins**:
+       * **Kind**: `SSH Username with private key`
+       * **ID**: `ec2-ssh-key`
+       * **Username**: `ubuntu`
+       * **Private Key**: Select *Enter directly*, click *Add*, and paste the contents of your `eshop-key.pem` private key.
+       * Click **Add**.
+     * Select `ubuntu (ec2-ssh-key)` in the Credentials dropdown.
+     * **Host Key Verification Strategy**: Select **Non-verifying Verification Strategy**.
+4. Click **Save**. The agent will start connecting. Check the node status to ensure it goes online (In-service).
 
 ---
 
